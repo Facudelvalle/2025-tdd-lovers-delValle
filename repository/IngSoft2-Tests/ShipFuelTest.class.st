@@ -12,7 +12,7 @@ ShipFuelTest >> testWhenAShipHasToMoveMoreSquaresThanItsRemainingFuelThenItDoesN
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
-	expectedSquare := 2.
+	expectedSquare := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 3 and: 4.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -37,7 +37,7 @@ ShipFuelTest >> testWhenAShipHasToMoveMoreSquaresThanItsRemainingFuelThenItDoesN
 	aGame nextTurn.
 	aGame nextTurn.
 
-	self assert: aBlueShip actualSquare equals: expectedSquare 
+	self assert: (aBlueShip actualPosition equals: expectedSquare) 
 ]
 
 { #category : 'tests' }
