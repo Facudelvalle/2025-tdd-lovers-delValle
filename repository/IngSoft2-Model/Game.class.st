@@ -106,8 +106,9 @@ Game >> move: aShip [
 		                   squaresAwayFrom: shipFinalPosition
 		                   with: board length.
 	aShip moveTo: shipFinalPosition.
-	[ aShip consumeFuel: squaresTraveled ] onErrorDo: [
-		aShip moveTo: shipInitialPosition ]
+	[ aShip consumeFuel: squaresTraveled ]
+		on: Error
+		do: [ aShip moveTo: shipInitialPosition ]
 ]
 
 { #category : 'action' }
