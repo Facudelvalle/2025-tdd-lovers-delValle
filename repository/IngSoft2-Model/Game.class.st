@@ -16,6 +16,12 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'as yet unclassified' }
+Game class >> assignEffectMagnitudIn: aBoard with: someDices [
+
+	aBoard distribution do: [ :aSquare | aSquare assigned: someDices ]
+]
+
 { #category : 'creation' }
 Game class >> fuel: someShips with: aFuelQuantity [
 
@@ -58,7 +64,17 @@ Game class >> with: aBoard for: someLaps and: someShips and: someDices [
 	self hasShips: someShips.
 	self hasLaps: someLaps.
 	self fuel: someShips with: (self maximumRoll: someDices) * 2. 
+	self assignEffectMagnitudIn: aBoard with: someDices .
 	^ self new initializeWith: aBoard for: someLaps and: someShips and: someDices
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyEffect: aShip and: aPosition [
+
+	| effect |
+	effect := board effectIn: aPosition currentSquare + 1.
+
+	^ effect applyOn: aShip and: aPosition 
 ]
 
 { #category : 'validation' }
@@ -91,21 +107,26 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices [
 ]
 
 { #category : 'action' }
-Game >> move: aShip [
+Game >> move: aShip with: rolledNumber [
 
-	| rolledNumber shipInitialPosition shipPositionBeforeSquareEffect shipFinalPosition squaresTraveled |
-	rolledNumber := self rollDices.
+	| shipInitialPosition shipPositionBeforeSquareEffect shipFinalPosition squaresTraveled |
 	shipInitialPosition := aShip currentPosition.
 	shipPositionBeforeSquareEffect := board
 		                                  update: shipInitialPosition
 		                                  with: rolledNumber.
 	(shipPositionBeforeSquareEffect hasCompleted: laps) ifTrue: [
 		self finish ].
-	shipFinalPosition := board moveIfWormHoleAt:  "Aca iria un mensaje al propio game que sea algo asi como aplicarEfectoDeLaSquare: shipPositionBeforeSquareEffect. y eso es lo que hace es mandar un mensaje polimorfico a la square que corresponda y retorna la posicion final, para esto deberiamos tener un array que tenga el efecto de cada square y lo comparamos con eso"
-		                     shipPositionBeforeSquareEffect.
-	squaresTraveled := shipInitialPosition  "Este se llamaria: squaresTraveledBeforeSquareEffect"
+	shipFinalPosition := board moveIfWormHoleAt: shipPositionBeforeSquareEffect.
+	((board moveIfWormHoleAt: shipPositionBeforeSquareEffect) equals:
+		 shipPositionBeforeSquareEffect) ifTrue: [
+		shipFinalPosition := self
+			                     applyEffect: aShip
+			                     and: shipPositionBeforeSquareEffect ].
+	
+	"shipFinalPosition := self applyEffect: aShip and: shipPositionBeforeSquareEffect." "Aca iria un mensaje al propio game que sea algo asi como aplicarEfectoDeLaSquare: shipPositionBeforeSquareEffect. y eso es lo que hace es mandar un mensaje polimorfico a la square que corresponda y retorna la posicion final, para esto deberiamos tener un array que tenga el efecto de cada square y lo comparamos con eso"
+	squaresTraveled := shipInitialPosition
 		                   squaresAwayFrom: shipPositionBeforeSquareEffect
-		                   with: board length.
+		                   with: board length. "Este se llamaria: squaresTraveledBeforeSquareEffect"
 	"squaresTraveledAfterSquareEffect := shipPositionBeforeSquareEffect squaresAwayFrom: shipFinalPosition with: board length"
 	"squaresTraveled := squaresTraveledBeforeSquareEffect + squaresTraveledAfterSquareEffect"
 	aShip moveTo: shipFinalPosition.
@@ -130,10 +151,11 @@ Game >> nextTurnPass [
 { #category : 'action' }
 Game >> nextTurnPlay [
 
-	| shipToMove |
+	| shipToMove rolledNumber |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
-	shipToMove canPlay ifTrue: [ self move: shipToMove].
+	rolledNumber := self rollDices.
+	(shipToMove canPlay: rolledNumber) ifTrue: [ self move: shipToMove with: rolledNumber ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]

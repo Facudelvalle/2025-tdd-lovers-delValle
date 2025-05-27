@@ -18,31 +18,57 @@ WormHoleTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 { #category : 'tests' }
 WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndOfIt [
 
-	| aBoard aShip twentySquares aSetDice aWormHole sideToRoll |
+	| aBoard aShip twentySquares aSetDice aWormHole sideToRoll aDistributionBuilder aDefaultDistribution expectedPosition |
 	twentySquares := 20.
-	aWormHole := WormHole between: 2 and: 10.
-	aBoard := Board with: twentySquares and: aWormHole.
-	aShip := Ship called: 'BlueShip'.
 	sideToRoll := 2.
+	
+	expectedPosition := 10.
+	
+	aWormHole := WormHole between: 2 and: 10.
+	aShip := Ship called: 'BlueShip'.
 	aSetDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionBuilder := DistributionBuilder new.
+	aDefaultDistribution := aDistributionBuilder build.
+	
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDefaultDistribution.
+
+	
 	aShip move: aSetDice roll.
 	aShip moveTo: (aBoard moveIfWormHoleAt: aShip currentPosition).
-	self assert: aShip currentSquare equals: 10
+	
+	self assert: aShip currentSquare equals: expectedPosition
 ]
 
 { #category : 'tests' }
 WormHoleTest >> testWhenAShipLandsOnTheEndOfAWormHoleThenItEndsUpAtTheBeginningOfIt [
 
-	| aBoard aShip twentySquares aSetDice aWormHole sideToRoll |
+	| aBoard aShip twentySquares aSetDice aWormHole sideToRoll aDistributionBuilder aDefaultDistribution expectedPosition |
 	twentySquares := 20.
-	aWormHole := WormHole between: 2 and: 5.
-	aBoard := Board with: twentySquares and: aWormHole.
-	aShip := Ship called: 'BlueShip'.
 	sideToRoll := 5.
+	
+	expectedPosition := 2.
+	
+	aWormHole := WormHole between: 2 and: 5.
+	aShip := Ship called: 'BlueShip'.
 	aSetDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionBuilder := DistributionBuilder new.
+	aDefaultDistribution := aDistributionBuilder build.
+	
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDefaultDistribution.
+
+	
 	aShip move: aSetDice roll.
 	aShip moveTo: (aBoard moveIfWormHoleAt: aShip currentPosition).
-	self assert: aShip currentSquare equals: 2
+	
+	self assert: aShip currentSquare equals: expectedPosition
 ]
 
 { #category : 'tests' }

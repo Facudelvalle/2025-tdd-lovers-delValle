@@ -59,6 +59,12 @@ WormHole >> fallsInto: aLength [
 			'A Worm Hole cannot fall outside of its Boards length' ]
 ]
 
+{ #category : 'accessing' }
+WormHole >> hasEndAt: aSquare [
+
+	^ aSquare = beginning or: aSquare = end
+]
+
 { #category : 'initialization' }
 WormHole >> initializeBetween: aBeginning and: anEnd [
 
