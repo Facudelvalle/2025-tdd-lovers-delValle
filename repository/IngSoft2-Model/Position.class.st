@@ -72,6 +72,23 @@ Position >> equals: aPosition [
 	^(aPosition squareEquals: square) and: (aPosition lapsEquals: lap)
 ]
 
+{ #category : 'converting' }
+Position >> goBackfourPlaces [
+
+	| newSquare newLap |
+	newSquare := square - 4.
+	newLap := lap - 1.
+	
+	lap = 1
+		ifTrue: [
+			newLap := 1.
+			square - 4 < 0 ifTrue: [ newSquare := 0 ] ]
+		ifFalse: [
+			square - 4 < 0 ifTrue: [ newSquare := 4 - square ] ].
+
+	^ self class at: newSquare in: newLap
+]
+
 { #category : 'testing' }
 Position >> hasCompleted: someLaps [
 
