@@ -8,7 +8,8 @@ Class {
 		'position',
 		'name',
 		'fuel',
-		'turnsLeftToWait'
+		'turnsLeftToWait',
+		'gravityPenalty'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -20,12 +21,28 @@ Ship class >> called: aName [
 	^ self new initializeCalled: aName
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> applyGravityPenalty: aGravitySquare [
+
+	gravityPenalty := aGravitySquare 
+]
+
 { #category : 'testing' }
 Ship >> canPlay [
 
 	turnsLeftToWait > 0 ifTrue: [
 		self reducePenalty.
 		^ false ].
+	^ true
+]
+
+{ #category : 'testing' }
+Ship >> canPlay: rolledNumber [
+
+	turnsLeftToWait > 0 ifTrue: [
+		self reducePenalty.
+		^ false ].
+	(gravityPenalty > rolledNumber) ifTrue: [ ^ false ].
 	^ true
 ]
 
@@ -80,6 +97,7 @@ Ship >> initializeCalled: aName [
 	position := Position at: 0 in: 1.
 	fuel := 0.
 	turnsLeftToWait := 0.
+	gravityPenalty := 0.
 ]
 
 { #category : 'penalty' }

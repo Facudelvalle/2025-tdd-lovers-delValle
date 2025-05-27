@@ -61,6 +61,15 @@ Game class >> with: aBoard for: someLaps and: someShips and: someDices [
 	^ self new initializeWith: aBoard for: someLaps and: someShips and: someDices
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> applyEffect: aShip and: aPosition [
+
+	| effect |
+	effect := board effectIn: aPosition currentSquare.
+
+	^ effect applyOn: aShip and: aPosition 
+]
+
 { #category : 'validation' }
 Game >> canStillPlay [
 
@@ -91,18 +100,16 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices [
 ]
 
 { #category : 'action' }
-Game >> move: aShip [
+Game >> move: aShip with: rolledNumber [
 
-	| rolledNumber shipInitialPosition shipPositionBeforeSquareEffect shipFinalPosition squaresTraveled |
-	rolledNumber := self rollDices.
+	| shipInitialPosition shipPositionBeforeSquareEffect shipFinalPosition squaresTraveled |
 	shipInitialPosition := aShip currentPosition.
 	shipPositionBeforeSquareEffect := board
 		                                  update: shipInitialPosition
 		                                  with: rolledNumber.
 	(shipPositionBeforeSquareEffect hasCompleted: laps) ifTrue: [
 		self finish ].
-	shipFinalPosition := board moveIfWormHoleAt:  "Aca iria un mensaje al propio game que sea algo asi como aplicarEfectoDeLaSquare: shipPositionBeforeSquareEffect. y eso es lo que hace es mandar un mensaje polimorfico a la square que corresponda y retorna la posicion final, para esto deberiamos tener un array que tenga el efecto de cada square y lo comparamos con eso"
-		                     shipPositionBeforeSquareEffect.
+	shipFinalPosition := self applyEffect: aShip and: shipPositionBeforeSquareEffect.  "Aca iria un mensaje al propio game que sea algo asi como aplicarEfectoDeLaSquare: shipPositionBeforeSquareEffect. y eso es lo que hace es mandar un mensaje polimorfico a la square que corresponda y retorna la posicion final, para esto deberiamos tener un array que tenga el efecto de cada square y lo comparamos con eso"
 	squaresTraveled := shipInitialPosition  "Este se llamaria: squaresTraveledBeforeSquareEffect"
 		                   squaresAwayFrom: shipPositionBeforeSquareEffect
 		                   with: board length.
@@ -130,10 +137,11 @@ Game >> nextTurnPass [
 { #category : 'action' }
 Game >> nextTurnPlay [
 
-	| shipToMove |
+	| shipToMove rolledNumber |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
-	shipToMove canPlay ifTrue: [ self move: shipToMove].
+	rolledNumber := self rollDices.
+	(shipToMove canPlay: rolledNumber) ifTrue: [ self move: shipToMove with: rolledNumber ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]

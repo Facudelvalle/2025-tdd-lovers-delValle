@@ -59,6 +59,12 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 	^ self new initializeWith: aLength and: aWormHole distributedBy: generatedSquares
 ]
 
+{ #category : 'as yet unclassified' }
+Board >> effectIn: aSquare [
+
+	^ distribution at: aSquare
+]
+
 { #category : 'initialization' }
 Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [ 
 
