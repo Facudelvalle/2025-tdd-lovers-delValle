@@ -8,32 +8,34 @@ Class {
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNecesaryNumberThenContinue [
 
-	| aDistribution hyperGravitySquarePossibility tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
+	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	someDices := OrderedCollection new.
-	someDices add: aLoadedDice.
-
-	hyperGravitySquarePossibility := 1.
+	
+	hyperGravitySquareProbability := 1.
 
 	aDistribution := {
 		                 ([ SetHyperGravitySquare with: 1 ]
-		                  -> hyperGravitySquarePossibility).}.
+		                  -> hyperGravitySquareProbability).}.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
@@ -50,32 +52,34 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareThenNeedsARolledNumberGreaterThenTwoToContinue [
 
-	| aDistribution hyperGravitySquarePossibility tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
+	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedPosition := Position at: 1 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	someDices := OrderedCollection new.
-	someDices add: aLoadedDice.
-
-	hyperGravitySquarePossibility := 1.
+	
+	hyperGravitySquareProbability := 1.
 
 	aDistribution := {
 		                 ([ SetHyperGravitySquare with: 2 ]
-		                  -> hyperGravitySquarePossibility).}.
+		                  -> hyperGravitySquareProbability).}.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap

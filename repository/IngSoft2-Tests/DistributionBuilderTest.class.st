@@ -31,6 +31,7 @@ DistributionBuilderTest >> testWhenAnAverageProbabilityDistributionIsCreatedThen
 	| aDistributionBuilder anAverageDistribution plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility expectedDistribution |
 	aDistributionBuilder := DistributionBuilder new.
 	anAverageDistribution := aDistributionBuilder buildAverage.
+	
 	plainSquarePossibility := 0.4.
 	blackHoleSquarePossibility := 0.2.
 	hyperGravitySquarePossibility := 0.2.

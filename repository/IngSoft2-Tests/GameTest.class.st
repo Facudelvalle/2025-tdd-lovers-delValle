@@ -58,13 +58,14 @@ GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly 
 
 	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aSetDice twoLaps aBlackShip sideToRoll aGame expectedPosition aDistributionBuilder aDefaultDistribution |
 	fiveSquares := 5.
+	sideToRoll := 6.
 	twoLaps := 2.
-	aWormHole := WormHole between: 2 and: 3.
+	
 	expectedPosition := Position at: 1 in: 2.
-
+	
+	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
-	sideToRoll := 6.
 	aSetDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionBuilder := DistributionBuilder new.
@@ -99,6 +100,10 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 	sideToRoll := 1.
 	oneLap := 1.
 
+	expectedDetails := 'Winner: There is not a winner yet' , String cr
+	                   , 'BlueShip: Lap: 1 Square: 1' , String cr
+	                   , 'BlackShip: Lap: 1 Square: 0'.
+
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
@@ -121,10 +126,6 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 		         for: oneLap
 		         and: someShips
 		         and: someDices.
-
-	expectedDetails := 'Winner: There is not a winner yet' , String cr
-	                   , 'BlueShip: Lap: 1 Square: 1' , String cr
-	                   , 'BlackShip: Lap: 1 Square: 0'.
 
 	aGame nextTurnPlay.
 
@@ -176,6 +177,10 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 	fiveSquares := 5.
 	sideToRoll := 3.
 	oneLap := 1.
+	
+	expectedDetails := 'Winner: BlueShip' , String cr
+	                   , 'BlueShip: Lap: 2 Square: 0' , String cr
+	                   , 'BlackShip: Lap: 1 Square: 2'.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -200,10 +205,6 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 		         and: someShips
 		         and: someDices.
 
-	expectedDetails := 'Winner: BlueShip' , String cr
-	                   , 'BlueShip: Lap: 2 Square: 0' , String cr
-	                   , 'BlackShip: Lap: 1 Square: 2'.
-
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -218,10 +219,10 @@ GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMax
 	fiveSquares := 5.
 	twoSides := 2.
 	oneLap := 1.
+	
 	maximumRolledNumber := twoSides.
 
 	aWormHole := WormHole between: 1 and: 2.
-
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aTwoSidedDice := Dice with: twoSides.
@@ -256,10 +257,10 @@ GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMa
 	twoSides := 2.
 	fourSides := 4.
 	oneLap := 1.
+	
 	maximumRolledNumber := twoSides + fourSides.
 
 	aWormHole := WormHole between: 1 and: 2.
-
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aTwoSidedDice := Dice with: twoSides.
@@ -296,6 +297,10 @@ GameTest >> testWhenTheGameWithMultipleLapsEndsThenTheWinnerIsShownOnTheLeaderBo
 	sideToRoll := 10.
 	fourLaps := 4.
 
+	expectedDetails := 'Winner: BlueShip' , String cr
+	                   , 'BlueShip: Lap: 5 Square: 0' , String cr
+	                   , 'BlackShip: Lap: 3 Square: 0'.
+
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
@@ -319,10 +324,6 @@ GameTest >> testWhenTheGameWithMultipleLapsEndsThenTheWinnerIsShownOnTheLeaderBo
 		         and: someShips
 		         and: someDices.
 
-	expectedDetails := 'Winner: BlueShip' , String cr
-	                   , 'BlueShip: Lap: 5 Square: 0' , String cr
-	                   , 'BlackShip: Lap: 3 Square: 0'.
-
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -341,18 +342,19 @@ GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 	aWormHole := WormHole between: 1 and: 2.
 	aBlueShip := Ship called: 'BlueShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	
+
 	aDistributionBuilder := DistributionBuilder new.
 	aDefaultDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
 		          distributedBy: aDefaultDistribution.
-		
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someDices add: aLoadedDice.
+
 	self
 		should: [
 			Game
@@ -370,8 +372,8 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap aDistributionBuilder aDefaultDistribution |
 	fiveSquares := 5.
 	oneLap := 1.
+	
 	aWormHole := WormHole between: 1 and: 2.
-
 	aBlueShip := Ship called: 'BlueShip'.
 
 	aDistributionBuilder := DistributionBuilder new.
@@ -403,8 +405,8 @@ GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
 	fiveSquares := 5.
 	twoSides := 2.
 	zeroLaps := 0.
+	
 	aWormHole := WormHole between: 1 and: 2.
-
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aDice := Dice with: twoSides.

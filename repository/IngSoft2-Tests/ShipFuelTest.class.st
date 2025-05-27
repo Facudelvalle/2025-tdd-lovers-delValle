@@ -8,10 +8,11 @@ Class {
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aDefaultDistribution |
-	fiveSquares := 10.
+	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aDefaultDistribution |
+	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedFuelLeft := 2.
 
 	aWormHole := WormHole between: 5 and: 6.
@@ -21,8 +22,9 @@ ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aDefaultDistribution := aDistributionBuilder build.
+	
 	aBoard := Board
-		          with: fiveSquares
+		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDefaultDistribution.
 
@@ -31,6 +33,7 @@ ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
@@ -50,10 +53,11 @@ ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aDefaultDistribution |
-	fiveSquares := 10.
+	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aDefaultDistribution |
+	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedFuelLeft := 2.
 
 	aWormHole := WormHole between: 5 and: 6.
@@ -63,8 +67,9 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aDefaultDistribution := aDistributionBuilder build.
+	
 	aBoard := Board
-		          with: fiveSquares
+		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDefaultDistribution.
 
@@ -73,6 +78,7 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
@@ -96,10 +102,11 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aDefaultDistribution |
-	fiveSquares := 10.
+	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aDefaultDistribution |
+	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedPosition := Position at: 3 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
@@ -109,8 +116,9 @@ ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aDefaultDistribution := aDistributionBuilder build.
+	
 	aBoard := Board
-		          with: fiveSquares
+		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDefaultDistribution.
 
@@ -119,6 +127,7 @@ ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
@@ -144,6 +153,7 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedFuelLeft := 1.
 
 	aWormHole := WormHole between: 0 and: 3.
@@ -153,6 +163,7 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aDefaultDistribution := aDistributionBuilder build.
+	
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
@@ -163,6 +174,7 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
@@ -181,6 +193,7 @@ ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingl
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedFuelLeft := 1.
 
 	aWormHole := WormHole between: 1 and: 2.
@@ -190,6 +203,7 @@ ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingl
 
 	aDistributionBuilder := DistributionBuilder new.
 	aDefaultDistribution := aDistributionBuilder build.
+	
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
@@ -200,6 +214,7 @@ ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingl
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
@@ -218,6 +233,7 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoe
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 3 and: 4.
@@ -227,6 +243,7 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoe
 
 	aDistributionBuilder := DistributionBuilder new.
 	aDefaultDistribution := aDistributionBuilder build.
+	
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
@@ -237,6 +254,7 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoe
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
@@ -255,10 +273,11 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoe
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenLosesTwoTurns [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aDefaultDistribution |
-	fiveSquares := 10.
+	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aDefaultDistribution |
+	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
+	
 	expectedPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
@@ -268,8 +287,9 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenLoses
 
 	aDistributionBuilder := DistributionBuilder new.
 	aDefaultDistribution := aDistributionBuilder build.
+	
 	aBoard := Board
-		          with: fiveSquares
+		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDefaultDistribution.
 
@@ -278,6 +298,7 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenLoses
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
