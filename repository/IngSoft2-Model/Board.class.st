@@ -26,7 +26,7 @@ Board class >> generateSquaresfrom: aDistribution with: aLength and: aWormHole [
 					                     weighting: [ :aSquareProbability |
 					                     aSquareProbability value ]) key value ] ].
 
-	^ generatedSquares
+	^ generatedSquares asOrderedCollection 
 ]
 
 { #category : 'validation' }
@@ -57,6 +57,17 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 	self validate: aLength isSmallerThanTheEndingOf: aWormHole.
 	generatedSquares := self generateSquaresfrom: aDistribution with: aLength and: aWormHole.
 	^ self new initializeWith: aLength and: aWormHole distributedBy: generatedSquares
+]
+
+{ #category : 'accessing' }
+Board >> distribution [
+	^ distribution
+]
+
+{ #category : 'as yet unclassified' }
+Board >> effectIn: aSquare [
+
+	^ distribution at: aSquare
 ]
 
 { #category : 'initialization' }

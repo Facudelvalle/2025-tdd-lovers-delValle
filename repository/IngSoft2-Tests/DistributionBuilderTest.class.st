@@ -17,11 +17,12 @@ DistributionBuilderTest >> testWhenAProbabilityDistributionIsCreatedThenTheSumOf
 	aDistributionBuilder moonWalkProbabilityIs: 0.0002.
 	aDistributionBuilder atomicBombProbabilityIs: 1.
 	aDistributionBuilder build.
-	
-	distributionProbabilitySum := aDistributionBuilder showProbabilities sum: [ :aProbability | aProbability ].
+
+	distributionProbabilitySum := aDistributionBuilder showProbabilities
+		                              sum: [ :aProbability | aProbability ].
 	expectedSum := 1.
-	
-  self assert: distributionProbabilitySum rounded equals: expectedSum  
+
+	self assert: distributionProbabilitySum rounded equals: expectedSum
 ]
 
 { #category : 'tests' }
@@ -29,7 +30,8 @@ DistributionBuilderTest >> testWhenAnAverageProbabilityDistributionIsCreatedThen
 
 	| aDistributionBuilder anAverageDistribution plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility expectedDistribution |
 	aDistributionBuilder := DistributionBuilder new.
-	anAverageDistribution := aDistributionBuilder buildDefault.
+	anAverageDistribution := aDistributionBuilder buildAverage.
+	
 	plainSquarePossibility := 0.4.
 	blackHoleSquarePossibility := 0.2.
 	hyperGravitySquarePossibility := 0.2.
@@ -37,17 +39,20 @@ DistributionBuilderTest >> testWhenAnAverageProbabilityDistributionIsCreatedThen
 	hyperJumpSquarePossibility := 0.08.
 	atomicBombSquarePossibility := 0.02.
 	expectedDistribution := {
-		                 ([ PlainSquare new ] -> plainSquarePossibility).
-		                 ([ BlackHoleSquare new ]
-		                  -> blackHoleSquarePossibility).
-		                 ([ HyperGravitySquare new ]
-		                  -> hyperGravitySquarePossibility).
-		                 ([ MoonWalkSquare new ]
-		                  -> moonWalkSquarePossibility).
-		                 ([ HyperJumpSquare new ]
-		                  -> hyperJumpSquarePossibility).
-		                 ([ AtomicBombSquare new ]
-		                  -> atomicBombSquarePossibility) }.
-	
-  self assert: anAverageDistribution asString equals: expectedDistribution asString 
+		                        ([ PlainSquare new ]
+		                         -> plainSquarePossibility).
+		                        ([ BlackHoleSquare new ]
+		                         -> blackHoleSquarePossibility).
+		                        ([ HyperGravitySquare new ]
+		                         -> hyperGravitySquarePossibility).
+		                        ([ MoonWalkSquare new ]
+		                         -> moonWalkSquarePossibility).
+		                        ([ HyperJumpSquare new ]
+		                         -> hyperJumpSquarePossibility).
+		                        ([ AtomicBombSquare new ]
+		                         -> atomicBombSquarePossibility) }.
+
+	self
+		assert: anAverageDistribution asString
+		equals: expectedDistribution asString
 ]
