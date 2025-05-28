@@ -175,6 +175,12 @@ Game >> moveShipsBackwards: aMagnitude [
 ]
 
 { #category : 'action' }
+Game >> moveShipsToSquareCero [
+	
+	ships do: [ :aShip | aShip moveTo: (aShip currentPosition adjustSquare: 0) ]
+]
+
+{ #category : 'action' }
 Game >> nextTurnPass [
 
 	| shipToMove |
