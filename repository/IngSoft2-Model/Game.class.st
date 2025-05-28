@@ -17,12 +17,6 @@ Class {
 }
 
 { #category : 'creation' }
-Game class >> assignEffectMagnitudIn: aBoard with: someDices [
-
-	aBoard distribution do: [ :aSquare | aSquare assigned: someDices ]
-]
-
-{ #category : 'creation' }
 Game class >> fuel: someShips with: aFuelQuantity [
 
 	someShips do: [ :aShip | aShip fuel: aFuelQuantity ]
@@ -157,6 +151,27 @@ Game >> move: aShip with: rolledNumber [
 			aShip fuel: (self class maximumRoll: dices) * 2 ].
 
 	(shipPositionAfterSquareEffect hasCompleted: laps) ifTrue: [ self finish ]
+]
+
+{ #category : 'action' }
+Game >> moveShipsBackwards: aMagnitude [
+
+	| shipInitialPosition shipNewPosition squaresTraveled |
+	ships do: [ :aShip |
+		shipInitialPosition := aShip currentPosition.
+		shipNewPosition := aShip currentPosition
+			                   add: aMagnitude negated
+			                   with: board length.
+		squaresTraveled := shipInitialPosition
+			                   squaresAwayFrom: shipNewPosition
+			                   with: board length.
+		aShip moveTo: shipNewPosition .
+		[ aShip consumeFuel: squaresTraveled ]
+			on: Error
+			do: [
+				aShip moveTo: shipInitialPosition.
+				aShip losesTwoTurns.
+				aShip fuel: (self class maximumRoll: dices) * 2 ] ]
 ]
 
 { #category : 'action' }

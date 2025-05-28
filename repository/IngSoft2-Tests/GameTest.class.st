@@ -16,6 +16,45 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMes
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
+
+	| fiveSquares sideToRoll oneLap aWormHole aBlueShip aBlackShip aLoadedDice moonWalkSquareProbability aDistribution aBoard someShips someDices |
+	fiveSquares := 20.
+	sideToRoll := 1.
+	oneLap := 1.
+
+	aWormHole := WormHole between: 17 and: 18.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	moonWalkSquareProbability := 1.
+
+	aDistribution := { ([ SetMoonWalkSquare with: -1 ]
+	                  -> moonWalkSquareProbability) }.
+	aBoard := Board
+		          with: fiveSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+	self
+		should: [
+			Game
+				with: aBoard
+				for: oneLap
+				and: someShips
+				and: someDices ]
+		raise: Error
+		withMessageText:
+		'The magnitude of the Moon Walk Square must be positive.'
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenAPlayerTryToRollTheDicesWhenTheGameHasFinishedThenItFails [
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap aDistributionBuilder aDefaultDistribution |

@@ -110,6 +110,6 @@ Board >> update: aPosition with: aRolledNumber [
 { #category : 'validation' }
 Board >> validateSquaresWith: aMaximumRoll [
 
-	distribution do: [ :aSqueare |
-		aSqueare validateMagnitudeWith: aMaximumRoll and: length ]
+	distribution do: [ :aSquare |
+		aSquare validateMagnitudeWith: aMaximumRoll and: length ]
 ]
