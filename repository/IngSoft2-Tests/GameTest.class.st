@@ -93,6 +93,52 @@ GameTest >> testWhenAPlayerTryToRollTheDicesWhenTheGameHasFinishedThenItFails [
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenTheEffectIsAppliedAndTheGameDoesNotEnd [
+
+	| expectedPosition twentySquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame blackHoleSquareProbability |
+	expectedPosition := Position at: 18 in: 1.
+	twentySquares := 20.
+	sideToRoll := 4.
+	twoLaps := 2.
+
+	aWormHole := WormHole between: 4 and: 18.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	blackHoleSquareProbability := 1.
+
+	aDistribution := { ([ BlackHoleSquare new]
+	                  -> blackHoleSquareProbability ) }.
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+	
+	aGame := Game
+		         with: aBoard
+		         for: twoLaps
+		         and: someShips
+		         and: someDices.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+	
+	self deny: aGame hasFinished.
+	self assert: (aBlueShip currentPositionEquals: expectedPosition).
+	
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly [
 
 	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aSetDice twoLaps aBlackShip sideToRoll aGame expectedPosition aDistributionBuilder aDefaultDistribution |

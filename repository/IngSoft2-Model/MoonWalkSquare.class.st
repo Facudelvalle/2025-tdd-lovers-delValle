@@ -22,6 +22,7 @@ MoonWalkSquare class >> between: aMinimumMagnitude and: aMaximumMagnitude [
 { #category : 'effect' }
 MoonWalkSquare >> applyOn: aShip and: aPosition in: aGame [ 
 	
+	aGame moveShipsBackwards: magnitude.
 	^ aPosition 
 ]
 
