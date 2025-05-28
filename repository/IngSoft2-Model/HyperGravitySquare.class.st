@@ -32,12 +32,6 @@ HyperGravitySquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitud
 	rollToContinue := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
 ]
 
-{ #category : 'testing' }
-HyperGravitySquare >> isGreaterThan: aRolledNumber [
-
-	^ rollToContinue > aRolledNumber
-]
-
 { #category : 'validation' }
 HyperGravitySquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
 

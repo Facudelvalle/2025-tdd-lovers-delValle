@@ -33,12 +33,6 @@ SetHyperGravitySquare >> initializeWith: aValue [
 	rollToContinue := aValue
 ]
 
-{ #category : 'testing' }
-SetHyperGravitySquare >> isGreaterThan: aRolledNumber [
-
-	^ rollToContinue > aRolledNumber
-]
-
 { #category : 'validating' }
 SetHyperGravitySquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
 

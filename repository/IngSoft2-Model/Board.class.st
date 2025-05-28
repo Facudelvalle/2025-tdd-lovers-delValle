@@ -60,11 +60,6 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 ]
 
 { #category : 'accessing' }
-Board >> distribution [
-	^ distribution
-]
-
-{ #category : 'accessing' }
 Board >> effectIn: aSquare [
 
 	^ distribution at: aSquare
