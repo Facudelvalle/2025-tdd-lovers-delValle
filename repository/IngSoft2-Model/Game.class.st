@@ -17,12 +17,6 @@ Class {
 }
 
 { #category : 'creation' }
-Game class >> assignEffectMagnitudIn: aBoard with: someDices [
-
-	aBoard distribution do: [ :aSquare | aSquare assigned: someDices ]
-]
-
-{ #category : 'creation' }
 Game class >> fuel: someShips with: aFuelQuantity [
 
 	someShips do: [ :aShip | aShip fuel: aFuelQuantity ]
