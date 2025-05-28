@@ -39,7 +39,7 @@ HyperGravitySquare >> isGreaterThan: aRolledNumber [
 ]
 
 { #category : 'validation' }
-HyperGravitySquare >> validateMagnitudeWith: aMagnitude [
+HyperGravitySquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
 
 	rollToContinue > aMagnitude ifTrue: [
 		Error signal:

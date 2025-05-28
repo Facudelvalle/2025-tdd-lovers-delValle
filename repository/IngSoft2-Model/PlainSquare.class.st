@@ -15,7 +15,7 @@ PlainSquare >> applyOn: aShip and: aPosition in: aGame [
 ]
 
 { #category : 'validation' }
-PlainSquare >> validateMagnitudeWith: aMagnitude [
+PlainSquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
 
 	^ true
 ]

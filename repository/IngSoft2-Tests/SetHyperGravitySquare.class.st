@@ -40,7 +40,7 @@ SetHyperGravitySquare >> isGreaterThan: aRolledNumber [
 ]
 
 { #category : 'validating' }
-SetHyperGravitySquare >> validateMagnitudeWith: aMagnitude [
+SetHyperGravitySquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
 
 	^ true
 ]
