@@ -8,10 +8,11 @@ Class {
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenAllTheOtherShipsFuelDoNotChange [
 
-	| tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice atomicBombSquareProbability aDistribution aBoard someShips someDices aGame expectedFuel |
+	| tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame expectedFuel aDistributionBuilder |
 	tenSquares := 10.
 	sideToRoll := 2.
 	twoLaps := 2.
+	
 	expectedFuel := 4.
 
 	aWormHole := WormHole between: 3 and: 8.
@@ -19,10 +20,10 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenAllTheOtherShipsFuel
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	atomicBombSquareProbability := 1.
-
-	aDistribution := { ([ AtomicBombSquare new]
-	                  -> atomicBombSquareProbability ) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder atomicBombProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -33,36 +34,37 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenAllTheOtherShipsFuel
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
 	aGame := Game
 		         with: aBoard
-		         for: twoLaps 
+		         for: twoLaps
 		         and: someShips
 		         and: someDices.
 
 	aGame nextTurnPlay.
-	
+
 	self assert: (aBlackShip fuelEquals: expectedFuel)
 ]
 
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirstSquareOfTheBoard [
 
-	| expectedPosition twentySquares sideToRoll oneLap aWormHole aBlueShip aBlackShip aLoadedDice atomicBombSquareProbability aDistribution aBoard someShips someDices aGame |
-	expectedPosition := Position at: 0 in: 1.
+	| expectedPosition twentySquares sideToRoll oneLap aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder |
 	twentySquares := 20.
 	sideToRoll := 2.
 	oneLap := 1.
+	
+	expectedPosition := Position at: 0 in: 1.
 
 	aWormHole := WormHole between: 7 and: 8.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	atomicBombSquareProbability := 1.
-
-	aDistribution := { ([ AtomicBombSquare new]
-	                  -> atomicBombSquareProbability ) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder atomicBombProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -73,7 +75,7 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirst
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
@@ -81,28 +83,29 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirst
 		         and: someDices.
 
 	aGame nextTurnPlay.
-	
+
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
 
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirstSquareOfTheCurrentLap [
 
-	| expectedPosition tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice atomicBombSquareProbability aDistribution aBoard someShips someDices aGame |
-	expectedPosition := Position at: 0 in: 2.
+	| expectedPosition tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder |
 	tenSquares := 10.
 	sideToRoll := 2.
 	twoLaps := 2.
+
+	expectedPosition := Position at: 0 in: 2.
 
 	aWormHole := WormHole between: 2 and: 8.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	atomicBombSquareProbability := 1.
-
-	aDistribution := { ([ AtomicBombSquare new]
-	                  -> atomicBombSquareProbability ) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder atomicBombProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -113,27 +116,28 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirst
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
 	aGame := Game
 		         with: aBoard
-		         for: twoLaps 
+		         for: twoLaps
 		         and: someShips
 		         and: someDices.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
-	
+
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
 
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItsFuelDoesNotChange [
 
-	| tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice atomicBombSquareProbability aDistribution aBoard someShips someDices aGame expectedFuel |
+	| tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame expectedFuel aDistributionBuilder |
 	tenSquares := 10.
 	sideToRoll := 2.
 	twoLaps := 2.
+
 	expectedFuel := 2.
 
 	aWormHole := WormHole between: 3 and: 8.
@@ -141,10 +145,10 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItsFuelDoesNotChange
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	atomicBombSquareProbability := 1.
-
-	aDistribution := { ([ AtomicBombSquare new]
-	                  -> atomicBombSquareProbability ) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder atomicBombProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -155,36 +159,37 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItsFuelDoesNotChange
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
 	aGame := Game
 		         with: aBoard
-		         for: twoLaps 
+		         for: twoLaps
 		         and: someShips
 		         and: someDices.
 
 	aGame nextTurnPlay.
-	
+
 	self assert: (aBlueShip fuelEquals: expectedFuel)
 ]
 
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenTheOtherShipsGoBackToTheFirstSquareOfTheirCurrentLap [
 
-	| expectedPosition tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice atomicBombSquareProbability aDistribution aBoard someShips someDices aGame |
-	expectedPosition := Position at: 0 in: 1.
+	| expectedPosition tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder |
 	tenSquares := 10.
 	sideToRoll := 2.
 	twoLaps := 2.
+
+	expectedPosition := Position at: 0 in: 1.
 
 	aWormHole := WormHole between: 2 and: 8.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	atomicBombSquareProbability := 1.
-
-	aDistribution := { ([ AtomicBombSquare new]
-	                  -> atomicBombSquareProbability ) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder atomicBombProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -195,16 +200,16 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenTheOtherShipsGoBackT
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
 	aGame := Game
 		         with: aBoard
-		         for: twoLaps 
+		         for: twoLaps
 		         and: someShips
 		         and: someDices.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
-	
+
 	self assert: (aBlackShip currentPositionEquals: expectedPosition)
 ]

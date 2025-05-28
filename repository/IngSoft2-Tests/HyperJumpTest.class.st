@@ -18,11 +18,12 @@ HyperJumpTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErr
 { #category : 'tests' }
 HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenItTakesTheSecondParsecValueAndMovesAccordingly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability someParsecs aGame expectedPosition aRatio |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
 	aRatio := 1.
+	
 	expectedPosition := Position at: 12 in: 1.
 
 	aWormHole := WormHole between: 17 and: 18.
@@ -30,14 +31,13 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	hyperJumpSquareProbability := 1.
-
 	someParsecs := #( 5 4 6 5 ) asOrderedCollection.
 
-	aDistribution := { ([
-	                  HyperJumpSquare
-		                  with: someParsecs
-		                  and: aRatio ] -> hyperJumpSquareProbability) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder hyperJumpProbabilityIs: 1.
+	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -64,7 +64,7 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndAfterTheJumpItGoesThroughTheFinalSquareThenTheGameEnds [
 
-	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability someParsecs aGame aRatio |
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame aRatio aDistributionBuilder |
 	tenSquares := 10.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -75,14 +75,13 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndAfterTheJumpItGoesThroughT
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	hyperJumpSquareProbability := 1.
-
 	someParsecs := #( 5 3 2 ) asOrderedCollection.
 
-	aDistribution := { ([
-	                  HyperJumpSquare
-		                  with: someParsecs
-		                  and: aRatio ] -> hyperJumpSquareProbability) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder hyperJumpProbabilityIs: 1.
+	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -108,11 +107,12 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndAfterTheJumpItGoesThroughT
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndIncrementALapThenItsPositionChangesAccordingly [
 
-	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLap aBlackShip aDistribution hyperJumpSquareProbability someParsecs aGame expectedPosition aRatio aDistributionBuilder |
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
 	tenSquares := 10.
 	sideToRoll := 7.
-	threeLap := 3.
+	threeLaps := 3.
 	aRatio := 1.
+	
 	expectedPosition := Position at: 2 in: 2.
 
 	aWormHole := WormHole between: 3 and: 4.
@@ -120,12 +120,12 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndIncrementALapThenItsPositi
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	hyperJumpSquareProbability := 1.
 	someParsecs := #( 5 3 2 ) asOrderedCollection.
+
 	aDistributionBuilder := DistributionBuilder new.
 	aDistributionBuilder hyperJumpProbabilityIs: 1.
 	aDistributionBuilder plainSquareProbabilityIs: 0.
-	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio. 
+	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
 	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: tenSquares
@@ -140,7 +140,7 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndIncrementALapThenItsPositi
 
 	aGame := Game
 		         with: aBoard
-		         for: threeLap
+		         for: threeLaps
 		         and: someShips
 		         and: someDices.
 
@@ -153,11 +153,12 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndIncrementALapThenItsPositi
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareThenItsFuellsConsumedCorrectly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability someParsecs aGame expectedPosition aRatio |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
 	aRatio := 1.
+	
 	expectedPosition := Position at: 13 in: 1.
 
 	aWormHole := WormHole between: 17 and: 18.
@@ -165,14 +166,13 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareThenItsFuellsConsumedCorrectl
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	hyperJumpSquareProbability := 1.
-
 	someParsecs := #( 5 4 6 5 ) asOrderedCollection.
 
-	aDistribution := { ([
-	                  HyperJumpSquare
-		                  with: someParsecs
-		                  and: aRatio ] -> hyperJumpSquareProbability) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder hyperJumpProbabilityIs: 1.
+	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -199,11 +199,12 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareThenItsFuellsConsumedCorrectl
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenTheShipMovesCorrectly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability someParsecs aGame expectedPosition aRatio |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
 	aRatio := 1.
+
 	expectedPosition := Position at: 13 in: 1.
 
 	aWormHole := WormHole between: 17 and: 18.
@@ -211,14 +212,13 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenTheShipMovesCorrectly [
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	hyperJumpSquareProbability := 1.
-
 	someParsecs := #( 5 4 6 5 ) asOrderedCollection.
 
-	aDistribution := { ([
-	                  HyperJumpSquare
-		                  with: someParsecs
-		                  and: aRatio ] -> hyperJumpSquareProbability) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder hyperJumpProbabilityIs: 1.
+	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -244,11 +244,12 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenTheShipMovesCorrectly [
 { #category : 'tests' }
 HyperJumpTest >> testWhenAllTheParsecsHadBeenTakenThenTheNextShipTakesTheFirstParsecAgain [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability someParsecs aGame expectedPosition aWhiteShip aRedShip aPinkShip aRatio |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aWhiteShip aRedShip aPinkShip aRatio aDistributionBuilder |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
 	aRatio := 1.
+
 	expectedPosition := Position at: 13 in: 1.
 
 	aWormHole := WormHole between: 17 and: 18.
@@ -259,14 +260,13 @@ HyperJumpTest >> testWhenAllTheParsecsHadBeenTakenThenTheNextShipTakesTheFirstPa
 	aPinkShip := Ship called: 'PinkShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	hyperJumpSquareProbability := 1.
-
 	someParsecs := #( 6 5 5 4 ) asOrderedCollection.
 
-	aDistribution := { ([
-	                  HyperJumpSquare
-		                  with: someParsecs
-		                  and: aRatio ] -> hyperJumpSquareProbability) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder hyperJumpProbabilityIs: 1.
+	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -299,11 +299,12 @@ HyperJumpTest >> testWhenAllTheParsecsHadBeenTakenThenTheNextShipTakesTheFirstPa
 { #category : 'tests' }
 HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrectly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution hyperJumpSquareProbability someParsecs aGame expectedPosition aRatio |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
 	twentySquares := 20.
 	sideToRoll := 7.
 	threeLaps := 3.
 	aRatio := 2.
+
 	expectedPosition := Position at: 13 in: 1.
 
 	aWormHole := WormHole between: 17 and: 18.
@@ -311,12 +312,13 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	hyperJumpSquareProbability := 1.
-	
-	someParsecs := #( 2 2 3 3) asOrderedCollection.
+	someParsecs := #( 2 2 3 3 ) asOrderedCollection.
 
-	aDistribution := { ([ HyperJumpSquare with: someParsecs and: aRatio]
-	                  -> hyperJumpSquareProbability) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder hyperJumpProbabilityIs: 1.
+	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -327,7 +329,7 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
 	aGame := Game
 		         with: aBoard
 		         for: threeLaps
@@ -338,5 +340,4 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
-
 ]
