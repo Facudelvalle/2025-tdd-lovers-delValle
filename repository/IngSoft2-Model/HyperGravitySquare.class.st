@@ -33,9 +33,9 @@ HyperGravitySquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitud
 ]
 
 { #category : 'validation' }
-HyperGravitySquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
+HyperGravitySquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLenght [
 
-	rollToContinue > aMagnitude ifTrue: [
+	rollToContinue > aMaximumRoll ifTrue: [
 		Error signal:
 			'The magnitude of the Hyper Gravity Square is grater than the maximum roll.' ]
 ]

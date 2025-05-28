@@ -15,7 +15,7 @@ BlackHoleSquare >> applyOn: aShip and: aPosition in: aGame [
 ]
 
 { #category : 'validation' }
-BlackHoleSquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
+BlackHoleSquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLenght [
 
 	^ true
 ]

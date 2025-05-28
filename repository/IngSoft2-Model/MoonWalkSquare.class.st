@@ -33,7 +33,7 @@ MoonWalkSquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitude [
 ]
 
 { #category : 'validation' }
-MoonWalkSquare >> validateMagnitudeWith: aMagnitude and: aBoardLength [
+MoonWalkSquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLength [
 
 	magnitude < 1 ifTrue: [
 		Error signal:

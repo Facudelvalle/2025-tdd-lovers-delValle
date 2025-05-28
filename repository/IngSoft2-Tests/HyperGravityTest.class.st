@@ -95,7 +95,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNecesaryNumberThenItCanMove [
 
-	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
+	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -109,9 +109,11 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 	
 	hyperGravitySquareProbability := 1.
 
-	aDistribution := {
-		                 ([ SetHyperGravitySquare with: 1 ]
-		                  -> hyperGravitySquareProbability).}.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder hyperGravityProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder hyperGravitySquareBetween: 1 and: 1.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole

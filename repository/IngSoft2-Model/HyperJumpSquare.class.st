@@ -13,9 +13,9 @@ Class {
 }
 
 { #category : 'creation' }
-HyperJumpSquare class >> with: aCollectionOfParsecs and: aRatio [
-
-	^ self new initializeWith: aCollectionOfParsecs and: aRatio
+HyperJumpSquare class >> with: anArrayLength and: aRatio [
+	
+	^ self new initializeWith: anArrayLength and: aRatio
 ]
 
 { #category : 'effect' }
@@ -34,9 +34,9 @@ HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
 ]
 
 { #category : 'initialization' }
-HyperJumpSquare >> initializeWith: aCollectionOfParsecs and: aRatio [
+HyperJumpSquare >> initializeWith: someParsecs and: aRatio [
 
-	parsecs := aCollectionOfParsecs sort: [:aParsec :nextParsec | aParsec > nextParsec ].
+	parsecs := someParsecs sort: [ :aParsec :nextParsec | aParsec > nextParsec ].
 	ratio := aRatio
 ]
 
@@ -47,20 +47,20 @@ HyperJumpSquare >> normalize: aParsec [
 ]
 
 { #category : 'validation' }
-HyperJumpSquare >> toParsecs: aMagnitud [
+HyperJumpSquare >> toParsecs: aBoardLenght [
 
-	^ aMagnitud // ratio
+	^ aBoardLenght // ratio
 ]
 
 { #category : 'validation' }
-HyperJumpSquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
+HyperJumpSquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLenght [
 
-	| parsecsLarge boardInParsecs |
-	parsecsLarge := parsecs sum: [ :aParsec | aParsec ].
+	| parsecsSum boardInParsecs |
+	parsecsSum := parsecs sum: [ :aParsec | aParsec ].
 	
 	boardInParsecs := self toParsecs: aBoardLenght.
 
-	parsecsLarge / boardInParsecs ~= 1 ifTrue: [
+	parsecsSum / boardInParsecs ~= 1 ifTrue: [
 		Error signal:
 			'The magnitude of the Hyper Jump Square Parsecs is not valid.' ]
 ]

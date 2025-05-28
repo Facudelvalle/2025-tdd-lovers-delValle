@@ -18,7 +18,7 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMes
 { #category : 'tests' }
 GameTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 
-	| twentySquares sideToRoll oneLap aWormHole aBlueShip aBlackShip aLoadedDice moonWalkSquareProbability aDistribution aBoard someShips someDices |
+	| twentySquares sideToRoll oneLap aWormHole aBlueShip aBlackShip aLoadedDice moonWalkSquareProbability aDistribution aBoard someShips someDices aDistributionBuilder |
 	twentySquares := 20.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -30,8 +30,11 @@ GameTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 
 	moonWalkSquareProbability := 1.
 
-	aDistribution := { ([ SetMoonWalkSquare with: -1 ]
-	                  -> moonWalkSquareProbability) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder moonWalkProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder moonWalkSquareBetween: -1 and: -1.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -256,6 +259,48 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenAShipTakesAHyperJumpSquareThenTheShipMovesCorrectly [
+
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability someParsecs aRatio |
+	twentySquares := 20.
+	sideToRoll := 2.
+	oneLap := 1.
+	aRatio := 2.
+
+	aWormHole := WormHole between: 17 and: 18.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	hyperJumpSquareProbability := 1.
+	
+	someParsecs := #( 5 5 5 6) asOrderedCollection.
+
+	aDistribution := { ([ HyperJumpSquare with: someParsecs and: aRatio ]
+	                  -> hyperJumpSquareProbability) }.
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
+	self
+		should: [
+			Game
+				with: aBoard
+				for: oneLap
+				and: someShips
+				and: someDices ]
+		raise: Error
+		withMessageText: 'The magnitude of the Hyper Jump Square Parsecs is not valid.'
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 
 	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap aDistributionBuilder aDefaultDistribution |
@@ -417,48 +462,6 @@ GameTest >> testWhenTheGameWithMultipleLapsEndsThenTheWinnerIsShownOnTheLeaderBo
 ]
 
 { #category : 'tests' }
-GameTest >> testWhenThereAShipTakesAHiperJumpSquareThenTheShipMovesCorrectly [
-
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability aCollectionofParsecs aRatio |
-	twentySquares := 20.
-	sideToRoll := 2.
-	oneLap := 1.
-	aRatio := 2.
-
-	aWormHole := WormHole between: 17 and: 18.
-	aBlueShip := Ship called: 'BlueShip'.
-	aBlackShip := Ship called: 'BlackShip'.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	hyperJumpSquareProbability := 1.
-	
-	aCollectionofParsecs := #( 5 5 5 6) asOrderedCollection.
-
-	aDistribution := { ([ HyperJumpSquare with: aCollectionofParsecs and: aRatio ]
-	                  -> hyperJumpSquareProbability) }.
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someShips := OrderedCollection new.
-	someDices := OrderedCollection new.
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	self
-		should: [
-			Game
-				with: aBoard
-				for: oneLap
-				and: someShips
-				and: someDices ]
-		raise: Error
-		withMessageText: 'The magnitude of the Hyper Jump Square Parsecs is not valid.'
-]
-
-{ #category : 'tests' }
 GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 
 	| fiveSquares aWormHole aBlueShip aLoadedDice sideToRoll aBoard someShips someDices oneLap aDistributionBuilder aDefaultDistribution |
@@ -526,7 +529,7 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 ]
 
 { #category : 'tests' }
-GameTest >> testWhenThereIsAHiperGravitySquareWithACorrectMagnitudeThenIsValid [
+GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 
 	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperGravitySquareProbability expectedPosition aGame |
 	tenSquares := 10.
@@ -568,7 +571,7 @@ GameTest >> testWhenThereIsAHiperGravitySquareWithACorrectMagnitudeThenIsValid [
 ]
 
 { #category : 'tests' }
-GameTest >> testWhenThereIsAHiperGravitySquareWithMagnitudeGreaterThanTheMaximumRollThenInvalid [
+GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximumRollThenInvalid [
 
 	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides oneLap aBlackShip aDistribution hyperGravitySquareProbability |
 	fiveSquares := 5.

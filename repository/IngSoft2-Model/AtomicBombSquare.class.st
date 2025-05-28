@@ -20,7 +20,7 @@ AtomicBombSquare >> applyOn: aShip and: aPosition in: aGame [
 ]
 
 { #category : 'validation' }
-AtomicBombSquare >> validateMagnitudeWith: aMagnitude and: aBoardLength [ 
+AtomicBombSquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLength [ 
 	
 	^ true.
 ]

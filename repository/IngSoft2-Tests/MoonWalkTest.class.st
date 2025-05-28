@@ -9,7 +9,7 @@ Class {
 MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInTheFirstLapThenTheShipGoesBackToTheFirstSquare [
 
 
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame moonWalkSquareProbability |
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame moonWalkSquareProbability aDistributionBuilder |
 	
 	expectedPosition := Position at: 0 in: 1.
 	twentySquares := 20.
@@ -23,8 +23,11 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 
 	moonWalkSquareProbability := 1.
 
-	aDistribution := { ([ SetMoonWalkSquare with: 7]
-	                  -> moonWalkSquareProbability ) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder moonWalkProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder moonWalkSquareBetween: 7 and: 7.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -55,7 +58,7 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnoughFuelToGoBkacwardThenTheyDoNotMoveAndLoseTwoTurns [
 
 
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame moonWalkSquareProbability |
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame moonWalkSquareProbability aDistributionBuilder |
 	
 	expectedPosition := Position at: 8 in: 1.
 	twentySquares := 20.
@@ -69,8 +72,11 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 
 	moonWalkSquareProbability := 1.
 
-	aDistribution := { ([ SetMoonWalkSquare with: 3]
-	                  -> moonWalkSquareProbability ) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder moonWalkProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder moonWalkSquareBetween: 3 and: 3.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -102,7 +108,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccordingWithTheSquareMagnitude [
 
 
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame moonWalkSquareProbability |
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame moonWalkSquareProbability aDistributionBuilder |
 	
 	expectedPosition := Position at: 6 in: 1.
 	twentySquares := 20.
@@ -115,9 +121,11 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	moonWalkSquareProbability := 1.
-
-	aDistribution := { ([ SetMoonWalkSquare with: 2]
-	                  -> moonWalkSquareProbability ) }.
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder moonWalkProbabilityIs: 1.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder moonWalkSquareBetween: 2 and: 2.
+	aDistribution := aDistributionBuilder build.
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole

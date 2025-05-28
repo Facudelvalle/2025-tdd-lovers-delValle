@@ -52,7 +52,7 @@ Game class >> maximumRoll: someDices [
 ]
 
 { #category : 'validation' }
-Game class >> validateSquaresFrom: aBoard and: someDices [
+Game class >> validateSquaresFrom: aBoard with: someDices [
 
 	aBoard validateSquaresWith: (self maximumRoll: someDices)
 ]
@@ -64,7 +64,7 @@ Game class >> with: aBoard for: someLaps and: someShips and: someDices [
 	self hasShips: someShips.
 	self hasLaps: someLaps.
 	self fuel: someShips with: (self maximumRoll: someDices) * 2. 
-	self validateSquaresFrom: aBoard and: someDices.
+	self validateSquaresFrom: aBoard with: someDices.
 	^ self new initializeWith: aBoard for: someLaps and: someShips and: someDices
 ]
 
