@@ -5,26 +5,29 @@ Class {
 	#name : 'HyperJumpSquare',
 	#superclass : 'Object',
 	#instVars : [
-		'parsecs'
+		'parsecs',
+		'ratio'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-HyperJumpSquare class >> with: aCollectionOfParsecs [
+{ #category : 'creation' }
+HyperJumpSquare class >> with: aCollectionOfParsecs and: aRatio [
 
-	^ self new initializeWith: aCollectionOfParsecs
+	^ self new initializeWith: aCollectionOfParsecs and: aRatio
 ]
 
 { #category : 'effect' }
 HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
 
-	| actualParsec positionAfterJump |
+	| actualParsec positionAfterJump squaresToMove |
 	actualParsec := parsecs removeFirst.
+	
+	squaresToMove := self normalize: actualParsec.
 
 	positionAfterJump := aPosition
-		                     add: actualParsec
+		                     add: squaresToMove 
 		                     with: aGame boardLength.
 
 	parsecs add: actualParsec.
@@ -33,18 +36,33 @@ HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
 ]
 
 { #category : 'initialization' }
-HyperJumpSquare >> initializeWith: aCollectionOfParsecs [
+HyperJumpSquare >> initializeWith: aCollectionOfParsecs and: aRatio [
 
-	parsecs := aCollectionOfParsecs sort: [:aParsec :nextParsec | aParsec > nextParsec ]
+	parsecs := aCollectionOfParsecs sort: [:aParsec :nextParsec | aParsec > nextParsec ].
+	ratio := aRatio
+]
+
+{ #category : 'private' }
+HyperJumpSquare >> normalize: aParsec [
+
+	^ aParsec * ratio
+]
+
+{ #category : 'validation' }
+HyperJumpSquare >> toParsecs: aMagnitud [
+
+	^ aMagnitud // ratio
 ]
 
 { #category : 'validation' }
 HyperJumpSquare >> validateMagnitudeWith: aMagnitude and: aBoardLenght [
 
-	| parsecsLarge |
+	| parsecsLarge boardInParsecs |
 	parsecsLarge := parsecs sum: [ :aParsec | aParsec ].
+	
+	boardInParsecs := self toParsecs: aBoardLenght.
 
-	parsecsLarge / aBoardLenght ~= 1 ifTrue: [
+	parsecsLarge / boardInParsecs ~= 1 ifTrue: [
 		Error signal:
 			'The magnitude of the Hyper Jump Square Parsecs is not valid.' ]
 ]
