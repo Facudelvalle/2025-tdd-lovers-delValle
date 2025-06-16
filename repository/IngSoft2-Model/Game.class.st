@@ -71,10 +71,7 @@ Game class >> with: aBoard for: someLaps and: someShips and: someDices [
 { #category : 'action' }
 Game >> applyEffectOn: aShip with: aPosition [
 
-	| effect |
-	effect := board effectIn: aPosition currentSquare + 1.
-
-	^ effect applyOn: aShip and: aPosition in: self
+	^ board applyEfectOn: aShip with: aPosition in: self.
 ]
 
 { #category : 'action' }

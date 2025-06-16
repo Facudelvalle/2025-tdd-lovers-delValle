@@ -60,6 +60,14 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 ]
 
 { #category : 'action' }
+Board >> applyEfectOn: aShip with: aPosition in: aGame [ 
+	
+	| effect |
+	effect := self effectIn: aPosition currentSquare + 1.
+	^ effect applyOn: aShip and: aPosition in: aGame .
+]
+
+{ #category : 'action' }
 Board >> calculateDistanceBetween: aPosition and: anotherPostion [
 
 	^ aPosition squaresAwayFrom: anotherPostion with: length
