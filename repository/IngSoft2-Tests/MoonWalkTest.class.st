@@ -8,9 +8,7 @@ Class {
 { #category : 'tests' }
 MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInTheFirstLapThenTheShipGoesBackToTheFirstSquare [
 
-
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder |
-	
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
 	expectedPosition := Position at: 0 in: 1.
 	twentySquares := 20.
 	sideToRoll := 5.
@@ -36,12 +34,16 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -56,7 +58,7 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnoughFuelToGoBkacwardThenTheyDoNotMoveAndLoseTwoTurns [
 
 
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder |
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
 	
 	expectedPosition := Position at: 8 in: 1.
 	twentySquares := 20.
@@ -84,11 +86,15 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
 	
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
-		         with: aBoard
-		         for: oneLap
-		         and: someShips
-		         and: someDices.
+	         with: aBoard
+	         for: oneLap
+	         and: someShips
+	         and: someDices
+	         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -103,9 +109,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccordingWithTheSquareMagnitude [
 
-
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder |
-	
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
 	expectedPosition := Position at: 6 in: 1.
 	twentySquares := 20.
 	sideToRoll := 2.
@@ -131,12 +135,16 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -148,9 +156,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 
-
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder |
-	
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
 	expectedPosition := Position at: 1 in: 1.
 	twentySquares := 20.
 	sideToRoll := 1.
@@ -176,12 +182,16 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 

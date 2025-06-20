@@ -18,12 +18,12 @@ HyperJumpTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErr
 { #category : 'tests' }
 HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenItTakesTheSecondParsecValueAndMovesAccordingly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
 	aRatio := 1.
-	
+
 	expectedPosition := Position at: 12 in: 1.
 
 	aWormHole := WormHole between: 17 and: 18.
@@ -49,11 +49,15 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
 
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -64,7 +68,7 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndAfterTheJumpItGoesThroughTheFinalSquareThenTheGameEnds [
 
-	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame aRatio aDistributionBuilder |
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame aRatio aDistributionBuilder aFuelQuantity |
 	tenSquares := 10.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -93,11 +97,15 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndAfterTheJumpItGoesThroughT
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
 
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
-		         for: oneLap
+		         for: oneLap 
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 
@@ -107,12 +115,12 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndAfterTheJumpItGoesThroughT
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndIncrementALapThenItsPositionChangesAccordingly [
 
-	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity |
 	tenSquares := 10.
 	sideToRoll := 7.
 	threeLaps := 3.
 	aRatio := 1.
-	
+
 	expectedPosition := Position at: 2 in: 2.
 
 	aWormHole := WormHole between: 3 and: 4.
@@ -138,11 +146,15 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndIncrementALapThenItsPositi
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
 
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: threeLaps
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -153,12 +165,12 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareAndIncrementALapThenItsPositi
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareThenItsFuellsConsumedCorrectly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
 	aRatio := 1.
-	
+
 	expectedPosition := Position at: 13 in: 1.
 
 	aWormHole := WormHole between: 17 and: 18.
@@ -184,11 +196,15 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareThenItsFuellsConsumedCorrectl
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
 
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -199,7 +215,7 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareThenItsFuellsConsumedCorrectl
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenTheShipMovesCorrectly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -230,11 +246,15 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenTheShipMovesCorrectly [
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
 
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 
@@ -244,7 +264,7 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenTheShipMovesCorrectly [
 { #category : 'tests' }
 HyperJumpTest >> testWhenAllTheParsecsHadBeenTakenThenTheNextShipTakesTheFirstParsecAgain [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aWhiteShip aRedShip aPinkShip aRatio aDistributionBuilder |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aWhiteShip aRedShip aPinkShip aRatio aDistributionBuilder aFuelQuantity |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -281,11 +301,15 @@ HyperJumpTest >> testWhenAllTheParsecsHadBeenTakenThenTheNextShipTakesTheFirstPa
 	someShips add: aPinkShip.
 	someDices add: aLoadedDice.
 
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
-		         for: oneLap
+		         for: oneLap 
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -299,7 +323,7 @@ HyperJumpTest >> testWhenAllTheParsecsHadBeenTakenThenTheNextShipTakesTheFirstPa
 { #category : 'tests' }
 HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrectly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity |
 	twentySquares := 20.
 	sideToRoll := 7.
 	threeLaps := 3.
@@ -330,11 +354,15 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
 
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
-		         for: threeLaps
+		         for: threeLaps 
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.

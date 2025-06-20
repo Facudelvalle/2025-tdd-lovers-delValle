@@ -8,11 +8,11 @@ Class {
 { #category : 'tests' }
 SquareEffectTest >> testWhenAllTheSquaresDoNotHaveAnEffectThenTheGameIsPlayedRegularly [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aDefaultDistribution |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aDefaultDistribution aFuelQuantity |
 	fiveSquares := 5.
 	sideToRoll := 4.
 	oneLap := 1.
-	
+
 	expectedPosition := Position at: 4 in: 1.
 
 	aWormHole := WormHole between: 2 and: 3.
@@ -32,11 +32,15 @@ SquareEffectTest >> testWhenAllTheSquaresDoNotHaveAnEffectThenTheGameIsPlayedReg
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 

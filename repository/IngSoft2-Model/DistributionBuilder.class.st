@@ -74,7 +74,7 @@ DistributionBuilder >> hyperGravityProbabilityIs: aProbability [
 	hyperGravityProbability := aProbability
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'validation' }
 DistributionBuilder >> hyperGravitySquareBetween: aMinimumMagnitude and: aMaximumMagnitude [
 
 	hyperGravitySquare := [

@@ -8,23 +8,22 @@ Class {
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLowerThanTheSquareMagnitudeThenItDoesNotMove [
 
-	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
+	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aFuelQuantity |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
-	
+
 	expectedPosition := Position at: 1 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	
+
 	hyperGravitySquareProbability := 1.
 
-	aDistribution := {
-		                 ([ SetHyperGravitySquare with: 2 ]
-		                  -> hyperGravitySquareProbability).}.
+	aDistribution := { ([ SetHyperGravitySquare with: 2 ]
+	                  -> hyperGravitySquareProbability) }.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -35,12 +34,15 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -52,23 +54,22 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLowerThanTheSquareMagnitudeThenItsFuelDoesNotChange [
 
-	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
+	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aFuelQuantity |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
-	
+
 	expectedFuel := 1.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	
+
 	hyperGravitySquareProbability := 1.
 
-	aDistribution := {
-		                 ([ SetHyperGravitySquare with: 2 ]
-		                  -> hyperGravitySquareProbability).}.
+	aDistribution := { ([ SetHyperGravitySquare with: 2 ]
+	                  -> hyperGravitySquareProbability) }.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -79,12 +80,16 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -95,18 +100,18 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNecesaryNumberThenItCanMove [
 
-	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder |
+	| aDistribution hyperGravitySquareProbability tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
-	
+
 	expectedPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	
+
 	hyperGravitySquareProbability := 1.
 
 	aDistributionBuilder := DistributionBuilder new.
@@ -124,12 +129,16 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-	
+
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
 	aGame := Game
 		         with: aBoard
 		         for: oneLap
 		         and: someShips
-		         and: someDices.
+		         and: someDices
+		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
