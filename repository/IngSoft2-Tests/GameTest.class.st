@@ -46,6 +46,7 @@ GameTest >> testWhenAPlayerTriesToRollTheDicesWhenTheGameHasFinishedThenItFails 
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -97,6 +98,7 @@ GameTest >> testWhenAShipCompletesTheRequiredAmountOfLapsThenItwinsTheGame [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -249,6 +251,7 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -298,6 +301,7 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -349,6 +353,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -398,6 +403,7 @@ GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMax
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aTwoSidedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	Game
@@ -447,6 +453,7 @@ GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMa
 	someShips add: aBlackShip.
 	someDices add: aTwoSidedDice.
 	someDices add: aFourSidedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	Game
@@ -494,6 +501,7 @@ GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid 
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	self
@@ -512,7 +520,7 @@ GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid 
 { #category : 'tests' }
 GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 
-	| fiveSquares aWormHole aBlueShip aLoadedDice sideToRoll aBoard someShips someDices oneLap aDistributionBuilder aDefaultDistribution aFuelQuantity |
+	| fiveSquares aWormHole aBlueShip aLoadedDice sideToRoll aBoard someShips someDices oneLap aDistributionBuilder aDistribution aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 2.
 	oneLap := 1.
@@ -522,18 +530,24 @@ GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDefaultDistribution := aDistributionBuilder build.
+	aPlainSquare := PlainSquare new.
+	aProbability := 1.
+	aPlainSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aPlainSquare
+		                                  with: aProbability.
+	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: fiveSquares.
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
-		          distributedBy: aDefaultDistribution.
+		          distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someDices add: aLoadedDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
-
 
 	self
 		should: [
@@ -550,7 +564,7 @@ GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 { #category : 'tests' }
 GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap aDistributionBuilder aDefaultDistribution aFuelQuantity |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap aDistributionBuilder aDistribution aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent |
 	fiveSquares := 5.
 	oneLap := 1.
 
@@ -558,15 +572,22 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 	aBlueShip := Ship called: 'BlueShip'.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDefaultDistribution := aDistributionBuilder build.
+	aPlainSquare := PlainSquare new.
+	aProbability := 1.
+	aPlainSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aPlainSquare
+		                                  with: aProbability.
+	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: fiveSquares.
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
-		          distributedBy: aDefaultDistribution.
+		          distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	self
@@ -584,7 +605,7 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 { #category : 'tests' }
 GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 
-	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution aDistributionBuilder expectedPosition aGame aFuelQuantity |
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution aDistributionBuilder expectedPosition aGame aFuelQuantity aHyperGravitySquare aProbability aHyperGravitySquareProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 2.
 	oneLap := 1.
@@ -597,10 +618,13 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDistributionBuilder plainSquareProbabilityIs: 0.
-	aDistributionBuilder hyperGravityProbabilityIs: 1.
-	aDistributionBuilder hyperGravitySquareBetween: 1 and: 2.
-	aDistribution := aDistributionBuilder build.
+	aHyperGravitySquare := HyperGravitySquare between: 1 and: 2.
+	aProbability := 1.
+	aHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
+		                                         for: aHyperGravitySquare
+		                                         with: aProbability.
+	aDistributionBuilder add: aHyperGravitySquareProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: tenSquares.
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -616,7 +640,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 
 	aGame := Game
 		         with: aBoard
-		         for: oneLap 
+		         for: oneLap
 		         and: someShips
 		         and: someDices
 		         and: aFuelQuantity.
@@ -631,7 +655,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 { #category : 'tests' }
 GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximumRollThenInvalid [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides oneLap aBlackShip aDistribution aDistributionBuilder aFuelQuantity |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides oneLap aBlackShip aDistribution aDistributionBuilder aFuelQuantity aHyperGravitySquare aProbability aHyperGravitySquareProbabilisticEvent |
 	fiveSquares := 5.
 	twoSides := 2.
 	oneLap := 1.
@@ -642,10 +666,13 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximum
 	aDice := Dice with: twoSides.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDistributionBuilder plainSquareProbabilityIs: 0.
-	aDistributionBuilder hyperGravityProbabilityIs: 1.
-	aDistributionBuilder hyperGravitySquareBetween: 5 and: 7.
-	aDistribution := aDistributionBuilder build.
+	aHyperGravitySquare := HyperGravitySquare between: 5 and: 7.
+	aProbability := 1.
+	aHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
+		                                         for: aHyperGravitySquare
+		                                         with: aProbability.
+	aDistributionBuilder add: aHyperGravitySquareProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: fiveSquares.
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
@@ -656,6 +683,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximum
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	self
@@ -674,7 +702,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximum
 { #category : 'tests' }
 GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides zeroLaps aBlackShip aDistributionBuilder aDefaultDistribution aFuelQuantity |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides zeroLaps aBlackShip aDistributionBuilder aDistribution aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent |
 	fiveSquares := 5.
 	twoSides := 2.
 	zeroLaps := 0.
@@ -685,17 +713,24 @@ GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
 	aDice := Dice with: twoSides.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDefaultDistribution := aDistributionBuilder build.
+	aPlainSquare := PlainSquare new.
+	aProbability := 1.
+	aPlainSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aPlainSquare
+		                                  with: aProbability.
+	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: fiveSquares.
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
-		          distributedBy: aDefaultDistribution.
+		          distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	self

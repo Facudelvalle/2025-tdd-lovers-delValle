@@ -39,6 +39,7 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aSetDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -49,7 +50,6 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
-
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
@@ -88,6 +88,7 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aSetDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -100,7 +101,6 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
-
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
@@ -139,6 +139,7 @@ ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aSetDice.
+	
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -149,7 +150,6 @@ ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 		         and: aFuelQuantity.
 
 	aGame nextTurnPlay.
-
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
