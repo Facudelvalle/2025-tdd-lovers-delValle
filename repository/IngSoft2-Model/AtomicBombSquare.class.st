@@ -3,7 +3,7 @@ This class represents an atomic bomb square
 "
 Class {
 	#name : 'AtomicBombSquare',
-	#superclass : 'Object',
+	#superclass : 'Square',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -17,10 +17,4 @@ AtomicBombSquare >> applyOn: aShip and: aPosition in: aGame [
 	squaresTraveled := aGame calculateDistanceBetween: aPosition and: shipNewPosition.
 	aShip addFuel: squaresTraveled. 
 	^ shipNewPosition 
-]
-
-{ #category : 'validation' }
-AtomicBombSquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLength [ 
-	
-	^ true.
 ]

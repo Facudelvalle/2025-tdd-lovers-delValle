@@ -3,7 +3,7 @@ This class represents a hyper jump square
 "
 Class {
 	#name : 'HyperJumpSquare',
-	#superclass : 'Object',
+	#superclass : 'Square',
 	#instVars : [
 		'parsecs',
 		'ratio'

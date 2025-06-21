@@ -1,3 +1,6 @@
+"
+This class represent a worm hole end point
+"
 Class {
 	#name : 'WormHoleEndpoint',
 	#superclass : 'Object',

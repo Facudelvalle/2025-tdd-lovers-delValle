@@ -3,7 +3,7 @@ This class represents a hyper gravity square
 "
 Class {
 	#name : 'HyperGravitySquare',
-	#superclass : 'Object',
+	#superclass : 'Square',
 	#instVars : [
 		'rollToContinue'
 	],

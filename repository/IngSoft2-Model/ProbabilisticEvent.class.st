@@ -1,3 +1,6 @@
+"
+This class represent a probabilistic event
+"
 Class {
 	#name : 'ProbabilisticEvent',
 	#superclass : 'Object',

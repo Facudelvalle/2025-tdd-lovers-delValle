@@ -3,7 +3,7 @@ This class represents a moon walk square
 "
 Class {
 	#name : 'MoonWalkSquare',
-	#superclass : 'Object',
+	#superclass : 'Square',
 	#instVars : [
 		'magnitude'
 	],
