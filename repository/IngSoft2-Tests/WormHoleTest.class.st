@@ -64,7 +64,7 @@ WormHoleTest >> testWhenAShipLandsOnTheEndOfAWormHoleThenItEndsUpAtTheBeginningO
 
 	aDistributionBuilder := DistributionBuilder new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 2.
+	aProbability := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbability.

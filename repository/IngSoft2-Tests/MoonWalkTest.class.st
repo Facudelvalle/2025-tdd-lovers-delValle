@@ -5,6 +5,16 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'asserting' }
+MoonWalkTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: anErrorMessage ]
+]
+
 { #category : 'tests' }
 MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInTheFirstLapThenTheShipGoesBackToTheFirstSquare [
 
@@ -52,6 +62,52 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 	aGame nextTurnPlay.
 
 	self assert: (aBlackShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
+
+	| twentySquares sideToRoll oneLap aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aDistributionBuilder aFuelQuantity aMoonWalkSquare aProbability aMoonWalkSquareProbabilisticEvent |
+	twentySquares := 20.
+	sideToRoll := 1.
+	oneLap := 1.
+
+	aWormHole := WormHole between: 17 and: 18.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionBuilder := DistributionBuilder new.
+	aMoonWalkSquare := MoonWalkSquare between: -1 and: -1.
+	aProbability := 1.
+	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aMoonWalkSquare
+		                                  with: aProbability.
+	aDistributionBuilder add: aMoonWalkSquareProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: twentySquares.
+	
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+	self
+		should: [
+			Game
+				with: aBoard
+				for: oneLap
+				and: someShips
+				and: someDices
+				and: aFuelQuantity ]
+		raise: Error
+		withMessageText:
+		'The magnitude of the Moon Walk Square must be positive.'
 ]
 
 { #category : 'tests' }

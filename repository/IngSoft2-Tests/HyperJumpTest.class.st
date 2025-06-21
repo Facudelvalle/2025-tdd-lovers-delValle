@@ -213,55 +213,6 @@ HyperJumpTest >> testWhenAShipTakesAHiperJumpSquareThenItsFuellsConsumedCorrectl
 ]
 
 { #category : 'tests' }
-HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenTheShipMovesCorrectly [
-
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity |
-	twentySquares := 20.
-	sideToRoll := 7.
-	oneLap := 1.
-	aRatio := 1.
-
-	expectedPosition := Position at: 13 in: 1.
-
-	aWormHole := WormHole between: 17 and: 18.
-	aBlueShip := Ship called: 'BlueShip'.
-	aBlackShip := Ship called: 'BlackShip'.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	someParsecs := #( 5 4 6 5 ) asOrderedCollection.
-
-	aDistributionBuilder := DistributionBuilder new.
-	aDistributionBuilder plainSquareProbabilityIs: 0.
-	aDistributionBuilder hyperJumpProbabilityIs: 1.
-	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
-	aDistribution := aDistributionBuilder build.
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someShips := OrderedCollection new.
-	someDices := OrderedCollection new.
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-
-	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
-
-	aGame := Game
-		         with: aBoard
-		         for: oneLap
-		         and: someShips
-		         and: someDices
-		         and: aFuelQuantity.
-
-	aGame nextTurnPlay.
-
-	self assert: (aBlueShip currentPositionEquals: expectedPosition)
-]
-
-{ #category : 'tests' }
 HyperJumpTest >> testWhenAllTheParsecsHadBeenTakenThenTheNextShipTakesTheFirstParsecAgain [
 
 	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aWhiteShip aRedShip aPinkShip aRatio aDistributionBuilder aFuelQuantity |
@@ -318,6 +269,55 @@ HyperJumpTest >> testWhenAllTheParsecsHadBeenTakenThenTheNextShipTakesTheFirstPa
 	aGame nextTurnPlay.
 
 	self assert: (aPinkShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+HyperJumpTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid [
+
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity |
+	twentySquares := 20.
+	sideToRoll := 7.
+	oneLap := 1.
+	aRatio := 1.
+
+	expectedPosition := Position at: 13 in: 1.
+
+	aWormHole := WormHole between: 17 and: 18.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	someParsecs := #( 5 4 6 5 ) asOrderedCollection.
+
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder hyperJumpProbabilityIs: 1.
+	aDistributionBuilder hyperJumpWith: someParsecs and: aRatio.
+	aDistribution := aDistributionBuilder build.
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
+
+	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
+
+	aGame := Game
+		         with: aBoard
+		         for: oneLap
+		         and: someShips
+		         and: someDices
+		         and: aFuelQuantity.
+
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
 
 { #category : 'tests' }
