@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 
-	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aFuelQuantity aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -22,34 +22,30 @@ ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -73,7 +69,7 @@ ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 
-	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aFuelQuantity aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -87,34 +83,30 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -142,7 +134,7 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 
-	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aFuelQuantity aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -156,34 +148,30 @@ ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -209,7 +197,7 @@ ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aFuelQuantity aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -223,34 +211,30 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: fiveSquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -260,6 +244,7 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 		         and: someDices
 		         and: aFuelQuantity
 		         and: aRewardBuilder.
+
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip fuelEquals: expectedFuelLeft)
@@ -268,7 +253,7 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingly [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft aDistributionBuilder aFuelQuantity aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -282,34 +267,30 @@ ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingl
 
 	aDistributionBuilder := DistributionBuilder new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: fiveSquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -328,7 +309,7 @@ ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingl
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoesNotMove [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aFuelQuantity aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -342,34 +323,30 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoe
 
 	aDistributionBuilder := DistributionBuilder new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: fiveSquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -392,7 +369,7 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoe
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenLosesTwoTurns [
 
-	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aFuelQuantity aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| tenSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition aDistributionBuilder aFuelQuantity aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -406,34 +383,30 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenLoses
 
 	aDistributionBuilder := DistributionBuilder new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game

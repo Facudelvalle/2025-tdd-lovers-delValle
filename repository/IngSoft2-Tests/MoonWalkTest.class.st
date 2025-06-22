@@ -18,7 +18,7 @@ MoonWalkTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 { #category : 'tests' }
 MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInTheFirstLapThenTheShipGoesBackToTheFirstSquare [
 
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbability aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	expectedPosition := Position at: 0 in: 1.
 	twentySquares := 20.
 	sideToRoll := 5.
@@ -29,36 +29,32 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aProbability := 1.
 	aDistributionBuilder := DistributionBuilder new.
 	aMoonWalkSquare := MoonWalkSquare between: 7 and: 7.
+	aProbabilityOfOne := 1.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
-		                                     with: aProbability.
+		                                     with: aProbabilityOfOne.
 	aDistributionBuilder add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -81,7 +77,7 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 { #category : 'tests' }
 MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 
-	| twentySquares sideToRoll oneLap aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aDistributionBuilder aFuelQuantity aMoonWalkSquare aProbability aMoonWalkSquareProbabilisticEvent |
+	| twentySquares sideToRoll oneLap aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aDistributionBuilder aFuelQuantity aMoonWalkSquare aProbabilityOfOne aMoonWalkSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -93,10 +89,10 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 
 	aDistributionBuilder := DistributionBuilder new.
 	aMoonWalkSquare := MoonWalkSquare between: -1 and: -1.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
-		                                     with: aProbability.
+		                                     with: aProbabilityOfOne.
 	aDistributionBuilder add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
 
@@ -105,12 +101,18 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	self
@@ -120,7 +122,8 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 				for: oneLap
 				and: someShips
 				and: someDices
-				and: aFuelQuantity ]
+				and: aFuelQuantity
+				and: aRewardBuilder ]
 		raise: Error
 		withMessageText:
 		'The magnitude of the Moon Walk Square must be positive.'
@@ -129,7 +132,7 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnoughFuelToGoBkacwardThenTheyDoNotMoveAndLoseTwoTurns [
 
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbability aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	expectedPosition := Position at: 8 in: 1.
 	twentySquares := 20.
 	sideToRoll := 2.
@@ -140,36 +143,32 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aDistributionBuilder := DistributionBuilder new.
 	aMoonWalkSquare := MoonWalkSquare between: 3 and: 3.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
-		                                     with: aProbability.
+		                                     with: aProbabilityOfOne.
 	aDistributionBuilder add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -193,7 +192,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccordingWithTheSquareMagnitude [
 
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbability aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	expectedPosition := Position at: 6 in: 1.
 	twentySquares := 20.
 	sideToRoll := 2.
@@ -204,36 +203,32 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aProbability := 1.
 	aDistributionBuilder := DistributionBuilder new.
 	aMoonWalkSquare := MoonWalkSquare between: 2 and: 2.
+	aProbabilityOfOne := 1.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
-		                                     with: aProbability.
+		                                     with: aProbabilityOfOne.
 	aDistributionBuilder add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -254,7 +249,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 
-	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbability aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| expectedPosition aBlueShip twentySquares sideToRoll oneLap aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	expectedPosition := Position at: 1 in: 1.
 	twentySquares := 20.
 	sideToRoll := 1.
@@ -265,36 +260,32 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aDistributionBuilder := DistributionBuilder new.
 	aMoonWalkSquare := MoonWalkSquare between: 1 and: 2.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
-		                                     with: aProbability.
+		                                     with: aProbabilityOfOne.
 	aDistributionBuilder add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
-
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game

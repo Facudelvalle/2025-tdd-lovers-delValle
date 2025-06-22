@@ -30,6 +30,7 @@ BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInval
 		                                  with: aProbability.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
+	
 	self
 		should: [
 			Board
@@ -56,6 +57,7 @@ BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThen
 		                                  with: aProbability.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
+	
 	self
 		should: [
 			Board

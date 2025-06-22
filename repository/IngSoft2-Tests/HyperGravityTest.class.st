@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLowerThanTheSquareMagnitudeThenItDoesNotMove [
 
-	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aFuelQuantity aDistributionBuilder aSetHyperGravitySquare aProbability aSetHyperGravitySquareProbabilisticEvent aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aFuelQuantity aDistributionBuilder aSetHyperGravitySquare aProbabilityOfOne aSetHyperGravitySquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -22,34 +22,31 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 
 	aDistributionBuilder := DistributionBuilder new.
 	aSetHyperGravitySquare := SetHyperGravitySquare with: 2.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aSetHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
 		                                            for:
 		                                            aSetHyperGravitySquare
-		                                            with: aProbability.
+		                                            with: aProbabilityOfOne.
 	aDistributionBuilder add: aSetHyperGravitySquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                   for: zeroReward
+		                                   with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -70,7 +67,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLowerThanTheSquareMagnitudeThenItsFuelDoesNotChange [
 
-	| aDistribution tenSquares sideToRoll oneLap expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aFuelQuantity aDistributionBuilder aSetHyperGravitySquare aProbability aSetHyperGravitySquareProbabilisticEvent aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| aDistribution tenSquares sideToRoll oneLap expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aFuelQuantity aDistributionBuilder aSetHyperGravitySquare aProbabilityOfOne aSetHyperGravitySquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -84,34 +81,31 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 
 	aDistributionBuilder := DistributionBuilder new.
 	aSetHyperGravitySquare := SetHyperGravitySquare with: 2.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aSetHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
 		                                            for:
 		                                            aSetHyperGravitySquare
-		                                            with: aProbability.
+		                                            with: aProbabilityOfOne.
 	aDistributionBuilder add: aSetHyperGravitySquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -121,6 +115,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 		         and: someDices
 		         and: aFuelQuantity
 		         and: aRewardBuilder.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 
@@ -130,7 +125,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNecesaryNumberThenItCanMove [
 
-	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aHyperGravitySquare aProbability aHyperGravitySquareProbabilisticEvent aRewardBuilder plusOneReward plusOneRewardProbabilisticEvent |
+	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -144,33 +139,30 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 
 	aDistributionBuilder := DistributionBuilder new.
 	aHyperGravitySquare := HyperGravitySquare between: 1 and: 1.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
 		                                         for: aHyperGravitySquare
-		                                         with: aProbability.
+		                                         with: aProbabilityOfOne.
 	aDistributionBuilder add: aHyperGravitySquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
-
-	aRewardBuilder := DistributionBuilder new.
-	plusOneReward := Reward of: 0.
-
-	plusOneRewardProbabilisticEvent := ProbabilisticEvent
-		                                   for: plusOneReward
-		                                   with: 1.
-
-	aRewardBuilder add: plusOneRewardProbabilisticEvent.
 
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aRewardBuilder := DistributionBuilder new.
+	zeroReward := Reward of: 0.
+	zeroRewardProbabilisticEvent := ProbabilisticEvent
+		                                for: zeroReward
+		                                with: aProbabilityOfOne.
+	aRewardBuilder add: zeroRewardProbabilisticEvent.
+
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game

@@ -18,7 +18,7 @@ HyperJumpTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErr
 { #category : 'tests' }
 HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenItTakesTheSecondParsecValueAndMovesAccordingly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbability aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -35,12 +35,13 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 
 	aDistributionBuilder := DistributionBuilder new.
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aHyperJumpSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
+
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -48,11 +49,9 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 
 	aRewardBuilder := DistributionBuilder new.
 	zeroReward := Reward of: 0.
-
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
-		                                      with: 1.
-
+		                                      with: aProbabilityOfOne.
 	aRewardBuilder add: zeroRewardRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -60,7 +59,6 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -80,7 +78,7 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndAfterTheJumpItGoesThroughTheFinalSquareThenTheGameEnds [
 
-	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbability aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -95,12 +93,13 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndAfterTheJumpItGoesThroughT
 
 	aDistributionBuilder := DistributionBuilder new.
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aHyperJumpSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
+
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -108,11 +107,9 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndAfterTheJumpItGoesThroughT
 
 	aRewardBuilder := DistributionBuilder new.
 	zeroReward := Reward of: 0.
-
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
-		                                      with: 1.
-
+		                                      with: aProbabilityOfOne.
 	aRewardBuilder add: zeroRewardRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -120,7 +117,6 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndAfterTheJumpItGoesThroughT
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -139,7 +135,7 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndAfterTheJumpItGoesThroughT
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndIncrementALapThenItsPositionChangesAccordingly [
 
-	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbability aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 7.
 	threeLaps := 3.
@@ -156,12 +152,13 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndIncrementALapThenItsPositi
 
 	aDistributionBuilder := DistributionBuilder new.
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aHyperJumpSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: tenSquares.
+
 	aBoard := Board
 		          with: tenSquares
 		          and: aWormHole
@@ -169,11 +166,9 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndIncrementALapThenItsPositi
 
 	aRewardBuilder := DistributionBuilder new.
 	zeroReward := Reward of: 0.
-
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
-		                                      with: 1.
-
+		                                      with: aProbabilityOfOne.
 	aRewardBuilder add: zeroRewardRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -181,7 +176,6 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndIncrementALapThenItsPositi
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -191,6 +185,7 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndIncrementALapThenItsPositi
 		         and: someDices
 		         and: aFuelQuantity
 		         and: aRewardBuilder.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 
@@ -200,7 +195,7 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndIncrementALapThenItsPositi
 { #category : 'tests' }
 HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenItsFuelIsConsumedCorrectly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedFuel aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbability aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedFuel aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -217,12 +212,13 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenItsFuelIsConsumedCorrectl
 
 	aDistributionBuilder := DistributionBuilder new.
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aHyperJumpSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
+
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -230,11 +226,9 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenItsFuelIsConsumedCorrectl
 
 	aRewardBuilder := DistributionBuilder new.
 	zeroReward := Reward of: 0.
-
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
-		                                      with: 1.
-
+		                                      with: aProbabilityOfOne.
 	aRewardBuilder add: zeroRewardRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -242,7 +236,6 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenItsFuelIsConsumedCorrectl
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -262,7 +255,7 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenItsFuelIsConsumedCorrectl
 { #category : 'tests' }
 HyperJumpTest >> testWhenAllTheParsecsHaveBeenTakenThenTheNextShipTakesTheFirstParsecAgain [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aWhiteShip aRedShip aPinkShip aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbability aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aWhiteShip aRedShip aPinkShip aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -282,25 +275,23 @@ HyperJumpTest >> testWhenAllTheParsecsHaveBeenTakenThenTheNextShipTakesTheFirstP
 
 	aDistributionBuilder := DistributionBuilder new.
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aHyperJumpSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
+
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-
 	aRewardBuilder := DistributionBuilder new.
 	zeroReward := Reward of: 0.
-
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
-		                                      with: 1.
-
+		                                      with: aProbabilityOfOne.
 	aRewardBuilder add: zeroRewardRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -311,7 +302,6 @@ HyperJumpTest >> testWhenAllTheParsecsHaveBeenTakenThenTheNextShipTakesTheFirstP
 	someShips add: aWhiteShip.
 	someShips add: aPinkShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -334,7 +324,7 @@ HyperJumpTest >> testWhenAllTheParsecsHaveBeenTakenThenTheNextShipTakesTheFirstP
 { #category : 'tests' }
 HyperJumpTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbability aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 7.
 	oneLap := 1.
@@ -351,12 +341,13 @@ HyperJumpTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInv
 
 	aDistributionBuilder := DistributionBuilder new.
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aHyperJumpSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
+
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -364,11 +355,9 @@ HyperJumpTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInv
 
 	aRewardBuilder := DistributionBuilder new.
 	zeroReward := Reward of: 0.
-
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
-		                                      with: 1.
-
+		                                      with: aProbabilityOfOne.
 	aRewardBuilder add: zeroRewardRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -376,7 +365,6 @@ HyperJumpTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInv
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
@@ -395,7 +383,7 @@ HyperJumpTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInv
 { #category : 'tests' }
 HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrectly [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbability aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLaps aBlackShip aDistribution someParsecs aGame expectedPosition aRatio aDistributionBuilder aFuelQuantity aHyperJumpSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 7.
 	threeLaps := 3.
@@ -412,12 +400,13 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 
 	aDistributionBuilder := DistributionBuilder new.
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aHyperJumpSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionBuilder buildFor: twentySquares.
+
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
@@ -425,11 +414,9 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 
 	aRewardBuilder := DistributionBuilder new.
 	zeroReward := Reward of: 0.
-
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
-		                                      with: 1.
-
+		                                      with: aProbabilityOfOne.
 	aRewardBuilder add: zeroRewardRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -437,7 +424,6 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aLoadedDice.
-
 	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
 	aGame := Game
