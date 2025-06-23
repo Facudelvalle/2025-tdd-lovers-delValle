@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 
-	| aBoard aBlueShip twentySquares aSetDice aWormHole sideToRoll aDistributionManager aDistribution expectedPosition someShips someDices aGame aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlackShip aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aBoard aBlueShip twentySquares aSetDice aWormHole sideToRoll aDistributionManager aDistribution expectedPosition someShips someDices aGame aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlackShip aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 2.
 
@@ -26,7 +26,7 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -39,6 +39,11 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -52,6 +57,7 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -62,7 +68,7 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 { #category : 'tests' }
 ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 
-	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 1.
 
@@ -80,7 +86,7 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -93,6 +99,11 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -106,6 +117,7 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -118,7 +130,7 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 { #category : 'tests' }
 ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 
-	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 1.
 
@@ -136,7 +148,7 @@ ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -149,6 +161,11 @@ ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -162,6 +179,7 @@ ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.

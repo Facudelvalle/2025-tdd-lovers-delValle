@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneInItsMaxiumFuell [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices expectedFuelLeft aDistributionManager aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardManager plusOneReward plusOneRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices expectedFuelLeft aDistributionManager aPlainSquare aPlainSquareProbabilisticEvent aDistribution aRewardManager plusOneReward plusOneRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aProbabilityOfOne |
 	fiveSquares := 5.
 	sideToRoll := 1.
 
@@ -21,12 +21,12 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -38,9 +38,13 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 
 	plusOneRewardProbabilisticEvent := ProbabilisticEvent
 		                                   for: plusOneReward
-		                                   with: 1.
-
+		                                   with: aProbabilityOfOne.
 	aRewardManager add: plusOneRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 
 	someShips := OrderedCollection new.
@@ -55,6 +59,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -67,7 +72,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 { #category : 'tests' }
 RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsOneLessFuel [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices expectedFuelLeft aDistributionManager aPlainSquare aProbability aPlainSquareProbabilisticEvent aDistribution aRewardManager plusOneReward plusOneRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices expectedFuelLeft aDistributionManager aPlainSquare aPlainSquareProbabilisticEvent aDistribution aRewardManager plusOneReward plusOneRewardProbabilisticEvent aGameBuilder aProbabilityOfOne aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 1.
 
@@ -80,12 +85,12 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsOneLessFuel [
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
-	aProbability := 1.
+	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
-		                                  with: aProbability.
+		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -97,10 +102,13 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsOneLessFuel [
 
 	plusOneRewardProbabilisticEvent := ProbabilisticEvent
 		                                   for: plusOneReward
-		                                   with: 1.
-
+		                                   with: aProbabilityOfOne.
 	aRewardManager add: plusOneRewardProbabilisticEvent.
-
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -114,6 +122,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsOneLessFuel [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.

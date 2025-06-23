@@ -1,12 +1,12 @@
 Class {
-	#name : 'DistributionBuilderTest',
+	#name : 'ProbabilisticEventManagerTest',
 	#superclass : 'TestCase',
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests' }
-DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsProbability [
+ProbabilisticEventManagerTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsProbability [
 
 	| expectedDistribution averageDistribution aDistributionManager aPlainSquare aPlainSquareProbabilisticEvent aDistribution aPlainSquareProbability oneHundredSquares aBlackHoleSquare aBlackHoleSquareProbability aBlackHoleSquareProbabilisticEvent aHyperGravitySquare aHyperGravitySquareProbability aHyperGravitySquareProbabilisticEvent aMoonWalkSquare aMoonWalkSquareProbability aMoonWalkSquareProbabilisticEvent aHyperJumpSquare aHyperJumpSquareProbability aHyperJumpSquareProbabilisticEvent anAtomicBombSquare anAtomicBombSquareProbability anAtomicBombSquareProbabilisticEvent plainSquares blackHoleSquares hyperGravitySquares moonWalkSquares hyperJumpSquares atomicBombSquares iterations |
 	
@@ -62,7 +62,7 @@ DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsPro
 		                                        anAtomicBombSquareProbability.
 	aDistributionManager add: anAtomicBombSquareProbabilisticEvent.
 
-	aDistribution := aDistributionManager buildFor: oneHundredSquares.
+	aDistribution := aDistributionManager generateFor: oneHundredSquares.
 
 	plainSquares := 0.
 	blackHoleSquares := 0.
@@ -73,7 +73,7 @@ DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsPro
 	iterations := 100.
 
 	1 to: iterations do: [ :anIteration |
-		aDistribution := aDistributionManager buildFor: oneHundredSquares.
+		aDistribution := aDistributionManager generateFor: oneHundredSquares.
 
 		plainSquares := plainSquares + (aDistribution occurrencesOf: aPlainSquare).
 		blackHoleSquares := blackHoleSquares + (aDistribution occurrencesOf: aBlackHoleSquare).

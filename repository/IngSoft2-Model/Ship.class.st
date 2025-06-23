@@ -10,7 +10,8 @@ Class {
 		'fuel',
 		'turnsLeftToWait',
 		'gravityPenalty',
-		'maximumFuel'
+		'maximumFuel',
+		'cards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -20,6 +21,12 @@ Class {
 Ship class >> called: aName [
 
 	^ self new initializeCalled: aName
+]
+
+{ #category : 'adding' }
+Ship >> addCards: someCards [
+	
+	someCards do: [ :aCard | cards add: aCard ]
 ]
 
 { #category : 'accessing' }
@@ -43,6 +50,12 @@ Ship >> canPlay: rolledNumber [
 	gravityPenalty > rolledNumber ifTrue: [
 		Error signal:
 			'The number rolled is not enought to pass the gravity penalty' ]
+]
+
+{ #category : 'accessing' }
+Ship >> cards [
+		
+	^ cards
 ]
 
 { #category : 'update' }
@@ -105,6 +118,7 @@ Ship >> initializeCalled: aName [
 	fuel := 0.
 	turnsLeftToWait := 0.
 	gravityPenalty := 0.
+	cards := OrderedCollection new.
 ]
 
 { #category : 'penalty' }

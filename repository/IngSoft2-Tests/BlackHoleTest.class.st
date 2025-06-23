@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoesBackToItsInitialPosition [
 
-	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager anBlackHoleSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager anBlackHoleSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 2.
 
@@ -26,7 +26,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoe
 		                                  for: anBlackHoleSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: tenSquares.
+	aDistribution := aDistributionManager generateFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -39,6 +39,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoe
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -52,6 +57,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoe
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -64,7 +70,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoe
 { #category : 'tests' }
 BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFourSquares [
 
-	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager anBlackHoleSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager anBlackHoleSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 4.
 
@@ -82,7 +88,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFou
 		                                  for: anBlackHoleSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: tenSquares.
+	aDistribution := aDistributionManager generateFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -95,6 +101,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFou
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -108,6 +119,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFou
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -118,7 +130,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFou
 { #category : 'tests' }
 BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenItGoesBackALapAndToTheAccordingSquare [
 
-	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager anBlackHoleSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager anBlackHoleSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 4.
 
@@ -136,7 +148,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenI
 		                                  for: anBlackHoleSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: tenSquares.
+	aDistribution := aDistributionManager generateFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -149,6 +161,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenI
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -162,6 +179,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenI
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -176,7 +194,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenI
 { #category : 'tests' }
 BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstLapItStaysOnTheFirstLap [
 
-	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager anBlackHoleSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager anBlackHoleSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 2.
 
@@ -194,7 +212,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstL
 		                                  for: anBlackHoleSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: tenSquares.
+	aDistribution := aDistributionManager generateFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -207,6 +225,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstL
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -220,6 +243,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstL
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.

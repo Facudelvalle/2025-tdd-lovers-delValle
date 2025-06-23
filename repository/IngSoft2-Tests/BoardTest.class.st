@@ -29,7 +29,7 @@ BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInval
 		                                  for: aPlainSquare
 		                                  with: aProbability.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 	
 	self
 		should: [
@@ -56,7 +56,7 @@ BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThen
 		                                  for: aPlainSquare
 		                                  with: aProbability.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 	
 	self
 		should: [
@@ -88,7 +88,7 @@ BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereT
 		                                      for: aBlackHoleSquare
 		                                      with: aProbability.
 	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -111,7 +111,7 @@ BoardTest >> testWhenABoardIsCreatedWithLessThanTwoSquaresThenInvalid [
 		                                  for: aPlainSquare
 		                                  with: aProbability.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: aLength.
+	aDistribution := aDistributionManager generateFor: aLength.
 
 	self
 		should: [

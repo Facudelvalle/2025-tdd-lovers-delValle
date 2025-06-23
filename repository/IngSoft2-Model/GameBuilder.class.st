@@ -10,7 +10,8 @@ Class {
 		'ships',
 		'dices',
 		'rewardsManager',
-		'fuelQuantity'
+		'fuelQuantity',
+		'cardsManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -28,6 +29,7 @@ GameBuilder >> build [
 		  and: dices
 		  and: fuelQuantity
 		  and: rewardsManager
+		  and: cardsManager
 ]
 
 { #category : 'initialization' }
@@ -38,6 +40,12 @@ GameBuilder >> initialize [
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	
+]
+
+{ #category : 'initialization' }
+GameBuilder >> setAvailableCards: aCardManager [ 
+	
+	cardsManager := aCardManager 
 ]
 
 { #category : 'initialization' }

@@ -34,7 +34,7 @@ GameBuilderTest >> testWhenTryingToCreateAGameWithoutABoardThenItFails [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares

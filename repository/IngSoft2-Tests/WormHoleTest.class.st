@@ -18,7 +18,7 @@ WormHoleTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 { #category : 'tests' }
 WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndOfIt [
 
-	| aBoard aBlueShip aBlackShip twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aBoard aBlueShip aBlackShip twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 2.
 
@@ -36,7 +36,7 @@ WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndO
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -49,6 +49,11 @@ WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndO
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -62,6 +67,7 @@ WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndO
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -72,7 +78,7 @@ WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndO
 { #category : 'tests' }
 WormHoleTest >> testWhenAShipLandsOnTheEndOfAWormHoleThenItEndsUpAtTheBeginningOfIt [
 
-	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager aDistribution expectedPosition aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlueShip aBlackShip someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager aDistribution expectedPosition aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlueShip aBlackShip someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 5.
 
@@ -90,7 +96,7 @@ WormHoleTest >> testWhenAShipLandsOnTheEndOfAWormHoleThenItEndsUpAtTheBeginningO
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -103,6 +109,11 @@ WormHoleTest >> testWhenAShipLandsOnTheEndOfAWormHoleThenItEndsUpAtTheBeginningO
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -116,6 +127,7 @@ WormHoleTest >> testWhenAShipLandsOnTheEndOfAWormHoleThenItEndsUpAtTheBeginningO
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.

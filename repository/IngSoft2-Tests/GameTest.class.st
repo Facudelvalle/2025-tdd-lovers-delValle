@@ -18,7 +18,7 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMes
 { #category : 'tests' }
 GameTest >> testWhenAPlayerTriesToRollTheDicesWhenTheGameHasFinishedThenItFails [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 5.
 
@@ -34,7 +34,7 @@ GameTest >> testWhenAPlayerTriesToRollTheDicesWhenTheGameHasFinishedThenItFails 
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -47,6 +47,11 @@ GameTest >> testWhenAPlayerTriesToRollTheDicesWhenTheGameHasFinishedThenItFails 
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -60,6 +65,7 @@ GameTest >> testWhenAPlayerTriesToRollTheDicesWhenTheGameHasFinishedThenItFails 
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -73,7 +79,7 @@ GameTest >> testWhenAPlayerTriesToRollTheDicesWhenTheGameHasFinishedThenItFails 
 { #category : 'tests' }
 GameTest >> testWhenAShipCompletesTheRequiredAmountOfLapsThenItwinsTheGame [
 
-	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices fourLaps aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices fourLaps aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 10.
 	fourLaps := 4.
@@ -94,7 +100,7 @@ GameTest >> testWhenAShipCompletesTheRequiredAmountOfLapsThenItwinsTheGame [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -107,6 +113,11 @@ GameTest >> testWhenAShipCompletesTheRequiredAmountOfLapsThenItwinsTheGame [
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -121,6 +132,7 @@ GameTest >> testWhenAShipCompletesTheRequiredAmountOfLapsThenItwinsTheGame [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -133,7 +145,7 @@ GameTest >> testWhenAShipCompletesTheRequiredAmountOfLapsThenItwinsTheGame [
 { #category : 'tests' }
 GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenTheEffectIsAppliedAndTheGameDoesNotEnd [
 
-	| expectedPosition twentySquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionGame aBlackHoleSquare aProbabilityOfOne aBlackHoleSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| expectedPosition twentySquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionGame aBlackHoleSquare aProbabilityOfOne aBlackHoleSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 4.
 	twoLaps := 2.
@@ -152,7 +164,7 @@ GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenT
 		                                      for: aBlackHoleSquare
 		                                      with: aProbabilityOfOne.
 	aDistributionGame add: aBlackHoleSquareProbabilisticEvent.
-	aDistribution := aDistributionGame buildFor: twentySquares.
+	aDistribution := aDistributionGame generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -165,6 +177,11 @@ GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenT
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -179,6 +196,7 @@ GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenT
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -192,9 +210,71 @@ GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenT
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenAShipLandsOnACardSquareThenACardIsAssignedToIt [
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent expectedCards aCardSquare aCardSquareProbabilisticEvent |
+	fiveSquares := 5.
+	sideToRoll := 1.
+
+	aWormHole := WormHole between: 2 and: 3.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aCardSquare := CardSquare new.
+	aProbabilityOfOne := 1.
+	aCardSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aCardSquare
+		                                  with: aProbabilityOfOne.
+	aDistributionManager add: aCardSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
+
+	aBoard := Board
+		          with: fiveSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	aRewardManager := ProbablisiticEventsManager new.
+	zeroReward := FuelDecreaseReward of: 0.
+	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
+		                                      for: zeroReward
+		                                      with: aProbabilityOfOne.
+	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
+	
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
+	aGameBuilder := GameBuilder new.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
+	aGame := aGameBuilder build.
+	
+	aGame nextTurnPlay.
+	
+	expectedCards := OrderedCollection new.
+	expectedCards add: anAllyCard.
+	expectedCards add: anAllyCard.
+	expectedCards add: anAllyCard.
+
+	self assert: aBlueShip cards equals: expectedCards.
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice twoLaps aBlackShip sideToRoll aGame expectedPosition aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice twoLaps aBlackShip sideToRoll aGame expectedPosition aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 6.
 	twoLaps := 2.
@@ -213,7 +293,7 @@ GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly 
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -226,6 +306,11 @@ GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly 
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -240,6 +325,7 @@ GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly 
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -250,7 +336,7 @@ GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly 
 { #category : 'tests' }
 GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 
-	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 1.
 
@@ -270,7 +356,7 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -283,6 +369,11 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -296,6 +387,7 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -306,7 +398,7 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 { #category : 'tests' }
 GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 2.
 
@@ -322,7 +414,7 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -335,6 +427,11 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -348,6 +445,7 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -360,7 +458,7 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 { #category : 'tests' }
 GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 
-	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 3.
 
@@ -380,7 +478,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -393,6 +491,11 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -406,6 +509,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -418,7 +522,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 { #category : 'tests' }
 GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMaximumRolledNumberTimesTwo [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices twoSides aTwoSidedDice aBlackShip maximumRolledNumber aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGame aGameBuilder |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices twoSides aTwoSidedDice aBlackShip maximumRolledNumber aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGame aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	twoSides := 2.
 
@@ -436,7 +540,7 @@ GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMax
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -449,6 +553,11 @@ GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMax
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -462,6 +571,7 @@ GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMax
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	self assert: (aBlueShip fuelEquals: maximumRolledNumber * 2).
@@ -471,7 +581,7 @@ GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMax
 { #category : 'tests' }
 GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMaximumRolledNumberTimesTwo [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap twoSides aTwoSidedDice aFourSidedDice fourSides aBlackShip maximumRolledNumber aDistributionBuilder aDistribution aFuelQuantity aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardBuilder zeroReward zeroRewardRewardProbabilisticEvent aGame |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap twoSides aTwoSidedDice aFourSidedDice fourSides aBlackShip maximumRolledNumber aDistributionBuilder aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent zeroReward zeroRewardRewardProbabilisticEvent aRewardManager aCardManager anAllyCard anAllyCardProbabilisticEvent aGameBuilder aGame |
 	fiveSquares := 5.
 	twoSides := 2.
 	fourSides := 4.
@@ -492,19 +602,24 @@ GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMa
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionBuilder buildFor: fiveSquares.
+	aDistribution := aDistributionBuilder generateFor: fiveSquares.
 	
 	aBoard := Board
 		          with: fiveSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardBuilder := ProbablisiticEventsManager new.
+	aRewardManager := ProbablisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
-	aRewardBuilder add: zeroRewardRewardProbabilisticEvent.
+	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -512,24 +627,86 @@ GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMa
 	someShips add: aBlackShip.
 	someDices add: aTwoSidedDice.
 	someDices add: aFourSidedDice.
-	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
-
-	aGame := Game
-		         with: aBoard
-		         for: oneLap
-		         and: someShips
-		         and: someDices
-		         and: aFuelQuantity
-		         and: aRewardBuilder.
+	
+	aGameBuilder  := GameBuilder new.
+	
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
+	aGame := aGameBuilder build.
+	
 
 	self assert: (aBlueShip fuelEquals: maximumRolledNumber * 2).
 	self assert: (aBlackShip fuelEquals: maximumRolledNumber * 2)
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenTheGameStartsThenAllTheShipsHaveTwoCards [
+
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent expectedCards |
+	fiveSquares := 5.
+	sideToRoll := 5.
+
+	aWormHole := WormHole between: 2 and: 3.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aPlainSquare := PlainSquare new.
+	aProbabilityOfOne := 1.
+	aPlainSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aPlainSquare
+		                                  with: aProbabilityOfOne.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
+
+	aBoard := Board
+		          with: fiveSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	aRewardManager := ProbablisiticEventsManager new.
+	zeroReward := FuelDecreaseReward of: 0.
+	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
+		                                      for: zeroReward
+		                                      with: aProbabilityOfOne.
+	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
+	
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
+	aGameBuilder := GameBuilder new.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
+	aGame := aGameBuilder build.
+	
+	expectedCards := OrderedCollection new.
+	expectedCards add: anAllyCard.
+	expectedCards add: anAllyCard.
+
+	self assert: aBlueShip cards equals: expectedCards.
+	self assert: aBlackShip cards equals: expectedCards.
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid [
 
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll aBlackShip aDistribution someParsecs aRatio aDistributionManager aHyperJumpSquare aProbabilityOfOne aHyperJumpSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll aBlackShip aDistribution someParsecs aRatio aDistributionManager aHyperJumpSquare aProbabilityOfOne aHyperJumpSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 2.
 	aRatio := 2.
@@ -548,7 +725,7 @@ GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid 
 		                                      for: aHyperJumpSquare
 		                                      with: aProbabilityOfOne.
 	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -561,6 +738,11 @@ GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid 
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -573,6 +755,7 @@ GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid 
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 
 	self
 		should: [ aGameBuilder build ]
@@ -584,7 +767,7 @@ GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid 
 { #category : 'tests' }
 GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 
-	| fiveSquares aWormHole aBlueShip aLoadedDice sideToRoll aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aBlueShip aLoadedDice sideToRoll aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := 2.
 
@@ -599,7 +782,7 @@ GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -612,6 +795,11 @@ GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -624,6 +812,7 @@ GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 
 	self
 		should: [ aGameBuilder build ]
@@ -634,7 +823,7 @@ GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 { #category : 'tests' }
 GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlackShip aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlackShip aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 
 	aWormHole := WormHole between: 1 and: 2.
@@ -648,7 +837,7 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -661,6 +850,11 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -673,6 +867,7 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 
 	self
 		should: [ aGameBuilder build ]
@@ -683,7 +878,7 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 { #category : 'tests' }
 GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 
-	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll aBlackShip aDistribution aDistributionManager expectedPosition aGame aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll aBlackShip aDistribution aDistributionManager expectedPosition aGame aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 2.
 
@@ -701,7 +896,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 		                                         for: aHyperGravitySquare
 		                                         with: aProbabilityOfOne.
 	aDistributionManager add: aHyperGravitySquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: tenSquares.
+	aDistribution := aDistributionManager generateFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -714,6 +909,11 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -727,6 +927,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -739,7 +940,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 { #category : 'tests' }
 GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximumRollThenInvalid [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides aBlackShip aDistribution aDistributionManager aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides aBlackShip aDistribution aDistributionManager aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	twoSides := 2.
 
@@ -755,7 +956,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximum
 		                                         for: aHyperGravitySquare
 		                                         with: aProbabilityOfOne.
 	aDistributionManager add: aHyperGravitySquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -768,6 +969,11 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximum
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -781,6 +987,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximum
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 
 	self
 		should: [ aGameBuilder build ]
@@ -792,7 +999,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximum
 { #category : 'tests' }
 GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides zeroLaps aBlackShip aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides zeroLaps aBlackShip aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	twoSides := 2.
 	zeroLaps := 0.
@@ -809,7 +1016,7 @@ GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: fiveSquares.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -822,6 +1029,11 @@ GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -835,6 +1047,7 @@ GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 
 	self
 		should: [ aGameBuilder build ]

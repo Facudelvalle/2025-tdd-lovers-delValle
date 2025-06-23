@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLowerThanTheSquareMagnitudeThenItDoesNotMove [
 
-	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aSetHyperGravitySquare aProbabilityOfOne aSetHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aSetHyperGravitySquare aProbabilityOfOne aSetHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 
@@ -27,7 +27,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 		                                            aSetHyperGravitySquare
 		                                            with: aProbabilityOfOne.
 	aDistributionManager add: aSetHyperGravitySquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: tenSquares.
+	aDistribution := aDistributionManager generateFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -40,6 +40,11 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -53,19 +58,20 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 
-	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+	self assert: (aBlueShip currentPositionEquals: expectedPosition).
 ]
 
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLowerThanTheSquareMagnitudeThenItsFuelDoesNotChange [
 
-	| aDistribution tenSquares sideToRoll expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aSetHyperGravitySquare aProbabilityOfOne aSetHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aDistribution tenSquares sideToRoll expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aSetHyperGravitySquare aProbabilityOfOne aSetHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 
@@ -84,7 +90,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 		                                            aSetHyperGravitySquare
 		                                            with: aProbabilityOfOne.
 	aDistributionManager add: aSetHyperGravitySquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: tenSquares.
+	aDistribution := aDistributionManager generateFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -97,6 +103,11 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -109,6 +120,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -120,7 +132,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNecesaryNumberThenItCanMove [
 
-	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 1.
 
@@ -138,7 +150,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 		                                         for: aHyperGravitySquare
 		                                         with: aProbabilityOfOne.
 	aDistributionManager add: aHyperGravitySquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: tenSquares.
+	aDistribution := aDistributionManager generateFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -151,6 +163,11 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -164,6 +181,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.

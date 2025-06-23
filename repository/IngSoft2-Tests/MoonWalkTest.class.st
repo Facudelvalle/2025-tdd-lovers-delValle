@@ -18,7 +18,7 @@ MoonWalkTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 { #category : 'tests' }
 MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInTheFirstLapThenTheShipGoesBackToTheFirstSquare [
 
-	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	expectedPosition := Position at: 0 in: 1.
 	twentySquares := 20.
 	sideToRoll := 5.
@@ -35,7 +35,7 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -48,6 +48,11 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -60,6 +65,7 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -74,7 +80,7 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 { #category : 'tests' }
 MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 
-	| twentySquares sideToRoll aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aDistributionManager aMoonWalkSquare aProbabilityOfOne aMoonWalkSquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| twentySquares sideToRoll aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aDistributionManager aMoonWalkSquare aProbabilityOfOne aMoonWalkSquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := 1.
 
@@ -90,7 +96,7 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -103,6 +109,11 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -115,6 +126,7 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 
 	self
 		should: [ aGameBuilder build ]
@@ -126,7 +138,7 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnoughFuelToGoBkacwardThenTheyDoNotMoveAndLoseTwoTurns [
 
-	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	expectedPosition := Position at: 8 in: 1.
 	twentySquares := 20.
 	sideToRoll := 2.
@@ -143,7 +155,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -156,6 +168,11 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -169,6 +186,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -184,7 +202,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccordingWithTheSquareMagnitude [
 
-	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	expectedPosition := Position at: 6 in: 1.
 	twentySquares := 20.
 	sideToRoll := 2.
@@ -201,7 +219,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -214,6 +232,11 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -227,6 +250,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -239,7 +263,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 
-	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
+	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	expectedPosition := Position at: 1 in: 1.
 	twentySquares := 20.
 	sideToRoll := 1.
@@ -256,7 +280,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
-	aDistribution := aDistributionManager buildFor: twentySquares.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
@@ -269,6 +293,11 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
+	
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -281,6 +310,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 	aGame nextTurnPlay.
 

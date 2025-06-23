@@ -18,14 +18,14 @@ ProbablisiticEventsManager >> add: anEvent [
 ]
 
 { #category : 'building' }
-ProbablisiticEventsManager >> buildFor: aLength [
+ProbablisiticEventsManager >> generateFor: aLength [
 
-	| generatedSquares |
-	generatedSquares := (0 to: aLength - 1) collect: [ :aNumber |
+	| generatedEvents |
+	generatedEvents := (0 to: aLength - 1) collect: [ :aNumber |
 		                    (probabilityEvents atRandomWeighting: [
 			                     :aProbabilisticEvent |
 			                     aProbabilisticEvent probability ]) event ].
-	^ generatedSquares asOrderedCollection
+	^ generatedEvents asOrderedCollection
 ]
 
 { #category : 'initialization' }

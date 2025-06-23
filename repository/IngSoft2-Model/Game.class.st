@@ -11,11 +11,20 @@ Class {
 		'finished',
 		'winner',
 		'laps',
-		'rewards'
+		'rewards',
+		'cards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'creation' }
+Game class >> assignCardsTo: someShips from: aCardsManager [ 
+	
+	| someCards |
+	someCards:= aCardsManager generateFor: 2.
+	someShips do: [ :aShip | aShip addCards: someCards ]
+]
 
 { #category : 'creation' }
 Game class >> fuel: someShips with: aFuelQuantity [
@@ -57,34 +66,21 @@ Game class >> validateSquaresFrom: aBoard with: someDices [
 ]
 
 { #category : 'creation' }
-Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFuelQuantity [
+Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFuelQuantity and: aRewardManager and: aCardsManager [
 
 	self hasDices: someDices.
 	self hasShips: someShips.
 	self hasLaps: someLaps.
 	self fuel: someShips with: aFuelQuantity.
+	self assignCardsTo: someShips from: aCardsManager.
 	self validateSquaresFrom: aBoard with: someDices.
 	^ self new
 		  initializeWith: aBoard
 		  for: someLaps
 		  and: someShips
 		  and: someDices
-]
-
-{ #category : 'creation' }
-Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFuelQuantity and: aRewardBuilder [
-
-	self hasDices: someDices.
-	self hasShips: someShips.
-	self hasLaps: someLaps.
-	self fuel: someShips with: aFuelQuantity.
-	self validateSquaresFrom: aBoard with: someDices.
-	^ self new
-		  initializeWith: aBoard
-		  for: someLaps
-		  and: someShips
-		  and: someDices
-		  and: aRewardBuilder
+		  and: aRewardManager
+			and: aCardsManager
 ]
 
 { #category : 'action' }
@@ -97,7 +93,7 @@ Game >> applyEffectOn: aShip with: aPosition [
 Game >> applyRewardTo: aShip for: aRolledNumber [
 
 	| aReward |
-	aReward := rewards buildFor: 1.
+	aReward := rewards generateFor: 1.
 
 	aRolledNumber = self maximumRoll ifTrue: [
 		(aReward at: 1) applyTo: aShip ]
@@ -122,6 +118,12 @@ Game >> finish [
 ]
 
 { #category : 'action' }
+Game >> generateCard [
+
+	^ cards generateFor: 1.
+]
+
+{ #category : 'action' }
 Game >> goBackFourSquares: aShip from: aPosition [ 
 	
 	^ board goBackFourSquares: aShip from: aPosition 
@@ -134,14 +136,15 @@ Game >> hasFinished [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: aRewardBuilder [
-
+Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: aRewardManager and: aCardMaganer [ 
+	
 	board := aBoard.
 	ships := someShips.
 	dices := someDices.
 	laps := someLaps.
 	finished := false.
-	rewards := aRewardBuilder.
+	rewards := aRewardManager.
+	cards := aCardMaganer.
 	winner := NullShip new
 ]
 
@@ -250,10 +253,12 @@ Game >> nextTurnPlay [
 	shipInitialPosition := shipToMove currentPosition.
 	[ self move: shipToMove with: rolledNumber ]
 		on: Error
-		do: [
-			shipToMove moveTo: shipInitialPosition.
-			shipToMove losesTwoTurns.
-			shipToMove restoreFuel ].
+		do: [ :anError |
+			(anError messageText = 'Ship does not have enough fuel to move.')
+				ifTrue: [
+					shipToMove moveTo: shipInitialPosition.
+					shipToMove losesTwoTurns.
+					shipToMove restoreFuel ] ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]
