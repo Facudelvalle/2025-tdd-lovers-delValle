@@ -8,10 +8,9 @@ Class {
 { #category : 'tests' }
 ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 
-	| aBoard aBlueShip twentySquares aSetDice aWormHole sideToRoll aDistributionBuilder aDistribution expectedPosition someShips someDices aFuelQuantity oneLap aGame aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlackShip aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
+	| aBoard aBlueShip twentySquares aSetDice aWormHole sideToRoll aDistributionManager aDistribution expectedPosition someShips someDices aGame aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlackShip aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
 	twentySquares := 20.
 	sideToRoll := 2.
-	oneLap := 1.
 
 	expectedPosition := Position at: 2 in: 1.
 
@@ -20,41 +19,40 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 	aBlackShip := Ship called: 'BlackShip'.
 	aSetDice := LoadedDice toRoll: sideToRoll.
 
-	aDistributionBuilder := DistributionBuilder new.
+	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
-	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionBuilder buildFor: twentySquares.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager buildFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardBuilder := DistributionBuilder new.
-	zeroReward := Reward of: 0.
+	aRewardManager := ProbablisiticEventsManager new.
+	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
-	aRewardBuilder add: zeroRewardProbabilisticEvent.
+	aRewardManager add: zeroRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aSetDice.
-	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
-	aGame := Game
-		         with: aBoard
-		         for: oneLap
-		         and: someShips
-		         and: someDices
-		         and: aFuelQuantity
-		         and: aRewardBuilder.
+	aGameBuilder := GameBuilder new.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
 
@@ -64,10 +62,9 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 { #category : 'tests' }
 ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 
-	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionBuilder expectedPosition oneLap aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aFuelQuantity aGame aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
+	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
 	twentySquares := 20.
 	sideToRoll := 1.
-	oneLap := 1.
 
 	expectedPosition := Position at: 2 in: 1.
 
@@ -76,41 +73,40 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 	aBlackShip := Ship called: 'BlackShip'.
 	aSetDice := LoadedDice toRoll: sideToRoll.
 
-	aDistributionBuilder := DistributionBuilder new.
+	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
-	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionBuilder buildFor: twentySquares.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager buildFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardBuilder := DistributionBuilder new.
-	zeroReward := Reward of: 0.
+	aRewardManager := ProbablisiticEventsManager new.
+	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
-	aRewardBuilder add: zeroRewardProbabilisticEvent.
+	aRewardManager add: zeroRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aSetDice.
-	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
-	aGame := Game
-		         with: aBoard
-		         for: oneLap
-		         and: someShips
-		         and: someDices
-		         and: aFuelQuantity
-		         and: aRewardBuilder.
+	aGameBuilder := GameBuilder new.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -122,10 +118,9 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 { #category : 'tests' }
 ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 
-	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionBuilder expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aFuelQuantity aGame oneLap aRewardBuilder zeroReward zeroRewardProbabilisticEvent |
+	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder |
 	twentySquares := 20.
 	sideToRoll := 1.
-	oneLap := 1.
 
 	expectedPosition := Position at: 1 in: 1.
 
@@ -134,41 +129,40 @@ ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 	aBlackShip := Ship called: 'BlackShip'.
 	aSetDice := LoadedDice toRoll: sideToRoll.
 
-	aDistributionBuilder := DistributionBuilder new.
+	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
-	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionBuilder buildFor: twentySquares.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager buildFor: twentySquares.
 
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardBuilder := DistributionBuilder new.
-	zeroReward := Reward of: 0.
+	aRewardManager := ProbablisiticEventsManager new.
+	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
-	aRewardBuilder add: zeroRewardProbabilisticEvent.
+	aRewardManager add: zeroRewardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
 	someDices add: aSetDice.
-	aFuelQuantity := (someDices sum: [ :aDice | aDice rollMaximum ]) * 2.
 
-	aGame := Game
-		         with: aBoard
-		         for: oneLap
-		         and: someShips
-		         and: someDices
-		         and: aFuelQuantity
-		         and: aRewardBuilder.
+	aGameBuilder := GameBuilder new.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
 

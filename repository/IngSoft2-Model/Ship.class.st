@@ -9,7 +9,8 @@ Class {
 		'name',
 		'fuel',
 		'turnsLeftToWait',
-		'gravityPenalty'
+		'gravityPenalty',
+		'maximumFuel'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -72,7 +73,9 @@ Ship >> details [
 { #category : 'accessing' }
 Ship >> fuel: aFuelQuantity [
 
-	fuel := aFuelQuantity
+	fuel := aFuelQuantity.
+	
+	maximumFuel := aFuelQuantity.
 ]
 
 { #category : 'compare' }
@@ -86,6 +89,12 @@ Ship >> hasEnoughFuelToTravel: squaresToTravel [
 
 	fuel < squaresToTravel ifTrue: [
 		Error signal: 'Ship does not have enough fuel to move.' ]
+]
+
+{ #category : 'accessing' }
+Ship >> increaseMaxFuel: aMagnitude [
+
+	maximumFuel := maximumFuel + aMagnitude
 ]
 
 { #category : 'initialization' }
@@ -119,4 +128,10 @@ Ship >> name [
 Ship >> reducePenalty [
 
 	turnsLeftToWait := turnsLeftToWait - 1
+]
+
+{ #category : 'accessing' }
+Ship >> restoreFuel [
+
+	fuel := maximumFuel
 ]

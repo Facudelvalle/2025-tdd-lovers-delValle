@@ -93,7 +93,7 @@ Game >> applyEffectOn: aShip with: aPosition [
 	^ board applyEfectOn: aShip with: aPosition in: self.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 Game >> applyRewardTo: aShip for: aRolledNumber [
 
 	| aReward |
@@ -252,7 +252,7 @@ Game >> nextTurnPlay [
 		do: [
 			shipToMove moveTo: shipInitialPosition.
 			shipToMove losesTwoTurns.
-			shipToMove fuel: (self class maximumRoll: dices) * 2 ].
+			shipToMove restoreFuel ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]

@@ -1,5 +1,8 @@
+"
+This class represent a fuel decrese reward
+"
 Class {
-	#name : 'Reward',
+	#name : 'FuelDecreaseReward',
 	#superclass : 'Object',
 	#instVars : [
 		'magnitude'
@@ -9,19 +12,19 @@ Class {
 }
 
 { #category : 'instance creation' }
-Reward class >> of: aMagnitude [
+FuelDecreaseReward class >> of: aMagnitude [
 
 	^ self new initializeOf: aMagnitude
 ]
 
 { #category : 'operations' }
-Reward >> applyTo: aShip [
+FuelDecreaseReward >> applyTo: aShip [
 
 	aShip addFuel: magnitude
 ]
 
 { #category : 'initialization' }
-Reward >> initializeOf: aMagnitude [
+FuelDecreaseReward >> initializeOf: aMagnitude [
 
 	magnitude := aMagnitude
 ]
