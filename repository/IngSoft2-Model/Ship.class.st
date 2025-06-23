@@ -60,16 +60,23 @@ Ship >> cards [
 ]
 
 { #category : 'update' }
-Ship >> consumeFuel: squaresTraveled [
+Ship >> consumeFuel: squaresToTravel [
 
 	| fuelNeededToTravel |
-	[ self hasEnoughFuelToTravel: squaresTraveled ]
+	fuel := fuel - squaresToTravel.
+	[ self hasEnoughFuelToTravel: squaresToTravel ]
 		on: Error
 		do: [
-			fuelNeededToTravel := squaresTraveled - fuel.
-			ally consumeFuel: fuelNeededToTravel.
-			fuel := 0 ].
-	fuel := fuel - squaresTraveled
+			fuelNeededToTravel := squaresToTravel - (fuel + squaresToTravel).
+			ally consumeFuelByAlly: fuelNeededToTravel.
+			fuel := 0 ]
+]
+
+{ #category : 'update' }
+Ship >> consumeFuelByAlly: fuelToConsume [
+
+	fuel := fuel - fuelToConsume.
+	self hasEnoughFuelToTravel: fuelToConsume
 ]
 
 { #category : 'accessing' }
@@ -78,7 +85,7 @@ Ship >> currentPosition [
 	^ position
 ]
 
-{ #category : 'compare' }
+{ #category : 'comparing' }
 Ship >> currentPositionEquals: aPosition [ 
 	
 	^ position equals: aPosition 
@@ -110,7 +117,7 @@ Ship >> fuel: aFuelQuantity [
 	maximumFuel := aFuelQuantity.
 ]
 
-{ #category : 'compare' }
+{ #category : 'comparing' }
 Ship >> fuelEquals: aFuelQuantity [ 
 	
 	^ fuel = aFuelQuantity 
@@ -125,7 +132,7 @@ Ship >> hasAFuelPenalty [
 { #category : 'testing' }
 Ship >> hasEnoughFuelToTravel: squaresToTravel [
 
-	fuel < squaresToTravel ifTrue: [
+	(fuel + squaresToTravel) < squaresToTravel ifTrue: [
 		Error signal: 'Ship does not have enough fuel to move.' ]
 ]
 
@@ -144,7 +151,7 @@ Ship >> initializeCalled: aName [
 	turnsLeftToWait := 0.
 	gravityPenalty := 0.
 	cards := OrderedCollection new.
-	ally := NullShip new.
+	ally := NullShip new
 ]
 
 { #category : 'penalty' }
@@ -162,6 +169,16 @@ Ship >> moveTo: aPosition [
 { #category : 'accessing' }
 Ship >> name [
 	^ name
+]
+
+{ #category : 'penalty' }
+Ship >> penalizeAndReturnTo: shipInitialPosition [
+
+	self moveTo: shipInitialPosition.
+	self losesTwoTurns.
+	self restoreFuel.
+	ally losesTwoTurns.
+	ally restoreFuel
 ]
 
 { #category : 'penalty' }

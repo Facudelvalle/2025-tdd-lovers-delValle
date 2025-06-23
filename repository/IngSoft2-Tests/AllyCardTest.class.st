@@ -16,7 +16,7 @@ AllyCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 ]
 
 { #category : 'tests' }
-AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveenoughFuelThenBothArePenalized [
+AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveEnoughFuelThenBothArePenalized [
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition |
 	twentySquares := 20.
@@ -76,10 +76,11 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveenoughFuelTh
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
-	aGame nextTurnPass.
+	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 
-	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+	self assert: aBlueShip hasAFuelPenalty.
+	self assert: aBlackShip hasAFuelPenalty
 ]
 
 { #category : 'tests' }
@@ -146,17 +147,19 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItCanUseTheOtherShipsFuelWhenItH
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
-	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+	self assert: (aBlueShip currentPositionEquals: expectedPosition).
+	self assert: (aBlackShip fuelEquals: 1)
 ]
 
 { #category : 'tests' }
 AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItsAllyCanUseTheShipsFuelWhenItHasNotEnoughFuelToMove [
 
-	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition |
+	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel |
 	twentySquares := 20.
 	sideToRoll := 1.
 
 	expectedPosition := Position at: 3 in: 1.
+	expectedFuel := 1.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -213,7 +216,8 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItsAllyCanUseTheShipsFuelWhenItH
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
-	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+	self assert: (aBlueShip currentPositionEquals: expectedPosition).
+	self assert: (aBlackShip fuelEquals: expectedFuel)
 ]
 
 { #category : 'tests' }

@@ -9,13 +9,25 @@ Class {
 }
 
 { #category : 'update' }
-NullShip >> consumeFuel: squaresTraveled [
+NullShip >> consumeFuelByAlly: squaresTraveled [
 
 	Error signal: 'Ship does not have enough fuel to move.'
+]
+
+{ #category : 'update' }
+NullShip >> losesTwoTurns [
+
+	
 ]
 
 { #category : 'accessing' }
 NullShip >> name [
 
 	^ 'There is not a winner yet'
+]
+
+{ #category : 'accessing' }
+NullShip >> restoreFuel [
+
+	
 ]

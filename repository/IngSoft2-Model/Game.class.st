@@ -254,11 +254,8 @@ Game >> nextTurnPlay [
 	[ self move: shipToMove with: rolledNumber ]
 		on: Error
 		do: [ :anError |
-			(anError messageText = 'Ship does not have enough fuel to move.')
-				ifTrue: [
-					shipToMove moveTo: shipInitialPosition.
-					shipToMove losesTwoTurns.
-					shipToMove restoreFuel ] ].
+			anError messageText = 'Ship does not have enough fuel to move.'
+				ifTrue: [ shipToMove penalizeAndReturnTo: shipInitialPosition ] ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]
