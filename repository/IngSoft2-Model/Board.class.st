@@ -94,6 +94,12 @@ Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [
 	distribution := aDistribution
 ]
 
+{ #category : 'testing' }
+Board >> isEmpty [
+
+	^ false
+]
+
 { #category : 'action' }
 Board >> jump: squaresToJump from: aPosition [ 
 	
