@@ -163,16 +163,18 @@ Game >> maximumRoll [
 { #category : 'action' }
 Game >> move: aShip with: rolledNumber [
 
-	| shipInitialPosition squaresTraveled shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice squaresTraveledWithSquareEffect |
+	| shipInitialPosition squaresTraveled shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice squaresTraveledWithSquareEffect adjustedRolledNumber |
 	aShip canPlay: rolledNumber.
 	
 	self applyRewardTo: aShip for: rolledNumber.
 	
 	shipInitialPosition := aShip currentPosition.
+	
+	adjustedRolledNumber := (aShip adjust: rolledNumber).
 
 	shipPositionBeforeWormHole := board
 		                              update: shipInitialPosition
-		                              with: rolledNumber.
+		                              with: adjustedRolledNumber.
 
 	squaresTraveledWithDice := board
 		                           calculateDistanceBetween:

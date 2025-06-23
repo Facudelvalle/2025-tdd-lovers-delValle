@@ -12,7 +12,8 @@ Class {
 		'gravityPenalty',
 		'maximumFuel',
 		'cards',
-		'ally'
+		'ally',
+		'rollPenalty'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -36,10 +37,22 @@ Ship >> addFuel: aFuelQuantity [
 	fuel := fuel + aFuelQuantity
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> adjust: aRolledNumber [
+
+	^ aRolledNumber + rollPenalty
+]
+
 { #category : 'penalty' }
 Ship >> applyGravityPenalty: aGravitySquare [
 
 	gravityPenalty := aGravitySquare 
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> applyRollPenalty: aPenalty [
+
+	rollPenalty := rollPenalty + aPenalty
 ]
 
 { #category : 'testing' }
@@ -151,6 +164,7 @@ Ship >> initializeCalled: aName [
 	turnsLeftToWait := 0.
 	gravityPenalty := 0.
 	cards := OrderedCollection new.
+	rollPenalty := 0.
 	ally := NullShip new
 ]
 
