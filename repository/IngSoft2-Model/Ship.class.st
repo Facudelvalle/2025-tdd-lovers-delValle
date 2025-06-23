@@ -151,7 +151,7 @@ Ship >> initializeCalled: aName [
 	turnsLeftToWait := 0.
 	gravityPenalty := 0.
 	cards := OrderedCollection new.
-	ally := NullShip new.
+	ally := NullShip new
 ]
 
 { #category : 'penalty' }
