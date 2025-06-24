@@ -14,5 +14,6 @@ RepeatCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetShi
 	[ aGame applyLastEffectTo: aTargetShip ]
 		on: Error
 		do: [ :anError |
-			aTargetShip penalizeAndReturnTo: aTargetShip currentPosition ]
+			aTargetShip penalizeAndReturnTo: aTargetShip currentPosition ].
+	aGame lastPlayedCard: self
 ]

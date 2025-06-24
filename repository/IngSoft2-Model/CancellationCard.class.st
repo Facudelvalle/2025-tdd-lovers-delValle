@@ -11,7 +11,8 @@ Class {
 { #category : 'playing' }
 CancellationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
-	aGame remove: anAffectedCard playedBy: anAffectedShip
+	aGame remove: anAffectedCard playedBy: anAffectedShip.
+	aGame lastPlayedCard: self
 ]
 
 { #category : 'comparing' }
