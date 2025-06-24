@@ -13,3 +13,9 @@ BlackHoleSquare >> applyOn: aShip and: aPosition in: aGame [
 
 	^ aGame goBackFourSquares: aShip from: aPosition
 ]
+
+{ #category : 'as yet unclassified' }
+BlackHoleSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ self applyOn: aShip and: aPosition in: aGame
+]

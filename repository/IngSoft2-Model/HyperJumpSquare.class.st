@@ -46,6 +46,12 @@ HyperJumpSquare >> normalize: aParsec [
 	^ aParsec * ratio
 ]
 
+{ #category : 'as yet unclassified' }
+HyperJumpSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ self applyOn: aShip and: aPosition in: aGame
+]
+
 { #category : 'validation' }
 HyperJumpSquare >> toParsecs: aBoardLenght [
 
