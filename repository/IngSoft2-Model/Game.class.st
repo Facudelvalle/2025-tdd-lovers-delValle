@@ -14,7 +14,8 @@ Class {
 		'rewards',
 		'cards',
 		'lastEffect',
-		'lastPlayedCard'
+		'lastPlayedCard',
+		'activePermanentCards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -83,6 +84,12 @@ Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFue
 		  and: someDices
 		  and: aRewardManager
 			and: aCardsManager
+]
+
+{ #category : 'accessing' }
+Game >> addActiveCard: aCard [
+
+	activePermanentCards add: aCard
 ]
 
 { #category : 'action' }
@@ -175,8 +182,8 @@ Game >> hasFinished [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: aRewardManager and: aCardMaganer [ 
-	
+Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: aRewardManager and: aCardMaganer [
+
 	board := aBoard.
 	ships := someShips.
 	dices := someDices.
@@ -187,6 +194,7 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	lastEffect := PlainSquare new.
 	winner := NullShip new.
 	lastPlayedCard := NullCard new.
+	activePermanentCards := OrderedCollection new
 ]
 
 { #category : 'action' }
@@ -213,7 +221,7 @@ Game >> maximumRoll [
 	^ dices sum: [ :aDice | aDice rollMaximum ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 Game >> move: aShip backward: aMagnitude [
 
 	| shipInitialPosition shipNewPosition |
@@ -315,17 +323,25 @@ Game >> nextTurnPlay [
 ]
 
 { #category : 'action' }
-Game >> play: aCard by: aPlayingShip for: anAfectedShip [
-	
-	aPlayingShip validateCard: aCard.
+Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip [
 
-	aCard bePlayedBy: aPlayingShip for: anAfectedShip in: self
+	aPlayingShip validateCard: aPlayedCard.
+
+	aPlayedCard
+		bePlayedBy: aPlayingShip
+		affecting: anAffectedCard
+		and: anAfectedShip
+		in: self
 ]
 
 { #category : 'action' }
-Game >> playLastCardBy: aPlayingShip for: aTargetShip [
+Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip [
 
-	lastPlayedCard bePlayedBy: aPlayingShip for: aTargetShip in: self
+	lastPlayedCard
+		bePlayedBy: aPlayingShip
+		affecting: anAffectedCard
+		and: aTargetShip
+		in: self
 ]
 
 { #category : 'printing' }
@@ -344,6 +360,14 @@ Game >> printBoard [
 	^ results
 ]
 
+{ #category : 'removing' }
+Game >> remove: anAffectedCard playedBy: aShip [
+
+	self validateIsActive: anAffectedCard.
+	activePermanentCards remove: anAffectedCard.
+	anAffectedCard cancelEffectIn: self
+]
+
 { #category : 'action' }
 Game >> rollDices [
 
@@ -351,6 +375,13 @@ Game >> rollDices [
 	rolledNumber := dices sumNumbers: [ :aDice | aDice roll ].
 
 	^ rolledNumber
+]
+
+{ #category : 'validation' }
+Game >> validateIsActive: aCard [
+
+	(activePermanentCards includes: aCard) ifFalse: [
+		Error signal: 'The card is not active.' ]
 ]
 
 { #category : 'validation' }

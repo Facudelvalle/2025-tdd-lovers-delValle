@@ -3,17 +3,52 @@ This Class Represents an All Card
 "
 Class {
 	#name : 'AllyCard',
-	#superclass : 'Object',
+	#superclass : 'Card',
+	#instVars : [
+		'allyOne',
+		'allyTwo'
+	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'comparing' }
+AllyCard >> = aCard [
+
+	^ aCard compare: allyOne and: allyTwo
+]
+
 { #category : 'playing' }
-AllyCard >> bePlayedBy: aPlayingShip for: anAllyShip in: aGame [
+AllyCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
 	aPlayingShip remove: self.
 	aPlayingShip formAllianceWith: anAllyShip.
 	anAllyShip formAllianceWith: aPlayingShip.
+	allyOne := aPlayingShip.
+	allyTwo := anAllyShip.
 	aGame lastPlayedCard: self.
+	aGame addActiveCard: self
+]
+
+{ #category : 'cancelling' }
+AllyCard >> cancelEffectIn: aGame [
+
+	allyOne removeAlly.
+	allyTwo removeAlly.
+	allyOne := NullShip new.
+	allyTwo := NullShip new
+]
+
+{ #category : 'comparing' }
+AllyCard >> compare: firstAlly and: secondAlly [
+
+	^ (firstAlly equals: allyOne) and: (secondAlly equals: allyTwo)
+]
+
+{ #category : 'initialization' }
+AllyCard >> initialize [
+
+	allyOne := NullShip new.
+	allyTwo := NullShip new
 ]
