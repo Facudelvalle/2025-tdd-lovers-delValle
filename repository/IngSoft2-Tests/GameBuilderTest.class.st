@@ -20,7 +20,7 @@ GameBuilderTest >> testWhenTryingToCreateAGameWithoutABoardThenItFails [
 
 	| fiveSquares aWormHole aBlueShip aLoadedDice sideToRoll aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aBlackShip |
 	fiveSquares := 5.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	aWormHole := WormHole between: 1 and: 2.
 	aBlueShip := Ship called: 'BlueShip'.

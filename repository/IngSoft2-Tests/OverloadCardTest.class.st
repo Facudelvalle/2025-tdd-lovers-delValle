@@ -20,7 +20,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anOverloadCard anOverloadCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel |
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedPosition := Position at: 0 in: 1.
 	expectedFuel := 0.
@@ -88,7 +88,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anOverloadCard anOverloadCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel |
 	twentySquares := 20.
-	sideToRoll := 3.
+	sideToRoll := #(3) asOrderedCollection.
 
 	expectedPosition := Position at: 4 in: 1.
 	expectedFuel := 2.
@@ -156,7 +156,7 @@ OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardWhenItIsNotItsTurnThen
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anOverloadCard anOverloadCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.

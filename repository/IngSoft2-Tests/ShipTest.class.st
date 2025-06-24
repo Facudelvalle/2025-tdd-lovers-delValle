@@ -10,7 +10,7 @@ ShipTest >> testWhenAShipMakesOneMoveOfTwoSquaresThenItsPositionIsTwo [
 
 	| aBoard aBlueShip twentySquares aSetDice aWormHole sideToRoll aDistributionManager aDistribution expectedPosition someShips someDices aGame aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlackShip aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	expectedPosition := Position at: 2 in: 1.
 
@@ -70,7 +70,7 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 
 	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedPosition := Position at: 2 in: 1.
 
@@ -132,7 +132,7 @@ ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 
 	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aBlueShip aBlackShip aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedPosition := Position at: 1 in: 1.
 

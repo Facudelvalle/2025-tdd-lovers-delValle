@@ -10,7 +10,7 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenAllTheOtherShipsFuel
 
 	| tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame expectedFuel aDistributionManager anAtomicBombSquare aProbabilityOfOne anAtomicBombProbabilisticEvent zeroReward zeroRewardProbabilisticEvent aRewardManager aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 	twoLaps := 2.
 
 	expectedFuel := 4.
@@ -72,7 +72,7 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirst
 
 	| expectedPosition twentySquares sideToRoll aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager anAtomicBombProbabilisticEvent anAtomicBombSquare aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	expectedPosition := Position at: 0 in: 1.
 
@@ -132,7 +132,7 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirst
 
 	| expectedPosition tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager anAtomicBombSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 	twoLaps := 2.
 
 	expectedPosition := Position at: 0 in: 2.
@@ -196,7 +196,7 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItsFuelDoesNotChange
 
 	| tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame expectedFuel aDistributionManager anAtomicBombSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 	twoLaps := 2.
 
 	expectedFuel := 2.
@@ -258,7 +258,7 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenTheOtherShipsGoBackT
 
 	| expectedPosition tenSquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager anAtomicBombSquare aProbabilityOfOne anAtomicBombProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 	twoLaps := 2.
 
 	expectedPosition := Position at: 0 in: 1.

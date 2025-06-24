@@ -20,7 +20,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsABackHoleEfectT
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aBlackHoleSquare aBlackHoleSquareProbabilisticEvent expectedPosition expectedFuel |
 	twentySquares := 20.
-	sideToRoll := 10.
+	sideToRoll := #(10) asOrderedCollection.
 
 	expectedPosition := Position at: 2 in: 1.
 	expectedFuel := 2.
@@ -85,25 +85,25 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsABackHoleEfectT
 { #category : 'tests' }
 RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperGavityEfectThenItsApplyCorrecty [
 
-	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aHyperGavitySquare aBlackHoleSquareProbabilisticEvent expectedPosition expectedFuel |
+	| twentySquares aWormHole aGame sidesToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aHyperGavitySquare expectedPosition expectedFuel aHyperGavitySquareProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 5.
+	sidesToRoll := #(2 5 2) asOrderedCollection.
 
-	expectedPosition := Position at: 2 in: 1.
-	expectedFuel := 2.
+	expectedPosition := Position at: 7 in: 1.
+	expectedFuel := 3.
 
-	aWormHole := WormHole between: 18 and: 19.
+	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
+	aLoadedDice := LoadedDice toRoll: sidesToRoll.
 
 	aDistributionManager := ProbablisiticEventsManager new.
-	aHyperGavitySquare := SetHyperGravitySquare with: 4.
+	aHyperGavitySquare := HyperGravitySquare between: 4 and: 4.
 	aProbabilityOfOne := 1.
-	aBlackHoleSquareProbabilisticEvent := ProbabilisticEvent
+	aHyperGavitySquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aHyperGavitySquare
 		                                  with: aProbabilityOfOne.
-	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
+	aDistributionManager add: aHyperGavitySquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
@@ -141,8 +141,11 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperGavityEfe
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
 	aGame play: aRepeatCard by: aBlackShip for: aBlueShip.
 	aGame nextTurnPass.
+	aGame nextTurnPlay.
 
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
@@ -154,7 +157,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsANullEfectThenI
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel |
 	twentySquares := 20.
-	sideToRoll := 3.
+	sideToRoll := #(3) asOrderedCollection.
 
 	expectedPosition := Position at: 6 in: 1.
 	expectedFuel := 0.
@@ -222,7 +225,7 @@ RepeatCardTest >> testWhenAShipTriesToPlayARepeatCardWhenItIsNotItsTurnThenInval
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anRepeatCard anRepeatCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.

@@ -20,7 +20,7 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveEnoughFuelTh
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition |
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedPosition := Position at: 3 in: 1.
 
@@ -88,7 +88,7 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItCanUseTheOtherShipsFuelWhenItH
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition |
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedPosition := Position at: 3 in: 1.
 
@@ -156,7 +156,7 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItsAllyCanUseTheShipsFuelWhenItH
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel |
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedPosition := Position at: 3 in: 1.
 	expectedFuel := 1.
@@ -225,7 +225,7 @@ AllyCardTest >> testWhenAShipTriesToPlayAnOverloadCardWhenItIsNotItsTurnThenInva
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.

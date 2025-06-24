@@ -20,7 +20,7 @@ WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndO
 
 	| aBoard aBlueShip aBlackShip twentySquares aSetDice aWormHole sideToRoll aDistributionManager expectedPosition aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	expectedPosition := Position at: 10 in: 1.
 
@@ -80,7 +80,7 @@ WormHoleTest >> testWhenAShipLandsOnTheEndOfAWormHoleThenItEndsUpAtTheBeginningO
 
 	| aBoard twentySquares aSetDice aWormHole sideToRoll aDistributionManager aDistribution expectedPosition aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aBlueShip aBlackShip someShips someDices aGame aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 5.
+	sideToRoll := #(5) asOrderedCollection.
 
 	expectedPosition := Position at: 2 in: 1.
 

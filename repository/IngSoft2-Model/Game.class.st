@@ -329,7 +329,7 @@ Game >> printBoard [
 Game >> rollDices [
 
 	| rolledNumber |
-	rolledNumber := dices sum: [ :aDice | aDice roll ].
+	rolledNumber := dices sumNumbers: [ :aDice | aDice roll ].
 
 	^ rolledNumber
 ]

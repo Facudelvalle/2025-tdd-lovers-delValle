@@ -20,7 +20,7 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenAllRolledNumbers
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aPlainSquare aPlainSquareProbabilisticEvent anAccelerationCard anAccelerationCardProbabilisticEvent expectedPosition expectedFuel |
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -88,7 +88,7 @@ AccelerationCardTest >> testWhenAShipTriesToPlayAnAccelerationCardWhenItIsNotIts
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aPlainSquare aPlainSquareProbabilisticEvent anAccelerationCard anAccelerationCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.

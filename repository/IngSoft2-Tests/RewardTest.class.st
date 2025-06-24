@@ -10,7 +10,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices expectedFuelLeft aDistributionManager aPlainSquare aPlainSquareProbabilisticEvent aDistribution aRewardManager plusOneReward plusOneRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aProbabilityOfOne |
 	fiveSquares := 5.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedFuelLeft := 3.
 
@@ -74,7 +74,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsOneLessFuel [
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices expectedFuelLeft aDistributionManager aPlainSquare aPlainSquareProbabilisticEvent aDistribution aRewardManager plusOneReward plusOneRewardProbabilisticEvent aGameBuilder aProbabilityOfOne aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedFuelLeft := 0.
 

@@ -10,9 +10,9 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 
 	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aSetHyperGravitySquare aProbabilityOfOne aSetHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
-	sideToRoll := 1.
+	sideToRoll := #(2 1) asOrderedCollection.
 
-	expectedPosition := Position at: 1 in: 1.
+	expectedPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -20,7 +20,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionManager := ProbablisiticEventsManager new.
-	aSetHyperGravitySquare := SetHyperGravitySquare with: 2.
+	aSetHyperGravitySquare := HyperGravitySquare between: 2 and: 2.
 	aProbabilityOfOne := 1.
 	aSetHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
 		                                            for:
@@ -62,7 +62,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
-	aGame nextTurnPlay.
+	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
@@ -73,9 +73,9 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 
 	| aDistribution tenSquares sideToRoll expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aSetHyperGravitySquare aProbabilityOfOne aSetHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
-	sideToRoll := 1.
+	sideToRoll := #(1 1 2) asOrderedCollection.
 
-	expectedFuel := 1.
+	expectedFuel := 3.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -83,7 +83,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionManager := ProbablisiticEventsManager new.
-	aSetHyperGravitySquare := SetHyperGravitySquare with: 2.
+	aSetHyperGravitySquare := HyperGravitySquare between: 2 and: 2.
 	aProbabilityOfOne := 1.
 	aSetHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
 		                                            for:
@@ -124,6 +124,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
+	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip fuelEquals: expectedFuel)
@@ -134,7 +135,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 
 	| aDistribution tenSquares sideToRoll expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionManager aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedPosition := Position at: 2 in: 1.
 

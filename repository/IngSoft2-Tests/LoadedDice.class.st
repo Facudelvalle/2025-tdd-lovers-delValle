@@ -5,32 +5,37 @@ Class {
 	#name : 'LoadedDice',
 	#superclass : 'Object',
 	#instVars : [
-		'loadedSide'
+		'loadedSides'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'creation' }
-LoadedDice class >> toRoll: aSide [
+LoadedDice class >> toRoll: someSide [
 
-	^ self new initializeToRoll: aSide
+	^ self new initializeToRoll: someSide
 ]
 
 { #category : 'initialization' }
-LoadedDice >> initializeToRoll: aSide [
+LoadedDice >> initializeToRoll: someSide [
 
-	loadedSide := aSide.
+	loadedSides := someSide.
 ]
 
 { #category : 'functions' }
 LoadedDice >> roll [
 
-	^ loadedSide
+	| sideRolled |
+	sideRolled := loadedSides first.
+	loadedSides removeFirst.
+	loadedSides add: sideRolled.
+	^ sideRolled.
+	
 ]
 
 { #category : 'functions' }
 LoadedDice >> rollMaximum [
 
-	^ loadedSide
+	^ loadedSides max.
 ]

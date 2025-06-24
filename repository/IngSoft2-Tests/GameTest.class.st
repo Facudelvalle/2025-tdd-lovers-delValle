@@ -20,7 +20,7 @@ GameTest >> testWhenAPlayerTriesToRollTheDicesWhenTheGameHasFinishedThenItFails 
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 5.
+	sideToRoll := #(5) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -81,7 +81,7 @@ GameTest >> testWhenAShipCompletesTheRequiredAmountOfLapsThenItwinsTheGame [
 
 	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices fourLaps aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 10.
+	sideToRoll := #(10) asOrderedCollection.
 	fourLaps := 4.
 
 	expectedDetails := 'Winner: BlueShip' , String cr
@@ -147,7 +147,7 @@ GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenT
 
 	| expectedPosition twentySquares sideToRoll twoLaps aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionGame aBlackHoleSquare aProbabilityOfOne aBlackHoleSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 4.
+	sideToRoll := #(4) asOrderedCollection.
 	twoLaps := 2.
 
 	expectedPosition := Position at: 18 in: 1.
@@ -213,7 +213,7 @@ GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenT
 GameTest >> testWhenAShipLandsOnACardSquareThenACardIsAssignedToIt [
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent expectedCards aCardSquare aCardSquareProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -276,7 +276,7 @@ GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly 
 
 	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice twoLaps aBlackShip sideToRoll aGame expectedPosition aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 6.
+	sideToRoll := #(6) asOrderedCollection.
 	twoLaps := 2.
 
 	expectedPosition := Position at: 1 in: 2.
@@ -338,7 +338,7 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 
 	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	expectedDetails := 'Winner: There is not a winner yet' , String cr
 	                   , 'BlueShip: Lap: 1 Square: 1' , String cr
@@ -402,7 +402,7 @@ GameTest >> testWhenAShipPlaysACardThenItIsNoLongerInItsHand [
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent expectedCards anAccelerationCard anAccelerationCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 10.
+	sideToRoll := #(10) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -471,7 +471,7 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -531,7 +531,7 @@ GameTest >> testWhenAShipTriesToPlayACardThatIsNotInItsHandThenInvalid [
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAccelerationCard anAccelerationCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 10.
+	sideToRoll := #(10) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -594,7 +594,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 
 	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 3.
+	sideToRoll := #(3) asOrderedCollection.
 
 	expectedDetails := 'Winner: BlueShip' , String cr
 	                   , 'BlueShip: Lap: 2 Square: 0' , String cr
@@ -781,7 +781,7 @@ GameTest >> testWhenTheGameStartsThenAllTheShipsHaveTwoCards [
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent expectedCards |
 	fiveSquares := 5.
-	sideToRoll := 5.
+	sideToRoll := #(5) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -842,7 +842,7 @@ GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid 
 
 	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll aBlackShip aDistribution someParsecs aRatio aDistributionManager aHyperJumpSquare aProbabilityOfOne aHyperJumpSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 	aRatio := 2.
 
 	aWormHole := WormHole between: 17 and: 18.
@@ -903,7 +903,7 @@ GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
 
 	| fiveSquares aWormHole aBlueShip aLoadedDice sideToRoll aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	aWormHole := WormHole between: 1 and: 2.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -1014,7 +1014,7 @@ GameTest >> testWhenThereIsAHyperGravitySquareWithACorrectMagnitudeThenIsValid [
 
 	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll aBlackShip aDistribution aDistributionManager expectedPosition aGame aHyperGravitySquare aProbabilityOfOne aHyperGravitySquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	tenSquares := 10.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	expectedPosition := Position at: 4 in: 1.
 

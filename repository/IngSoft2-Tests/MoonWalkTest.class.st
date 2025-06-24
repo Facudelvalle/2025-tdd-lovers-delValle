@@ -21,7 +21,7 @@ MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInT
 	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	expectedPosition := Position at: 0 in: 1.
 	twentySquares := 20.
-	sideToRoll := 5.
+	sideToRoll := #(5) asOrderedCollection.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -82,7 +82,7 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 
 	| twentySquares sideToRoll aWormHole aBlueShip aBlackShip aLoadedDice aDistribution aBoard someShips someDices aDistributionManager aMoonWalkSquare aProbabilityOfOne aMoonWalkSquareProbabilisticEvent aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	aWormHole := WormHole between: 17 and: 18.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -141,7 +141,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	expectedPosition := Position at: 8 in: 1.
 	twentySquares := 20.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 8.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -205,7 +205,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	expectedPosition := Position at: 6 in: 1.
 	twentySquares := 20.
-	sideToRoll := 2.
+	sideToRoll := #(2) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 8.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -266,7 +266,7 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 	| expectedPosition aBlueShip twentySquares sideToRoll aWormHole aBlackShip aLoadedDice aDistribution aBoard someShips someDices aGame aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aProbabilityOfOne aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	expectedPosition := Position at: 1 in: 1.
 	twentySquares := 20.
-	sideToRoll := 1.
+	sideToRoll := #(1) asOrderedCollection.
 
 	aWormHole := WormHole between: 17 and: 18.
 	aBlueShip := Ship called: 'BlueShip'.
