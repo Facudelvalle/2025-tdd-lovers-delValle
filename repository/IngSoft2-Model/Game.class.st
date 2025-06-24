@@ -100,6 +100,12 @@ Game >> applyRewardTo: aShip for: aRolledNumber [
 ]
 
 { #category : 'action' }
+Game >> applyRollPenalty: aPenalty [
+
+	ships do: [ :aShip | aShip applyRollPenalty: aPenalty ]
+]
+
+{ #category : 'action' }
 Game >> calculateDistanceBetween: aPosition and: anotherPosition [
 
 	^ board calculateDistanceBetween: aPosition and: anotherPosition
@@ -264,7 +270,8 @@ Game >> nextTurnPlay [
 
 { #category : 'action' }
 Game >> play: aCard by: aPlayingShip for: anAfectedShip [
-	"CHEQUEAR SI TENGO LA CARTA"
+	
+	aPlayingShip validateCard: aCard.
 
 	aCard bePlayedBy: aPlayingShip for: anAfectedShip in: self
 ]

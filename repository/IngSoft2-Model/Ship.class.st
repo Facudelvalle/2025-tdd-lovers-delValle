@@ -37,7 +37,7 @@ Ship >> addFuel: aFuelQuantity [
 	fuel := fuel + aFuelQuantity
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'update' }
 Ship >> adjust: aRolledNumber [
 
 	^ aRolledNumber + rollPenalty
@@ -49,7 +49,7 @@ Ship >> applyGravityPenalty: aGravitySquare [
 	gravityPenalty := aGravitySquare 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'penalty' }
 Ship >> applyRollPenalty: aPenalty [
 
 	rollPenalty := rollPenalty + aPenalty
@@ -205,10 +205,7 @@ Ship >> reducePenalty [
 Ship >> remove: aCard [
 
 	| indexOfCard |
-	indexOfCard := cards
-		               indexOf: aCard
-		               ifAbsent: [ Error signal: 'Card is not in hand.' ].
-
+	indexOfCard := cards indexOf: aCard.
 	cards removeIndex: indexOfCard
 ]
 
@@ -216,4 +213,10 @@ Ship >> remove: aCard [
 Ship >> restoreFuel [
 
 	fuel := maximumFuel
+]
+
+{ #category : 'comparing' }
+Ship >> validateCard: aCard [ 
+	
+	(cards includes: aCard) ifFalse: [ Error signal: 'The ship does not have that card on its hand.' ] 
 ]

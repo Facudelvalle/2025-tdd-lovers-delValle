@@ -586,7 +586,7 @@ GameTest >> testWhenAShipTriesToPlayACardThatIsNotInItsHandThenInvalid [
 	self
 		should: [ aGame play: anAllyCard by: aBlueShip for: aBlackShip ]
 		raise: Error
-		withMessageText: 'Card is not in hand.'
+		withMessageText: 'The ship does not have that card on its hand.'
 ]
 
 { #category : 'tests' }
