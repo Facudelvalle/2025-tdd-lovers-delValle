@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : 'playing' }
-AccelerationCard >> bePlayedBy: aPlayingShip for: anAllyShip in: aGame [
+AccelerationCard >> bePlayedBy: aPlayingShip for: aTargetShip in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
 	aGame applyRollPenalty: 1.

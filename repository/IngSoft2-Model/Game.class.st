@@ -12,7 +12,8 @@ Class {
 		'winner',
 		'laps',
 		'rewards',
-		'cards'
+		'cards',
+		'lastEffect'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -83,10 +84,43 @@ Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFue
 			and: aCardsManager
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> applyEffectMovementFor: aShip from: shipPositionAfterWormHole to: shipPositionAfterSquareEffect [
+
+	| squaresTraveledWithSquareEffect |
+	squaresTraveledWithSquareEffect := board
+		                                   calculateDistanceBetween:
+		                                   shipPositionAfterWormHole
+		                                   and:
+		                                   shipPositionAfterSquareEffect.
+
+
+
+	aShip moveTo: shipPositionAfterSquareEffect.
+	aShip consumeFuel: squaresTraveledWithSquareEffect
+]
+
 { #category : 'action' }
 Game >> applyEffectOn: aShip with: aPosition [
 
 	^ board applyEfectOn: aShip with: aPosition in: self.
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyLastEffectTo: aShip [
+
+	| shipInitialPosition shipPositionAfterEffect |
+	shipInitialPosition := aShip currentPosition.
+
+	shipPositionAfterEffect := lastEffect
+		                           applyOn: aShip
+		                           and: shipInitialPosition
+		                           in: self.
+
+	self
+		applyEffectMovementFor: aShip
+		from: shipInitialPosition
+		to: shipPositionAfterEffect
 ]
 
 { #category : 'action' }
@@ -151,6 +185,7 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	finished := false.
 	rewards := aRewardManager.
 	cards := aCardMaganer.
+	lastEffect := PlainSquare new.
 	winner := NullShip new
 ]
 
@@ -158,6 +193,12 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 Game >> jump: squaresToJump from: aPosition [ 
 	
 	^ board jump: squaresToJump from: aPosition 
+]
+
+{ #category : 'accessing' }
+Game >> lastEffect: anEffect [
+
+	lastEffect := anEffect
 ]
 
 { #category : 'accessing' }
@@ -169,7 +210,7 @@ Game >> maximumRoll [
 { #category : 'action' }
 Game >> move: aShip with: rolledNumber [
 
-	| shipInitialPosition squaresTraveled shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice squaresTraveledWithSquareEffect adjustedRolledNumber |
+	| shipInitialPosition shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice adjustedRolledNumber |
 	aShip canPlay: rolledNumber.
 	
 	self applyRewardTo: aShip for: rolledNumber.
@@ -197,18 +238,8 @@ Game >> move: aShip with: rolledNumber [
 		                                 applyEffectOn: aShip
 		                                 with: shipPositionAfterWormHole.
 
-	squaresTraveledWithSquareEffect := board
-		                                   calculateDistanceBetween:
-		                                   shipPositionAfterWormHole
-		                                   and:
-		                                   shipPositionAfterSquareEffect.
-
-
-	squaresTraveled := squaresTraveledWithSquareEffect.
-
-	aShip moveTo: shipPositionAfterSquareEffect.
-	aShip consumeFuel: squaresTraveled.
-
+	self applyEffectMovementFor: aShip from: shipPositionAfterWormHole to: shipPositionAfterSquareEffect.
+	
 	shipPositionAfterSquareEffect hasCompleted: laps in: self
 ]
 
@@ -254,16 +285,18 @@ Game >> nextTurnPass [
 { #category : 'action' }
 Game >> nextTurnPlay [
 
-	| shipToMove rolledNumber shipInitialPosition |
+	| shipToMove rolledNumber shipInitialPosition lastEffectBeforeMovement |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
 	rolledNumber := self rollDices.
 	shipInitialPosition := shipToMove currentPosition.
+	lastEffectBeforeMovement := lastEffect.
 	[ self move: shipToMove with: rolledNumber ]
 		on: Error
 		do: [ :anError |
 			anError messageText = 'Ship does not have enough fuel to move.'
-				ifTrue: [ shipToMove penalizeAndReturnTo: shipInitialPosition ] ].
+				ifTrue: [ shipToMove penalizeAndReturnTo: shipInitialPosition.
+					lastEffect := lastEffectBeforeMovement ] ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]

@@ -58,6 +58,7 @@ Board >> applyEfectOn: aShip with: aPosition in: aGame [
 	
 	| effect |
 	effect := self effectIn: aPosition currentSquare + 1.
+	aGame lastEffect: effect.
 	^ effect applyOn: aShip and: aPosition in: aGame .
 ]
 
