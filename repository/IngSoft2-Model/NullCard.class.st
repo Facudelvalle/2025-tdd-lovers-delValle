@@ -4,13 +4,14 @@ This class represents a Null Card
 "
 Class {
 	#name : 'NullCard',
-	#superclass : 'Object',
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'playing' }
-NullCard >> bePlayedBy: aPlayingShip for: anAllyShip in: aGame [
+NullCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
-	Error signal: 'A Redo card can not be played when there are no played cards yet.'
+	Error signal:
+		'A Redo card can not be played when there are no played cards yet.'
 ]

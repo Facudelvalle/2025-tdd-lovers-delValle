@@ -18,9 +18,9 @@ OverloadCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: an
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerThanTwoThenTheShipMovesBackwards [
 
-	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anOverloadCard anOverloadCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel |
+	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anOverloadCard anOverloadCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel aNullCard |
 	twentySquares := 20.
-	sideToRoll := #(1) asOrderedCollection.
+	sideToRoll := #( 1 ) asOrderedCollection.
 
 	expectedPosition := Position at: 0 in: 1.
 	expectedFuel := 0.
@@ -54,8 +54,8 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 	aCardManager := ProbablisiticEventsManager new.
 	anOverloadCard := OverloadCard new.
 	anOverloadCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anOverloadCard
-		                                with: aProbabilityOfOne.
+		                                    for: anOverloadCard
+		                                    with: aProbabilityOfOne.
 	aCardManager add: anOverloadCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -73,11 +73,16 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
+	aNullCard := NullCard new.
+
 	aGame nextTurnPlay.
-	aGame play: anOverloadCard by: aBlackShip for: aBlueShip.
+	aGame
+		play: anOverloadCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip.
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
-
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
 	self assert: (aBlueShip fuelEquals: expectedFuel)
@@ -86,9 +91,9 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTargetShipIsReducedByTwo [
 
-	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anOverloadCard anOverloadCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel |
+	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anOverloadCard anOverloadCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel aNullCard |
 	twentySquares := 20.
-	sideToRoll := #(3) asOrderedCollection.
+	sideToRoll := #( 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 4 in: 1.
 	expectedFuel := 2.
@@ -122,8 +127,8 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 	aCardManager := ProbablisiticEventsManager new.
 	anOverloadCard := OverloadCard new.
 	anOverloadCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anOverloadCard
-		                                with: aProbabilityOfOne.
+		                                    for: anOverloadCard
+		                                    with: aProbabilityOfOne.
 	aCardManager add: anOverloadCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
@@ -141,8 +146,14 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
+	aNullCard := NullCard new.
+
 	aGame nextTurnPlay.
-	aGame play: anOverloadCard by: aBlackShip for: aBlueShip.
+	aGame
+		play: anOverloadCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip.
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
@@ -150,5 +161,3 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
 	self assert: (aBlueShip fuelEquals: expectedFuel)
 ]
-
-

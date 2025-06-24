@@ -14,6 +14,12 @@ NullShip >> consumeFuelByAlly: squaresTraveled [
 	Error signal: 'Ship does not have enough fuel to move.'
 ]
 
+{ #category : 'comparing' }
+NullShip >> equals: aShip [
+
+	^ true
+]
+
 { #category : 'update' }
 NullShip >> losesTwoTurns [
 

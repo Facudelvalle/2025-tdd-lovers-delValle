@@ -43,6 +43,12 @@ Ship >> adjust: aRolledNumber [
 	^ aRolledNumber + rollPenalty
 ]
 
+{ #category : 'accessing' }
+Ship >> amountOfCards [
+
+	^ cards size
+]
+
 { #category : 'penalty' }
 Ship >> applyGravityPenalty: aGravitySquare [
 
@@ -207,6 +213,12 @@ Ship >> remove: aCard [
 	| indexOfCard |
 	indexOfCard := cards indexOf: aCard.
 	cards removeIndex: indexOfCard
+]
+
+{ #category : 'removing' }
+Ship >> removeAlly [
+
+	ally := NullShip new
 ]
 
 { #category : 'accessing' }

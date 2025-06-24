@@ -400,9 +400,9 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 { #category : 'tests' }
 GameTest >> testWhenAShipPlaysACardThenItIsNoLongerInItsHand [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder anAllyCard anAllyCardProbabilisticEvent expectedCards anAccelerationCard anAccelerationCardProbabilisticEvent aSetCardManager |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder anAllyCard anAllyCardProbabilisticEvent expectedCards anAccelerationCard anAccelerationCardProbabilisticEvent aSetCardManager aNullCard |
 	fiveSquares := 5.
-	sideToRoll := #(10) asOrderedCollection.
+	sideToRoll := #( 10 ) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -461,7 +461,12 @@ GameTest >> testWhenAShipPlaysACardThenItIsNoLongerInItsHand [
 	expectedCards := OrderedCollection new.
 	expectedCards add: anAccelerationCard.
 
-	aGame play: anAllyCard by: aBlueShip for: aBlackShip.
+	aNullCard := NullCard new.
+	aGame
+		play: anAllyCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -529,9 +534,9 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 { #category : 'tests' }
 GameTest >> testWhenAShipTriesToPlayACardThatIsNotInItsHandThenInvalid [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAccelerationCard anAccelerationCardProbabilisticEvent |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAccelerationCard anAccelerationCardProbabilisticEvent aNullCard |
 	fiveSquares := 5.
-	sideToRoll := #(10) asOrderedCollection.
+	sideToRoll := #( 10 ) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -582,9 +587,15 @@ GameTest >> testWhenAShipTriesToPlayACardThatIsNotInItsHandThenInvalid [
 	aGame := aGameBuilder build.
 
 	anAllyCard := AllyCard new.
+	aNullCard := NullCard new.
 
 	self
-		should: [ aGame play: anAllyCard by: aBlueShip for: aBlackShip ]
+		should: [
+			aGame
+				play: anAllyCard
+				by: aBlueShip
+				affecting: aNullCard
+				and: aBlackShip ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
