@@ -13,3 +13,9 @@ PlainSquare >> applyOn: aShip and: aPosition in: aGame [
 
 	^ aPosition
 ]
+
+{ #category : 'as yet unclassified' }
+PlainSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ self applyOn: aShip and: aPosition in: aGame
+]

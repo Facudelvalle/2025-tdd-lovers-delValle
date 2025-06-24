@@ -8,7 +8,6 @@ Class {
 { #category : 'playing' }
 RepeatCard >> bePlayedBy: aPlayingShip for: aTargetShip in: aGame [
 
-	aGame validateNextPlayer: aPlayingShip.
 	[ aGame applyLastEffectTo: aTargetShip ]
 		on: Error
 		do: [ :anError |

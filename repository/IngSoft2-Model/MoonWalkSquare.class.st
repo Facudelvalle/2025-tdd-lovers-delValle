@@ -32,6 +32,12 @@ MoonWalkSquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitude [
 	magnitude := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
 ]
 
+{ #category : 'as yet unclassified' }
+MoonWalkSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ aGame move: aShip backward: magnitude.
+]
+
 { #category : 'validation' }
 MoonWalkSquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLength [
 

@@ -113,8 +113,8 @@ Game >> applyLastEffectTo: aShip [
 	shipInitialPosition := aShip currentPosition.
 
 	shipPositionAfterEffect := lastEffect
-		                           applyOn: aShip
-		                           and: shipInitialPosition
+		                           repeatEffectFor: aShip
+		                           on: shipInitialPosition
 		                           in: self.
 
 	self
@@ -207,6 +207,17 @@ Game >> maximumRoll [
 	^ dices sum: [ :aDice | aDice rollMaximum ]
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> move: aShip backward: aMagnitude [
+
+	| shipInitialPosition shipNewPosition |
+	shipInitialPosition := aShip currentPosition.
+	shipNewPosition := board
+		                   update: shipInitialPosition
+		                   with: aMagnitude negated.
+	^ shipNewPosition 
+]
+
 { #category : 'action' }
 Game >> move: aShip with: rolledNumber [
 
@@ -246,19 +257,15 @@ Game >> move: aShip with: rolledNumber [
 { #category : 'action' }
 Game >> moveShipsBackwards: aMagnitude [
 
-	| shipInitialPosition shipNewPosition squaresTraveled |
+	| shipInitialPosition shipNewPosition |
 	ships do: [ :aShip |
 		shipInitialPosition := aShip currentPosition.
 		shipNewPosition := board
 			                   update: shipInitialPosition
 			                   with: aMagnitude negated.
 
-		squaresTraveled := board
-			                   calculateDistanceBetween: shipInitialPosition
-			                   and: shipNewPosition.
 
-		aShip moveTo: shipNewPosition.
-		[ aShip consumeFuel: squaresTraveled ]
+		[ self applyEffectMovementFor: aShip from: shipInitialPosition to: shipNewPosition ]
 			on: Error
 			do: [
 				aShip moveTo: shipInitialPosition.
