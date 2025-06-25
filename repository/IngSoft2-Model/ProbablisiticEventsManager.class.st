@@ -28,6 +28,13 @@ ProbablisiticEventsManager >> generateFor: aLength [
 	^ generatedEvents asOrderedCollection
 ]
 
+{ #category : 'building' }
+ProbablisiticEventsManager >> generateOne [
+
+	^ (probabilityEvents atRandomWeighting:
+		  [ :aProbabilisticEvent | aProbabilisticEvent probability ]) event
+]
+
 { #category : 'initialization' }
 ProbablisiticEventsManager >> initialize [
 

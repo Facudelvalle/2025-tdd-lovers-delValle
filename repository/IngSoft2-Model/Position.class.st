@@ -18,6 +18,12 @@ Position class >> at: aSquare in: aLap [
 	^ self new initializeAt: aSquare in: aLap
 ]
 
+{ #category : 'comparing' }
+Position >> > aRaceGoal [
+
+	^ aRaceGoal currentLap < lap
+]
+
 { #category : 'adding' }
 Position >> add: aRolledNumber with: aBoardLength [
 
@@ -71,12 +77,6 @@ Position >> equals: aPosition [
 Position >> goBackFourSquaresIn: aBoardLength [
  
 	^ self add: -4 with: aBoardLength
-]
-
-{ #category : 'testing' }
-Position >> hasCompleted: someLaps in: aGame [
-
-	someLaps < lap ifTrue: [ aGame finish ]
 ]
 
 { #category : 'initialization' }

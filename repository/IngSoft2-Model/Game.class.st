@@ -15,7 +15,8 @@ Class {
 		'cards',
 		'lastEffect',
 		'lastPlayedCard',
-		'activePermanentCards'
+		'activePermanentCards',
+		'raceGoal'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -132,11 +133,8 @@ Game >> applyLastEffectTo: aShip [
 { #category : 'action' }
 Game >> applyRewardTo: aShip for: aRolledNumber [
 
-	| aReward |
-	aReward := rewards generateFor: 1.
-
 	aRolledNumber = self maximumRoll ifTrue: [
-		(aReward at: 1) applyTo: aShip ]
+		rewards generateOne applyTo: aShip ]
 ]
 
 { #category : 'action' }
@@ -194,6 +192,7 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	lastEffect := PlainSquare new.
 	winner := NullShip new.
 	lastPlayedCard := NullCard new.
+	raceGoal := Position at: 0 in: laps.
 	activePermanentCards := OrderedCollection new
 ]
 
@@ -237,12 +236,12 @@ Game >> move: aShip with: rolledNumber [
 
 	| shipInitialPosition shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice adjustedRolledNumber |
 	aShip canPlay: rolledNumber.
-	
+
 	self applyRewardTo: aShip for: rolledNumber.
-	
+
 	shipInitialPosition := aShip currentPosition.
-	
-	adjustedRolledNumber := (aShip adjust: rolledNumber).
+
+	adjustedRolledNumber := aShip adjust: rolledNumber.
 
 	shipPositionBeforeWormHole := board
 		                              update: shipInitialPosition
@@ -263,9 +262,12 @@ Game >> move: aShip with: rolledNumber [
 		                                 applyEffectOn: aShip
 		                                 with: shipPositionAfterWormHole.
 
-	self applyEffectMovementFor: aShip from: shipPositionAfterWormHole to: shipPositionAfterSquareEffect.
-	
-	shipPositionAfterSquareEffect hasCompleted: laps in: self
+	self
+		applyEffectMovementFor: aShip
+		from: shipPositionAfterWormHole
+		to: shipPositionAfterSquareEffect.
+
+	shipPositionAfterSquareEffect > raceGoal ifTrue: [ self finish ]
 ]
 
 { #category : 'action' }
@@ -274,12 +276,12 @@ Game >> moveShipsBackwards: aMagnitude [
 	| shipInitialPosition shipNewPosition |
 	ships do: [ :aShip |
 		shipInitialPosition := aShip currentPosition.
-		shipNewPosition := board
-			                   update: shipInitialPosition
-			                   with: aMagnitude negated.
-
-
-		[ self applyEffectMovementFor: aShip from: shipInitialPosition to: shipNewPosition ]
+		shipNewPosition := self move: aShip backward: aMagnitude.
+		[
+		self
+			applyEffectMovementFor: aShip
+			from: shipInitialPosition
+			to: shipNewPosition ]
 			on: Error
 			do: [
 				aShip moveTo: shipInitialPosition.

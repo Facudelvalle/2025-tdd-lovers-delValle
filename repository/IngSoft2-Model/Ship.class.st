@@ -188,6 +188,7 @@ Ship >> moveTo: aPosition [
 
 { #category : 'accessing' }
 Ship >> name [
+
 	^ name
 ]
 
