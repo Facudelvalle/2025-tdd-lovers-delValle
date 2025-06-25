@@ -1,24 +1,24 @@
 Class {
-	#name : 'DistributionBuilderTest',
+	#name : 'ProbabilisticEventManagerTest',
 	#superclass : 'TestCase',
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'tests' }
-DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsProbability [
+ProbabilisticEventManagerTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsProbability [
 
-	| expectedDistribution averageDistribution aDistributionBuilder aPlainSquare aPlainSquareProbabilisticEvent aDistribution aPlainSquareProbability oneHundredSquares aBlackHoleSquare aBlackHoleSquareProbability aBlackHoleSquareProbabilisticEvent aHyperGravitySquare aHyperGravitySquareProbability aHyperGravitySquareProbabilisticEvent aMoonWalkSquare aMoonWalkSquareProbability aMoonWalkSquareProbabilisticEvent aHyperJumpSquare aHyperJumpSquareProbability aHyperJumpSquareProbabilisticEvent anAtomicBombSquare anAtomicBombSquareProbability anAtomicBombSquareProbabilisticEvent plainSquares blackHoleSquares hyperGravitySquares moonWalkSquares hyperJumpSquares atomicBombSquares iterations |
+	| expectedDistribution averageDistribution aDistributionManager aPlainSquare aPlainSquareProbabilisticEvent aDistribution aPlainSquareProbability oneHundredSquares aBlackHoleSquare aBlackHoleSquareProbability aBlackHoleSquareProbabilisticEvent aHyperGravitySquare aHyperGravitySquareProbability aHyperGravitySquareProbabilisticEvent aMoonWalkSquare aMoonWalkSquareProbability aMoonWalkSquareProbabilisticEvent aHyperJumpSquare aHyperJumpSquareProbability aHyperJumpSquareProbabilisticEvent anAtomicBombSquare anAtomicBombSquareProbability anAtomicBombSquareProbabilisticEvent plainSquares blackHoleSquares hyperGravitySquares moonWalkSquares hyperJumpSquares atomicBombSquares iterations |
 	
 	oneHundredSquares := 100.
-	aDistributionBuilder := DistributionBuilder new.
+	aDistributionManager := ProbablisiticEventsManager new.
 
 	aPlainSquare := PlainSquare new.
 	aPlainSquareProbability := 0.4.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aPlainSquareProbability.
-	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
 
 	aBlackHoleSquare := BlackHoleSquare new.
 	aBlackHoleSquareProbability := 0.2.
@@ -26,7 +26,7 @@ DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsPro
 		                                      for: aBlackHoleSquare
 		                                      with:
 		                                      aBlackHoleSquareProbability.
-	aDistributionBuilder add: aBlackHoleSquareProbabilisticEvent.
+	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
 
 	aHyperGravitySquare := HyperGravitySquare between: 1 and: 2.
 	aHyperGravitySquareProbability := 0.2.
@@ -34,7 +34,7 @@ DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsPro
 		                                         for: aHyperGravitySquare
 		                                         with:
 		                                         aHyperGravitySquareProbability.
-	aDistributionBuilder add: aHyperGravitySquareProbabilisticEvent.
+	aDistributionManager add: aHyperGravitySquareProbabilisticEvent.
 
 	aMoonWalkSquare := MoonWalkSquare between: 1 and: 2.
 	aMoonWalkSquareProbability := 0.1.
@@ -42,7 +42,7 @@ DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsPro
 		                                     for: aMoonWalkSquare
 		                                     with:
 		                                     aMoonWalkSquareProbability.
-	aDistributionBuilder add: aMoonWalkSquareProbabilisticEvent.
+	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
 
 	aHyperJumpSquare := HyperJumpSquare
 		                    with: #( 1 2 3 ) asOrderedCollection
@@ -52,7 +52,7 @@ DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsPro
 		                                      for: aHyperJumpSquare
 		                                      with:
 		                                      aHyperJumpSquareProbability.
-	aDistributionBuilder add: aHyperJumpSquareProbabilisticEvent.
+	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
 
 	anAtomicBombSquare := AtomicBombSquare new.
 	anAtomicBombSquareProbability := 0.02.
@@ -60,9 +60,9 @@ DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsPro
 		                                        for: anAtomicBombSquare
 		                                        with:
 		                                        anAtomicBombSquareProbability.
-	aDistributionBuilder add: anAtomicBombSquareProbabilisticEvent.
+	aDistributionManager add: anAtomicBombSquareProbabilisticEvent.
 
-	aDistribution := aDistributionBuilder buildFor: oneHundredSquares.
+	aDistribution := aDistributionManager generateFor: oneHundredSquares.
 
 	plainSquares := 0.
 	blackHoleSquares := 0.
@@ -73,7 +73,7 @@ DistributionBuilderTest >> testWhenADistributionIsBuiltThenItMatchesTheEventsPro
 	iterations := 100.
 
 	1 to: iterations do: [ :anIteration |
-		aDistribution := aDistributionBuilder buildFor: oneHundredSquares.
+		aDistribution := aDistributionManager generateFor: oneHundredSquares.
 
 		plainSquares := plainSquares + (aDistribution occurrencesOf: aPlainSquare).
 		blackHoleSquares := blackHoleSquares + (aDistribution occurrencesOf: aBlackHoleSquare).

@@ -18,18 +18,19 @@ BoardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMe
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInvalid [
 
-	| twentySquares aWormHole aDistributionBuilder aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
+	| twentySquares aWormHole aDistributionManager aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
 	twentySquares := 20.
 	aWormHole := WormHole between: 15 and: 30.
 
-	aDistributionBuilder := DistributionBuilder new.
+	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbability := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbability.
-	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionBuilder buildFor: twentySquares.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+	
 	self
 		should: [
 			Board
@@ -44,18 +45,19 @@ BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInval
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThenInvalid [
 
-	| twentySquares aWormHole aDistributionBuilder aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
+	| twentySquares aWormHole aDistributionManager aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
 	twentySquares := 20.
 	aWormHole := WormHole between: 25 and: 30.
 
-	aDistributionBuilder := DistributionBuilder new.
+	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbability := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbability.
-	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionBuilder buildFor: twentySquares.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+	
 	self
 		should: [
 			Board
@@ -70,7 +72,7 @@ BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThen
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereThereIsAWormHoleIsAWormHoleEndpoint [
 
-	| aWormHole fiveSquares aBoard expectedDistribution aDistributionBuilder aDistribution aBlackHoleSquare aProbability aBlackHoleSquareProbabilisticEvent |
+	| aWormHole fiveSquares aBoard expectedDistribution aDistributionManager aDistribution aBlackHoleSquare aProbability aBlackHoleSquareProbabilisticEvent |
 	fiveSquares := 5.
 	aWormHole := WormHole between: 1 and: 2.
 	expectedDistribution := 'a BlackHoleSquare' , String cr
@@ -79,14 +81,14 @@ BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereT
 	                        , 'a BlackHoleSquare' , String cr
 	                        , 'a BlackHoleSquare'.
 
-	aDistributionBuilder := DistributionBuilder new.
+	aDistributionManager := ProbablisiticEventsManager new.
 	aBlackHoleSquare := BlackHoleSquare new.
 	aProbability := 1.
 	aBlackHoleSquareProbabilisticEvent := ProbabilisticEvent
 		                                      for: aBlackHoleSquare
 		                                      with: aProbability.
-	aDistributionBuilder add: aBlackHoleSquareProbabilisticEvent.
-	aDistribution := aDistributionBuilder buildFor: fiveSquares.
+	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
 
 	aBoard := Board
 		          with: fiveSquares
@@ -98,18 +100,18 @@ BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereT
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedWithLessThanTwoSquaresThenInvalid [
 
-	| aLength aWormHole aDistributionBuilder aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
+	| aLength aWormHole aDistributionManager aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
 	aLength := -1.
 	aWormHole := WormHole between: 1 and: 2.
 
-	aDistributionBuilder := DistributionBuilder new.
+	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbability := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbability.
-	aDistributionBuilder add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionBuilder buildFor: aLength.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: aLength.
 
 	self
 		should: [

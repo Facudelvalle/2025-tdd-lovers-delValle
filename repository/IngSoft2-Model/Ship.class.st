@@ -9,7 +9,11 @@ Class {
 		'name',
 		'fuel',
 		'turnsLeftToWait',
-		'gravityPenalty'
+		'gravityPenalty',
+		'maximumFuel',
+		'cards',
+		'allies',
+		'rollPenalty'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -21,16 +25,46 @@ Ship class >> called: aName [
 	^ self new initializeCalled: aName
 ]
 
+{ #category : 'adding' }
+Ship >> addCards: someCards [
+	
+	someCards do: [ :aCard | cards add: aCard ]
+]
+
 { #category : 'accessing' }
 Ship >> addFuel: aFuelQuantity [
 
 	fuel := fuel + aFuelQuantity
 ]
 
+{ #category : 'update' }
+Ship >> adjust: aRolledNumber [
+
+	^ aRolledNumber + rollPenalty
+]
+
+{ #category : 'accessing' }
+Ship >> amountOfCards [
+
+	^ cards size
+]
+
 { #category : 'penalty' }
 Ship >> applyGravityPenalty: aGravitySquare [
 
 	gravityPenalty := aGravitySquare 
+]
+
+{ #category : 'penalty' }
+Ship >> applyRollPenalty: aPenalty [
+
+	rollPenalty := rollPenalty + aPenalty
+]
+
+{ #category : 'testing' }
+Ship >> canLendFuelFor: fuelNeededToTravel [
+
+	^ fuel >= fuelNeededToTravel
 ]
 
 { #category : 'testing' }
@@ -44,11 +78,33 @@ Ship >> canPlay: rolledNumber [
 			'The number rolled is not enought to pass the gravity penalty' ]
 ]
 
+{ #category : 'accessing' }
+Ship >> cards [
+		
+	^ cards
+]
+
 { #category : 'update' }
-Ship >> consumeFuel: squaresTraveled [
-	
-	self hasEnoughFuelToTravel: squaresTraveled.
-	fuel := fuel - squaresTraveled
+Ship >> consumeFuel: squaresToTravel [
+
+	| fuelNeededToTravel lendingAlly |
+	fuel := fuel - squaresToTravel.
+	[ self hasEnoughFuelToTravel: squaresToTravel ]
+		on: Error
+		do: [
+			fuelNeededToTravel := fuel abs.
+			lendingAlly := allies
+				               detect: [ :anAlly |
+				               anAlly canLendFuelFor: fuelNeededToTravel ]
+				               ifNone: [ lendingAlly := NullShip new ].
+			lendingAlly consumeFuelByAlly: fuelNeededToTravel.
+			fuel := 0 ]
+]
+
+{ #category : 'update' }
+Ship >> consumeFuelByAlly: fuelToConsume [
+
+	fuel := fuel - fuelToConsume
 ]
 
 { #category : 'accessing' }
@@ -57,7 +113,7 @@ Ship >> currentPosition [
 	^ position
 ]
 
-{ #category : 'compare' }
+{ #category : 'comparing' }
 Ship >> currentPositionEquals: aPosition [ 
 	
 	^ position equals: aPosition 
@@ -69,23 +125,52 @@ Ship >> details [
 	^ name , ': ' , position asString
 ]
 
+{ #category : 'comparing' }
+Ship >> equals: aShip [
+
+	^ name == aShip name
+]
+
+{ #category : 'update' }
+Ship >> formAllianceWith: aShip [
+
+	| aNullShip |
+	allies add: aShip.
+	aNullShip := NullShip new.
+	allies remove: aNullShip ifAbsent: [ Error signal: 'pepe' ]
+]
+
 { #category : 'accessing' }
 Ship >> fuel: aFuelQuantity [
 
-	fuel := aFuelQuantity
+	fuel := aFuelQuantity.
+	
+	maximumFuel := aFuelQuantity.
 ]
 
-{ #category : 'compare' }
+{ #category : 'comparing' }
 Ship >> fuelEquals: aFuelQuantity [ 
 	
 	^ fuel = aFuelQuantity 
 ]
 
 { #category : 'testing' }
+Ship >> hasAFuelPenalty [
+
+	^ turnsLeftToWait > 0
+]
+
+{ #category : 'testing' }
 Ship >> hasEnoughFuelToTravel: squaresToTravel [
 
-	fuel < squaresToTravel ifTrue: [
+	fuel < 0 ifTrue: [
 		Error signal: 'Ship does not have enough fuel to move.' ]
+]
+
+{ #category : 'accessing' }
+Ship >> increaseMaxFuel: aMagnitude [
+
+	maximumFuel := maximumFuel + aMagnitude
 ]
 
 { #category : 'initialization' }
@@ -96,6 +181,10 @@ Ship >> initializeCalled: aName [
 	fuel := 0.
 	turnsLeftToWait := 0.
 	gravityPenalty := 0.
+	cards := OrderedCollection new.
+	rollPenalty := 0.
+	allies := OrderedCollection new.
+	allies add: NullShip new
 ]
 
 { #category : 'penalty' }
@@ -112,11 +201,49 @@ Ship >> moveTo: aPosition [
 
 { #category : 'accessing' }
 Ship >> name [
+
 	^ name
+]
+
+{ #category : 'penalty' }
+Ship >> penalizeAndReturnTo: shipInitialPosition [
+
+	self moveTo: shipInitialPosition.
+	self losesTwoTurns.
+	self restoreFuel.
+	allies first losesTwoTurns.
+	allies first restoreFuel
 ]
 
 { #category : 'penalty' }
 Ship >> reducePenalty [
 
 	turnsLeftToWait := turnsLeftToWait - 1
+]
+
+{ #category : 'removing' }
+Ship >> remove: aCard [
+
+	| indexOfCard |
+	indexOfCard := cards indexOf: aCard.
+	cards removeIndex: indexOfCard
+]
+
+{ #category : 'removing' }
+Ship >> removeAlly: anAlly [
+
+	allies remove: anAlly.
+	allies isEmpty ifTrue: [ allies add: NullShip new ]
+]
+
+{ #category : 'accessing' }
+Ship >> restoreFuel [
+
+	fuel := maximumFuel
+]
+
+{ #category : 'comparing' }
+Ship >> validateCard: aCard [ 
+	
+	(cards includes: aCard) ifFalse: [ Error signal: 'The ship does not have that card on its hand.' ] 
 ]

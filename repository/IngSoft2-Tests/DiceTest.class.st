@@ -19,9 +19,9 @@ DiceTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMes
 DiceTest >> testWhenADiceIsSetToRollASideThenItRollsThatSide [
 
 	| aSetDice sideToRoll |
-	sideToRoll := 3.
+	sideToRoll := #(3) asOrderedCollection.
 	aSetDice := LoadedDice toRoll: sideToRoll.
-	self assert: aSetDice roll equals: sideToRoll
+	self assert: aSetDice roll equals: sideToRoll first
 ]
 
 { #category : 'tests' }

@@ -10,11 +10,25 @@ Class {
 		'dices',
 		'finished',
 		'winner',
-		'laps'
+		'laps',
+		'rewards',
+		'cards',
+		'lastEffect',
+		'lastPlayedCard',
+		'activePermanentCards',
+		'raceGoal'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'creation' }
+Game class >> assignCardsTo: someShips from: aCardsManager [
+
+	| someCards |
+	someCards := aCardsManager generateFor: 2.
+	someShips do: [ :aShip | aShip addCards: someCards ]
+]
 
 { #category : 'creation' }
 Game class >> fuel: someShips with: aFuelQuantity [
@@ -56,24 +70,77 @@ Game class >> validateSquaresFrom: aBoard with: someDices [
 ]
 
 { #category : 'creation' }
-Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFuelQuantity [
+Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFuelQuantity and: aRewardManager and: aCardsManager [
 
 	self hasDices: someDices.
 	self hasShips: someShips.
 	self hasLaps: someLaps.
 	self fuel: someShips with: aFuelQuantity.
+	self assignCardsTo: someShips from: aCardsManager.
 	self validateSquaresFrom: aBoard with: someDices.
 	^ self new
 		  initializeWith: aBoard
 		  for: someLaps
 		  and: someShips
 		  and: someDices
+		  and: aRewardManager
+			and: aCardsManager
+]
+
+{ #category : 'accessing' }
+Game >> addActiveCard: aCard [
+
+	activePermanentCards add: aCard
+]
+
+{ #category : 'action' }
+Game >> applyEffectMovementFor: aShip from: shipPositionAfterWormHole to: shipPositionAfterSquareEffect [
+
+	| squaresTraveledWithSquareEffect |
+	squaresTraveledWithSquareEffect := board
+		                                   calculateDistanceBetween:
+		                                   shipPositionAfterWormHole
+		                                   and:
+		                                   shipPositionAfterSquareEffect.
+
+	aShip moveTo: shipPositionAfterSquareEffect.
+	aShip consumeFuel: squaresTraveledWithSquareEffect
 ]
 
 { #category : 'action' }
 Game >> applyEffectOn: aShip with: aPosition [
 
 	^ board applyEfectOn: aShip with: aPosition in: self.
+]
+
+{ #category : 'action' }
+Game >> applyLastEffectTo: aShip [
+
+	| shipInitialPosition shipPositionAfterEffect |
+	shipInitialPosition := aShip currentPosition.
+
+	shipPositionAfterEffect := lastEffect
+		                           repeatEffectFor: aShip
+		                           on: shipInitialPosition
+		                           in: self.
+
+	self
+		applyEffectMovementFor: aShip
+		from: shipInitialPosition
+		to: shipPositionAfterEffect
+]
+
+{ #category : 'action' }
+Game >> applyRewardTo: aShip for: aRolledNumber [
+
+	aRolledNumber = self maximumRoll ifTrue: [
+		rewards generateOne applyTo: aShip ]
+]
+
+{ #category : 'action' }
+Game >> applyRollPenalty: aPenalty [
+
+	ships do: [ :aShip | aShip applyRollPenalty: aPenalty ]
 ]
 
 { #category : 'action' }
@@ -95,6 +162,12 @@ Game >> finish [
 ]
 
 { #category : 'action' }
+Game >> generateCard [
+
+	^ cards generateFor: 1.
+]
+
+{ #category : 'action' }
 Game >> goBackFourSquares: aShip from: aPosition [ 
 	
 	^ board goBackFourSquares: aShip from: aPosition 
@@ -107,14 +180,20 @@ Game >> hasFinished [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices [
+Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: aRewardManager and: aCardMaganer [
 
 	board := aBoard.
 	ships := someShips.
 	dices := someDices.
 	laps := someLaps.
 	finished := false.
+	rewards := aRewardManager.
+	cards := aCardMaganer.
+	lastEffect := PlainSquare new.
 	winner := NullShip new.
+	lastPlayedCard := NullCard new.
+	raceGoal := Position at: 0 in: someLaps.
+	activePermanentCards := OrderedCollection new
 ]
 
 { #category : 'action' }
@@ -123,17 +202,50 @@ Game >> jump: squaresToJump from: aPosition [
 	^ board jump: squaresToJump from: aPosition 
 ]
 
+{ #category : 'accessing' }
+Game >> lastEffect: anEffect [
+
+	lastEffect := anEffect
+]
+
+{ #category : 'accessing' }
+Game >> lastPlayedCard: aCard [
+
+	lastPlayedCard := aCard
+]
+
+{ #category : 'accessing' }
+Game >> maximumRoll [
+
+	^ dices sum: [ :aDice | aDice rollMaximum ]
+]
+
+{ #category : 'action' }
+Game >> move: aShip backward: aMagnitude [
+
+	| shipInitialPosition shipNewPosition |
+	shipInitialPosition := aShip currentPosition.
+	shipNewPosition := board
+		                   update: shipInitialPosition
+		                   with: aMagnitude negated.
+	^ shipNewPosition 
+]
+
 { #category : 'action' }
 Game >> move: aShip with: rolledNumber [
 
-	| shipInitialPosition squaresTraveled shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice squaresTraveledWithSquareEffect |
+	| shipInitialPosition shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice adjustedRolledNumber |
 	aShip canPlay: rolledNumber.
+
+	self applyRewardTo: aShip for: rolledNumber.
 
 	shipInitialPosition := aShip currentPosition.
 
+	adjustedRolledNumber := aShip adjust: rolledNumber.
+
 	shipPositionBeforeWormHole := board
 		                              update: shipInitialPosition
-		                              with: rolledNumber.
+		                              with: adjustedRolledNumber.
 
 	squaresTraveledWithDice := board
 		                           calculateDistanceBetween:
@@ -150,42 +262,31 @@ Game >> move: aShip with: rolledNumber [
 		                                 applyEffectOn: aShip
 		                                 with: shipPositionAfterWormHole.
 
-	squaresTraveledWithSquareEffect := board
-		                                   calculateDistanceBetween:
-		                                   shipPositionAfterWormHole
-		                                   and:
-		                                   shipPositionAfterSquareEffect.
+	self
+		applyEffectMovementFor: aShip
+		from: shipPositionAfterWormHole
+		to: shipPositionAfterSquareEffect.
 
-
-	squaresTraveled := squaresTraveledWithSquareEffect.
-
-	aShip moveTo: shipPositionAfterSquareEffect.
-	aShip consumeFuel: squaresTraveled.
-
-	shipPositionAfterSquareEffect hasCompleted: laps in: self
+	shipPositionAfterSquareEffect > raceGoal ifTrue: [ self finish ]
 ]
 
 { #category : 'action' }
 Game >> moveShipsBackwards: aMagnitude [
 
-	| shipInitialPosition shipNewPosition squaresTraveled |
+	| shipInitialPosition shipNewPosition |
 	ships do: [ :aShip |
 		shipInitialPosition := aShip currentPosition.
-		shipNewPosition := board
-			                   update: shipInitialPosition
-			                   with: aMagnitude negated.
-
-		squaresTraveled := board
-			                   calculateDistanceBetween: shipInitialPosition
-			                   and: shipNewPosition.
-
-		aShip moveTo: shipNewPosition.
-		[ aShip consumeFuel: squaresTraveled ]
+		shipNewPosition := self move: aShip backward: aMagnitude.
+		[
+		self
+			applyEffectMovementFor: aShip
+			from: shipInitialPosition
+			to: shipNewPosition ]
 			on: Error
 			do: [
 				aShip moveTo: shipInitialPosition.
 				aShip losesTwoTurns.
-				aShip fuel: (self class maximumRoll: dices) * 2 ] ]
+				aShip restoreFuel ] ]
 ]
 
 { #category : 'action' }
@@ -200,26 +301,50 @@ Game >> nextTurnPass [
 	| shipToMove |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
-	shipToMove fuel: (self class maximumRoll: dices) * 2.
+	shipToMove restoreFuel.
 	ships add: shipToMove.
 ]
 
 { #category : 'action' }
 Game >> nextTurnPlay [
 
-	| shipToMove rolledNumber shipInitialPosition |
+	| shipToMove rolledNumber shipInitialPosition lastEffectBeforeMovement |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
 	rolledNumber := self rollDices.
 	shipInitialPosition := shipToMove currentPosition.
+	lastEffectBeforeMovement := lastEffect.
 	[ self move: shipToMove with: rolledNumber ]
 		on: Error
-		do: [
-			shipToMove moveTo: shipInitialPosition.
-			shipToMove losesTwoTurns.
-			shipToMove fuel: (self class maximumRoll: dices) * 2 ].
+		do: [ :anError |
+			anError messageText = 'Ship does not have enough fuel to move.'
+				ifTrue: [
+					shipToMove penalizeAndReturnTo: shipInitialPosition.
+					lastEffect := lastEffectBeforeMovement ] ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
+]
+
+{ #category : 'action' }
+Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip [
+
+	aPlayingShip validateCard: aPlayedCard.
+
+	aPlayedCard
+		bePlayedBy: aPlayingShip
+		affecting: anAffectedCard
+		and: anAfectedShip
+		in: self
+]
+
+{ #category : 'action' }
+Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip [
+
+	lastPlayedCard
+		bePlayedBy: aPlayingShip
+		affecting: anAffectedCard
+		and: aTargetShip
+		in: self
 ]
 
 { #category : 'printing' }
@@ -238,11 +363,34 @@ Game >> printBoard [
 	^ results
 ]
 
+{ #category : 'removing' }
+Game >> remove: anAffectedCard playedBy: aShip [
+
+	self validateIsActive: anAffectedCard.
+	activePermanentCards remove: anAffectedCard.
+	anAffectedCard cancelEffectIn: self
+]
+
 { #category : 'action' }
 Game >> rollDices [
 
 	| rolledNumber |
-	rolledNumber := dices sum: [ :aDice | aDice roll ].
+	rolledNumber := dices sumNumbers: [ :aDice | aDice roll ].
 
 	^ rolledNumber
+]
+
+{ #category : 'validation' }
+Game >> validateIsActive: aCard [
+
+	(activePermanentCards includes: aCard) ifFalse: [
+		Error signal: 'The card is not active.' ]
+]
+
+{ #category : 'validation' }
+Game >> validateNextPlayer: aShip [
+
+	((ships at: 1) equals: aShip) ifFalse: [
+		Error signal:
+			'A permanent card cannot be played when it is not your turn.' ]
 ]

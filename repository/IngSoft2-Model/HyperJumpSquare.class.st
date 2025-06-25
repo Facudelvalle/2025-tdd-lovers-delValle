@@ -5,7 +5,7 @@ Class {
 	#name : 'HyperJumpSquare',
 	#superclass : 'Square',
 	#instVars : [
-		'parsecs',
+		'units',
 		'ratio'
 	],
 	#category : 'IngSoft2-Model',
@@ -21,29 +21,35 @@ HyperJumpSquare class >> with: anArrayLength and: aRatio [
 { #category : 'effect' }
 HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
 
-	| actualParsec positionAfterJump squaresToMove |
-	actualParsec := parsecs removeFirst.
+	| aUnitDistance positionAfterJump squaresToMove |
+	aUnitDistance := units removeFirst.
 	
-	squaresToMove := self normalize: actualParsec.
+	squaresToMove := self normalize: aUnitDistance.
 
 	positionAfterJump := aGame jump: squaresToMove from: aPosition .
 
-	parsecs add: actualParsec.
+	units add: aUnitDistance.
 
 	^ positionAfterJump
 ]
 
 { #category : 'initialization' }
-HyperJumpSquare >> initializeWith: someParsecs and: aRatio [
+HyperJumpSquare >> initializeWith: someUnits and: aRatio [
 
-	parsecs := someParsecs sort: [ :aParsec :nextParsec | aParsec > nextParsec ].
+	units := someUnits sort: [ :aUnit :nextUnit | aUnit > nextUnit ].
 	ratio := aRatio
 ]
 
 { #category : 'private' }
-HyperJumpSquare >> normalize: aParsec [
+HyperJumpSquare >> normalize: aUnitDistance [
 
-	^ aParsec * ratio
+	^ aUnitDistance toParsec * ratio
+]
+
+{ #category : 'effect' }
+HyperJumpSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ self applyOn: aShip and: aPosition in: aGame
 ]
 
 { #category : 'validation' }
@@ -56,7 +62,7 @@ HyperJumpSquare >> toParsecs: aBoardLenght [
 HyperJumpSquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLenght [
 
 	| parsecsSum boardInParsecs |
-	parsecsSum := parsecs sum: [ :aParsec | aParsec ].
+	parsecsSum := units sumNumbers: [ :aUnitDistance | aUnitDistance toParsec ].
 	
 	boardInParsecs := self toParsecs: aBoardLenght.
 

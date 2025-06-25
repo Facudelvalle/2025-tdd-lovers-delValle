@@ -58,6 +58,7 @@ Board >> applyEfectOn: aShip with: aPosition in: aGame [
 	
 	| effect |
 	effect := self effectIn: aPosition currentSquare + 1.
+	aGame lastEffect: effect.
 	^ effect applyOn: aShip and: aPosition in: aGame .
 ]
 
@@ -92,6 +93,12 @@ Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [
 	length := aLength.
 	wormHole := aWormHole.
 	distribution := aDistribution
+]
+
+{ #category : 'testing' }
+Board >> isEmpty [
+
+	^ false
 ]
 
 { #category : 'action' }
