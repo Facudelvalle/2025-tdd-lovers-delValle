@@ -235,7 +235,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperGavityEfe
 { #category : 'tests' }
 RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperJumpEfectThenItsApplyCorrecty [
 
-	| twentySquares aWormHole aGame sidesToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aHyperJumpSquare expectedPosition expectedFuel aHyperJumpSquareProbabilisticEvent aRatio someParsecs aNullCard |
+	| twentySquares aWormHole aGame sidesToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aHyperJumpSquare expectedPosition expectedFuel aHyperJumpSquareProbabilisticEvent aRatio someParsecs aNullCard aParsecJumpOfFive anotherParsecJumpOfFive aParsecJumpOfTen |
 	twentySquares := 20.
 	sidesToRoll := #( 2 10 ) asOrderedCollection.
 
@@ -250,7 +250,13 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperJumpEfect
 
 	aDistributionManager := ProbablisiticEventsManager new.
 
-	someParsecs := #( 5 5 10 ) asOrderedCollection.
+	aParsecJumpOfFive := Parsec with: 5.
+	anotherParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfTen := Parsec with: 10.
+	someParsecs := OrderedCollection new.
+	someParsecs add: aParsecJumpOfFive.
+	someParsecs add: anotherParsecJumpOfFive.
+	someParsecs add: aParsecJumpOfTen.
 
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
 	aProbabilityOfOne := 1.

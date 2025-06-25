@@ -532,6 +532,77 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenAShipTakesAHyperJumpThenItsMovesAccordingly [
+
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll aBlackShip aDistribution someParsecs aRatio aDistributionManager aHyperJumpSquare aProbabilityOfOne aHyperJumpSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aParsecJumpOfFive otherParsecJumpOfFive aParsecJumpOfSix anotherParsecJumpOfFive |
+	twentySquares := 20.
+	sideToRoll := #( 2 ) asOrderedCollection.
+	aRatio := 2.
+
+	aWormHole := WormHole between: 17 and: 18.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aParsecJumpOfFive := Parsec with: 5.
+	otherParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfSix := Parsec with: 6.
+	anotherParsecJumpOfFive := Parsec with: 5.
+	someParsecs := OrderedCollection new.
+	someParsecs add: aParsecJumpOfFive.
+	someParsecs add: otherParsecJumpOfFive.
+	someParsecs add: aParsecJumpOfSix.
+	someParsecs add: anotherParsecJumpOfFive.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
+	aProbabilityOfOne := 1.
+	aHyperJumpSquareProbabilisticEvent := ProbabilisticEvent
+		                                      for: aHyperJumpSquare
+		                                      with: aProbabilityOfOne.
+	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	aRewardManager := ProbablisiticEventsManager new.
+	zeroReward := FuelDecreaseReward of: 0.
+	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
+		                                      for: zeroReward
+		                                      with: aProbabilityOfOne.
+	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                for: anAllyCard
+		                                with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+	aGameBuilder := GameBuilder new.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
+
+	self
+		should: [ aGameBuilder build ]
+		raise: Error
+		withMessageText:
+		'The magnitude of the Hyper Jump Square Parsecs is not valid.'
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenAShipTriesToPlayACardThatIsNotInItsHandThenInvalid [
 
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAccelerationCard anAccelerationCardProbabilisticEvent aNullCard |
@@ -846,67 +917,6 @@ GameTest >> testWhenTheGameStartsThenAllTheShipsHaveTwoCards [
 
 	self assert: aBlueShip cards equals: expectedCards.
 	self assert: aBlackShip cards equals: expectedCards.
-]
-
-{ #category : 'tests' }
-GameTest >> testWhenTheHyperJumpParsecsDoNotEqualTheLengthOfTheBoardThenInvalid [
-
-	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll aBlackShip aDistribution someParsecs aRatio aDistributionManager aHyperJumpSquare aProbabilityOfOne aHyperJumpSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
-	twentySquares := 20.
-	sideToRoll := #(2) asOrderedCollection.
-	aRatio := 2.
-
-	aWormHole := WormHole between: 17 and: 18.
-	aBlueShip := Ship called: 'BlueShip'.
-	aBlackShip := Ship called: 'BlackShip'.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	someParsecs := #( 5 5 5 6 ) asOrderedCollection.
-
-	aDistributionManager := ProbablisiticEventsManager new.
-	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbabilityOfOne := 1.
-	aHyperJumpSquareProbabilisticEvent := ProbabilisticEvent
-		                                      for: aHyperJumpSquare
-		                                      with: aProbabilityOfOne.
-	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager := ProbablisiticEventsManager new.
-	zeroReward := FuelDecreaseReward of: 0.
-	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
-		                                      for: zeroReward
-		                                      with: aProbabilityOfOne.
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-	
-	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent for: anAllyCard with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips := OrderedCollection new.
-	someDices := OrderedCollection new.
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-	aGameBuilder := GameBuilder new.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
-
-	self
-		should: [ aGameBuilder build ]
-		raise: Error
-		withMessageText:
-		'The magnitude of the Hyper Jump Square Parsecs is not valid.'
 ]
 
 { #category : 'tests' }

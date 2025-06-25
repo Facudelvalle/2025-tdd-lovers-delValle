@@ -21,14 +21,14 @@ HyperJumpSquare class >> with: anArrayLength and: aRatio [
 { #category : 'effect' }
 HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
 
-	| actualParsec positionAfterJump squaresToMove |
-	actualParsec := parsecs removeFirst.
+	| aUnitDistance positionAfterJump squaresToMove |
+	aUnitDistance := parsecs removeFirst.
 	
-	squaresToMove := self normalize: actualParsec.
+	squaresToMove := self normalize: aUnitDistance.
 
 	positionAfterJump := aGame jump: squaresToMove from: aPosition .
 
-	parsecs add: actualParsec.
+	parsecs add: aUnitDistance.
 
 	^ positionAfterJump
 ]
@@ -41,9 +41,9 @@ HyperJumpSquare >> initializeWith: someParsecs and: aRatio [
 ]
 
 { #category : 'private' }
-HyperJumpSquare >> normalize: aParsec [
+HyperJumpSquare >> normalize: aUnitDistance [
 
-	^ aParsec * ratio
+	^ aUnitDistance toParsec * ratio
 ]
 
 { #category : 'effect' }
@@ -62,7 +62,7 @@ HyperJumpSquare >> toParsecs: aBoardLenght [
 HyperJumpSquare >> validateMagnitudeWith: aMaximumRoll and: aBoardLenght [
 
 	| parsecsSum boardInParsecs |
-	parsecsSum := parsecs sum: [ :aParsec | aParsec ].
+	parsecsSum := parsecs sumNumbers: [ :aUnitDistance | aUnitDistance toParsec ].
 	
 	boardInParsecs := self toParsecs: aBoardLenght.
 
