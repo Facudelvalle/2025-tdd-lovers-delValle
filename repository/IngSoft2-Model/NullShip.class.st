@@ -8,6 +8,18 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'comparing' }
+NullShip >> = aShip [
+
+	^ true
+]
+
+{ #category : 'testing' }
+NullShip >> canLendFuelFor: aShip [
+
+	^ false
+]
+
 { #category : 'update' }
 NullShip >> consumeFuelByAlly: squaresTraveled [
 

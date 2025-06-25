@@ -34,8 +34,8 @@ AllyCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip i
 { #category : 'cancelling' }
 AllyCard >> cancelEffectIn: aGame [
 
-	allyOne removeAlly.
-	allyTwo removeAlly.
+	allyOne removeAlly: allyTwo.
+	allyTwo removeAlly: allyOne.
 	allyOne := NullShip new.
 	allyTwo := NullShip new
 ]

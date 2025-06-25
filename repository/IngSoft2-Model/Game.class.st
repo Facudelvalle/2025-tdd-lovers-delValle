@@ -318,7 +318,8 @@ Game >> nextTurnPlay [
 		on: Error
 		do: [ :anError |
 			anError messageText = 'Ship does not have enough fuel to move.'
-				ifTrue: [ shipToMove penalizeAndReturnTo: shipInitialPosition.
+				ifTrue: [
+					shipToMove penalizeAndReturnTo: shipInitialPosition.
 					lastEffect := lastEffectBeforeMovement ] ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]

@@ -12,7 +12,7 @@ Class {
 		'gravityPenalty',
 		'maximumFuel',
 		'cards',
-		'ally',
+		'allies',
 		'rollPenalty'
 	],
 	#category : 'IngSoft2-Model',
@@ -62,6 +62,12 @@ Ship >> applyRollPenalty: aPenalty [
 ]
 
 { #category : 'testing' }
+Ship >> canLendFuelFor: fuelNeededToTravel [
+
+	^ fuel >= fuelNeededToTravel
+]
+
+{ #category : 'testing' }
 Ship >> canPlay: rolledNumber [
 
 	turnsLeftToWait > 0 ifTrue: [
@@ -81,21 +87,24 @@ Ship >> cards [
 { #category : 'update' }
 Ship >> consumeFuel: squaresToTravel [
 
-	| fuelNeededToTravel |
+	| fuelNeededToTravel lendingAlly |
 	fuel := fuel - squaresToTravel.
 	[ self hasEnoughFuelToTravel: squaresToTravel ]
 		on: Error
 		do: [
-			fuelNeededToTravel := squaresToTravel - (fuel + squaresToTravel).
-			ally consumeFuelByAlly: fuelNeededToTravel.
+			fuelNeededToTravel := fuel abs.
+			lendingAlly := allies
+				               detect: [ :anAlly |
+				               anAlly canLendFuelFor: fuelNeededToTravel ]
+				               ifNone: [ lendingAlly := NullShip new ].
+			lendingAlly consumeFuelByAlly: fuelNeededToTravel.
 			fuel := 0 ]
 ]
 
 { #category : 'update' }
 Ship >> consumeFuelByAlly: fuelToConsume [
 
-	fuel := fuel - fuelToConsume.
-	self hasEnoughFuelToTravel: fuelToConsume
+	fuel := fuel - fuelToConsume
 ]
 
 { #category : 'accessing' }
@@ -125,7 +134,10 @@ Ship >> equals: aShip [
 { #category : 'update' }
 Ship >> formAllianceWith: aShip [
 
-	ally := aShip
+	| aNullShip |
+	allies add: aShip.
+	aNullShip := NullShip new.
+	allies remove: aNullShip ifAbsent: [ Error signal: 'pepe' ]
 ]
 
 { #category : 'accessing' }
@@ -151,7 +163,7 @@ Ship >> hasAFuelPenalty [
 { #category : 'testing' }
 Ship >> hasEnoughFuelToTravel: squaresToTravel [
 
-	(fuel + squaresToTravel) < squaresToTravel ifTrue: [
+	fuel < 0 ifTrue: [
 		Error signal: 'Ship does not have enough fuel to move.' ]
 ]
 
@@ -171,7 +183,8 @@ Ship >> initializeCalled: aName [
 	gravityPenalty := 0.
 	cards := OrderedCollection new.
 	rollPenalty := 0.
-	ally := NullShip new
+	allies := OrderedCollection new.
+	allies add: NullShip new
 ]
 
 { #category : 'penalty' }
@@ -198,8 +211,8 @@ Ship >> penalizeAndReturnTo: shipInitialPosition [
 	self moveTo: shipInitialPosition.
 	self losesTwoTurns.
 	self restoreFuel.
-	ally losesTwoTurns.
-	ally restoreFuel
+	allies first losesTwoTurns.
+	allies first restoreFuel
 ]
 
 { #category : 'penalty' }
@@ -217,9 +230,10 @@ Ship >> remove: aCard [
 ]
 
 { #category : 'removing' }
-Ship >> removeAlly [
+Ship >> removeAlly: anAlly [
 
-	ally := NullShip new
+	allies remove: anAlly.
+	allies isEmpty ifTrue: [ allies add: NullShip new ]
 ]
 
 { #category : 'accessing' }
