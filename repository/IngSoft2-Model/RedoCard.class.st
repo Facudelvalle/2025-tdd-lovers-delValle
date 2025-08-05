@@ -14,5 +14,5 @@ RedoCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetShip 
 	aGame
 		playLastCardBy: aPlayingShip
 		affecting: anAffectedCard
-		and: aTargetShip
+		and: aTargetShip.
 ]

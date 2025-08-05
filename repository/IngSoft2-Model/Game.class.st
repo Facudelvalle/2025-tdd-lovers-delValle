@@ -138,9 +138,9 @@ Game >> applyRewardTo: aShip for: aRolledNumber [
 ]
 
 { #category : 'action' }
-Game >> applyRollPenalty: aPenalty [
+Game >> applyRollModifier: aPenalty [
 
-	ships do: [ :aShip | aShip applyRollPenalty: aPenalty ]
+	ships do: [ :aShip | aShip applyRollModifier: aPenalty ]
 ]
 
 { #category : 'action' }
@@ -235,11 +235,11 @@ Game >> move: aShip backward: aMagnitude [
 Game >> move: aShip with: rolledNumber [
 
 	| shipInitialPosition shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice adjustedRolledNumber |
-	aShip canPlay: rolledNumber.
-
+	"aShip canPlay: rolledNumber."
 	self applyRewardTo: aShip for: rolledNumber.
+	aShip playTurnWith: rolledNumber on: board.
 
-	shipInitialPosition := aShip currentPosition.
+	"shipInitialPosition := aShip currentPosition.
 
 	adjustedRolledNumber := aShip adjust: rolledNumber.
 
@@ -256,18 +256,18 @@ Game >> move: aShip with: rolledNumber [
 		                             shipPositionBeforeWormHole.
 
 	aShip moveTo: shipPositionAfterWormHole.
-	aShip consumeFuel: squaresTraveledWithDice.
+	aShip consumeFuel: squaresTraveledWithDice."
 
-	shipPositionAfterSquareEffect := self
+	"shipPositionAfterSquareEffect := self
 		                                 applyEffectOn: aShip
 		                                 with: shipPositionAfterWormHole.
 
 	self
 		applyEffectMovementFor: aShip
 		from: shipPositionAfterWormHole
-		to: shipPositionAfterSquareEffect.
+		to: shipPositionAfterSquareEffect."
 
-	shipPositionAfterSquareEffect > raceGoal ifTrue: [ self finish ]
+	"shipPositionAfterSquareEffect > raceGoal ifTrue: [ self finish ]"
 ]
 
 { #category : 'action' }
@@ -344,7 +344,7 @@ Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip 
 		bePlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: aTargetShip
-		in: self
+		in: self.
 ]
 
 { #category : 'printing' }

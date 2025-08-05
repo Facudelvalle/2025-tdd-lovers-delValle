@@ -23,7 +23,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAfterAShipsMovesThenTheCardDonApp
 	sideToRoll := #(3) asOrderedCollection.
 
 	expectedPosition := Position at: 6 in: 1.
-	expectedFuel := 0.
+	expectedFuel := Fuel with: 0 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.

@@ -15,7 +15,7 @@ AtomicBombSquare >> applyOn: aShip and: aPosition in: aGame [
 	aGame moveShipsToSquareZero.
 	shipNewPosition := aPosition adjustSquare: 0.
 	squaresTraveled := aGame calculateDistanceBetween: aPosition and: shipNewPosition.
-	aShip addFuel: squaresTraveled. 
+	aShip modifyFuelBy: squaresTraveled. 
 	^ shipNewPosition 
 ]
 
@@ -27,6 +27,6 @@ AtomicBombSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 	squaresTraveled := aGame
 		                   calculateDistanceBetween: aPosition
 		                   and: shipNewPosition.
-	aShip addFuel: squaresTraveled.
+	aShip modifyFuelBy: squaresTraveled.
 	^ shipNewPosition
 ]

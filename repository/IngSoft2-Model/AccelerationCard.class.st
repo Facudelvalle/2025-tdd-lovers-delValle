@@ -12,7 +12,7 @@ Class {
 AccelerationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAfectedShip in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
-	aGame applyRollPenalty: 1.
+	aGame applyRollModifier: 1.
 	aGame lastPlayedCard: self.
 	aGame addActiveCard: self
 ]
@@ -20,5 +20,5 @@ AccelerationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAf
 { #category : 'cancelling' }
 AccelerationCard >> cancelEffectIn: aGame [
 
-	aGame applyRollPenalty: -1
+	aGame applyRollModifier: -1
 ]

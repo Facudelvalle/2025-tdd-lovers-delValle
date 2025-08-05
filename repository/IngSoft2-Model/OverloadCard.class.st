@@ -12,7 +12,7 @@ Class {
 OverloadCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetShip in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
-	aTargetShip applyRollPenalty: -2.
+	aTargetShip applyRollModifier: -2.
 	aGame lastPlayedCard: self.
 	aGame addActiveCard: self
 ]
@@ -20,5 +20,5 @@ OverloadCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetS
 { #category : 'cancelling' }
 OverloadCard >> cancelEffectIn: aGame [
 
-	aGame applyRollPenalty: 2
+	aGame applyRollModifier: 2
 ]

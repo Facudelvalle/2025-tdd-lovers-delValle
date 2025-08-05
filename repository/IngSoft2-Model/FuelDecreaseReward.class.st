@@ -17,7 +17,7 @@ FuelDecreaseReward class >> of: aMagnitude [
 { #category : 'operations' }
 FuelDecreaseReward >> applyTo: aShip [
 
-	aShip addFuel: magnitude
+	aShip modifyFuelBy: magnitude
 ]
 
 { #category : 'initialization' }
