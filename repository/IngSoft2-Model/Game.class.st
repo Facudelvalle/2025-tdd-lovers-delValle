@@ -271,7 +271,7 @@ Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfec
 Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip [
 
 	lastPlayedCard
-		bePlayedBy: aPlayingShip
+		applyEffectPlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: aTargetShip
 		in: self.

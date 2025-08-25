@@ -161,7 +161,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsABackHoleEfectT
 ]
 
 { #category : 'tests' }
-RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsACardEffectThenItsApplyCorrecty [
+RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsACardEffectThenItsAppliedCorrectly [
 
 	| twentySquares aWormHole aGame sidesToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aCardSquare aCardSquareProbabilisticEvent expectedSize aNullCard |
 	twentySquares := 20.

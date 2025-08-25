@@ -18,17 +18,28 @@ AllyCard >> = aCard [
 	^ aCard compare: allyOne and: allyTwo
 ]
 
-{ #category : 'playing' }
-AllyCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip in: aGame [
+{ #category : 'as yet unclassified' }
+AllyCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
-	aPlayingShip remove: self.
 	aPlayingShip formAllianceWith: anAllyShip.
 	anAllyShip formAllianceWith: aPlayingShip.
 	allyOne := aPlayingShip.
 	allyTwo := anAllyShip.
 	aGame lastPlayedCard: self.
 	aGame addActiveCard: self
+]
+
+{ #category : 'playing' }
+AllyCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip in: aGame [
+
+	self
+		applyEffectPlayedBy: aPlayingShip
+		affecting: anAffectedCard
+		and: anAllyShip
+		in: aGame.
+	aPlayingShip remove: self.
+	
 ]
 
 { #category : 'cancelling' }
