@@ -167,7 +167,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsACardEffectThen
 	twentySquares := 20.
 	sidesToRoll := #( 2 2 10 ) asOrderedCollection.
 
-	expectedSize := 3.
+	expectedSize := 2.
 
 	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.

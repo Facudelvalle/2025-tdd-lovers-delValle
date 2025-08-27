@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'playing' }
-NullCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+NullCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
 	Error signal:
 		'A Redo card can not be played when there are no played cards yet.'

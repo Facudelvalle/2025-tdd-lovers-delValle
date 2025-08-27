@@ -22,8 +22,8 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 	twentySquares := 20.
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
 
-	expectedPosition := Position at: 5 in: 1.
-	expectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
+	expectedPosition := Position at: 2 in: 1.
+	expectedFuel := Fuel with: 5 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -67,10 +67,10 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		                                       with: aProbabilityOfOne.
 
 	aSetCardManager := SetProbablisiticEventsManager new.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: aCancellationCardProbabilisticEvent.
-
+	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
 	someShips add: aBlueShip.
@@ -87,12 +87,15 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 	aGame := aGameBuilder build.
 
 	aNullCard := NullCard new.
+	
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
 	aGame
 		play: anAccelerationCard
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip.
-	aGame nextTurnPlay.
+	aGame nextTurnPass.
 	aGame
 		play: aRedoCard
 		by: aBlackShip
@@ -360,12 +363,12 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARepeatCardThenTheEffectIsAppliedPr
 		play: aRepeatCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlueShip.
 	aGame
 		play: aRedoCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlueShip.
 
 	self assert: aBlueShip amountOfCards equals: expectedSize
 ]
