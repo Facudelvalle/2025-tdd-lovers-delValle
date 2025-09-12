@@ -238,21 +238,12 @@ Game >> nextTurnPass [
 { #category : 'action' }
 Game >> nextTurnPlay [
 
-	| shipToMove rolledNumber shipInitialPosition lastEffectBeforeMovement |
+	| shipToMove rolledNumber |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
 	rolledNumber := self rollDices.
-	shipInitialPosition := shipToMove currentPosition.
-	lastEffectBeforeMovement := lastEffect.
 	self move: shipToMove with: rolledNumber.
-	"[ self move: shipToMove with: rolledNumber ]
-		on: Error
-		do: [ :anError |
-			anError messageText = 'Ship does not have enough fuel to move.'
-				ifTrue: [
-					shipToMove penalizeAndReturnTo: shipInitialPosition.
-					lastEffect := lastEffectBeforeMovement ] ]."
-	ships add: shipToMove.
+	ships add: shipToMove
 ]
 
 { #category : 'action' }
