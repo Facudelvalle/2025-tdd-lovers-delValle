@@ -12,7 +12,7 @@ ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 	tenSquares := 10.
 	sideToRoll := #(1) asOrderedCollection.
 
-	expectedFuelLeft := 2.
+	expectedFuelLeft := Fuel with: 2 upTo: 2 in: HasFuelState new.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -76,7 +76,7 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 	tenSquares := 10.
 	sideToRoll := #(1) asOrderedCollection.
 
-	expectedFuelLeft := 2.
+	expectedFuelLeft := Fuel with: 2 upTo: 2 in: HasFuelState new.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -210,7 +210,7 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 	fiveSquares := 5.
 	sideToRoll := #(1) asOrderedCollection.
 
-	expectedFuelLeft := 1.
+	expectedFuelLeft := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
 	aWormHole := WormHole between: 0 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -269,7 +269,7 @@ ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingl
 	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices expectedFuelLeft aDistributionManager aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardManager zeroReward zeroRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
 	fiveSquares := 5.
 	sideToRoll := #(1) asOrderedCollection.
-	expectedFuelLeft := 1.
+	expectedFuelLeft := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
 	aWormHole := WormHole between: 1 and: 2.
 	aBlueShip := Ship called: 'BlueShip'.

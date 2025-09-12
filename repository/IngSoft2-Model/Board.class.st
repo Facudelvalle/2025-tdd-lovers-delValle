@@ -114,10 +114,10 @@ Board >> moveIfWormHoleAt: aPosition [
 ]
 
 { #category : 'updating' }
-Board >> update: aPosition with: aRolledNumber [
+Board >> update: aPosition with: aMagnitude [
 
 	| newPosition |
-	newPosition := aPosition add: aRolledNumber with: length.
+	newPosition := aPosition add: aMagnitude with: length.
 	^ newPosition
 ]
 

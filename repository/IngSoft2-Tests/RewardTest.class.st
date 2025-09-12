@@ -12,7 +12,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 	fiveSquares := 5.
 	sideToRoll := #(1) asOrderedCollection.
 
-	expectedFuelLeft := 3.
+	expectedFuelLeft := Fuel with: 3 upTo: 3 in: HasFuelState new.
 
 	aWormHole := WormHole between: 0 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -76,7 +76,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsOneLessFuel [
 	fiveSquares := 5.
 	sideToRoll := #(1) asOrderedCollection.
 
-	expectedFuelLeft := 0.
+	expectedFuelLeft := Fuel with: 0 upTo: 2 in: HasFuelState new.
 
 	aWormHole := WormHole between: 0 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.

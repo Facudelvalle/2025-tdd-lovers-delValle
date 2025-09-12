@@ -10,10 +10,9 @@ Class {
 		'fuel',
 		'turnsLeftToWait',
 		'gravityPenalty',
-		'maximumFuel',
 		'cards',
 		'allies',
-		'rollPenalty'
+		'rollModifier'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -31,16 +30,10 @@ Ship >> addCards: someCards [
 	someCards do: [ :aCard | cards add: aCard ]
 ]
 
-{ #category : 'accessing' }
-Ship >> addFuel: aFuelQuantity [
-
-	fuel := fuel + aFuelQuantity
-]
-
 { #category : 'update' }
 Ship >> adjust: aRolledNumber [
 
-	^ aRolledNumber + rollPenalty
+	^ aRolledNumber + rollModifier
 ]
 
 { #category : 'accessing' }
@@ -56,26 +49,40 @@ Ship >> applyGravityPenalty: aGravitySquare [
 ]
 
 { #category : 'penalty' }
-Ship >> applyRollPenalty: aPenalty [
+Ship >> applyRollModifier: aModifier [
 
-	rollPenalty := rollPenalty + aPenalty
+	rollModifier := rollModifier + aModifier
+]
+
+{ #category : 'move' }
+Ship >> borrowFuelFromAllies [
+
+	| fuelNeededToTravel lendingAlly updatedFuelState |
+	fuelNeededToTravel := fuel amountOfFuelNeeded.
+	lendingAlly := allies
+		               detect: [ :anAlly |
+		               anAlly canLendFuelFor: fuelNeededToTravel ]
+		               ifNone: [ lendingAlly := NullShip new ].
+	updatedFuelState := lendingAlly consumeFuelByAlly: fuelNeededToTravel.
+	fuel := Fuel with: 0 upTo: fuel maximumFuel in: updatedFuelState
 ]
 
 { #category : 'testing' }
 Ship >> canLendFuelFor: fuelNeededToTravel [
 
-	^ fuel >= fuelNeededToTravel
+	^ fuel canLendFuelFor: fuelNeededToTravel
 ]
 
 { #category : 'testing' }
-Ship >> canPlay: rolledNumber [
+Ship >> canPlay: aRolledNumber [
 
-	turnsLeftToWait > 0 ifTrue: [
-		self reducePenalty.
-		Error signal: 'The ship has a penalty of movement' ].
-	gravityPenalty > rolledNumber ifTrue: [
-		Error signal:
-			'The number rolled is not enought to pass the gravity penalty' ]
+	| hasToWait |
+	hasToWait := turnsLeftToWait > 0.
+	
+	hasToWait ifTrue: [
+		self reducePenalty ].
+	
+	^  hasToWait not and: gravityPenalty <= aRolledNumber 
 ]
 
 { #category : 'accessing' }
@@ -85,26 +92,18 @@ Ship >> cards [
 ]
 
 { #category : 'update' }
-Ship >> consumeFuel: squaresToTravel [
+Ship >> consumeFuel: squaresToTravel from: initialPosition [
 
-	| fuelNeededToTravel lendingAlly |
-	fuel := fuel - squaresToTravel.
-	[ self hasEnoughFuelToTravel: squaresToTravel ]
-		on: Error
-		do: [
-			fuelNeededToTravel := fuel abs.
-			lendingAlly := allies
-				               detect: [ :anAlly |
-				               anAlly canLendFuelFor: fuelNeededToTravel ]
-				               ifNone: [ lendingAlly := NullShip new ].
-			lendingAlly consumeFuelByAlly: fuelNeededToTravel.
-			fuel := 0 ]
+	fuel := fuel consume: squaresToTravel.
+	fuel borrowBy: self.
+	fuel applyPenaltyTo: self thatStartedFrom: initialPosition
 ]
 
 { #category : 'update' }
 Ship >> consumeFuelByAlly: fuelToConsume [
 
-	fuel := fuel - fuelToConsume
+	fuel := fuel consume: fuelToConsume.
+	^ HasFuelState new
 ]
 
 { #category : 'accessing' }
@@ -141,17 +140,16 @@ Ship >> formAllianceWith: aShip [
 ]
 
 { #category : 'accessing' }
-Ship >> fuel: aFuelQuantity [
-
-	fuel := aFuelQuantity.
+Ship >> fuel: someFuel [
 	
-	maximumFuel := aFuelQuantity.
+	fuel := fuel modifyMaximumAmountBy: someFuel.
+	fuel := fuel restore.
 ]
 
 { #category : 'comparing' }
-Ship >> fuelEquals: aFuelQuantity [ 
+Ship >> fuelEquals: someFuel [
 	
-	^ fuel = aFuelQuantity 
+	^ fuel equals: someFuel
 ]
 
 { #category : 'testing' }
@@ -160,17 +158,11 @@ Ship >> hasAFuelPenalty [
 	^ turnsLeftToWait > 0
 ]
 
-{ #category : 'testing' }
-Ship >> hasEnoughFuelToTravel: squaresToTravel [
-
-	fuel < 0 ifTrue: [
-		Error signal: 'Ship does not have enough fuel to move.' ]
-]
-
 { #category : 'accessing' }
 Ship >> increaseMaxFuel: aMagnitude [
 
-	maximumFuel := maximumFuel + aMagnitude
+	fuel := fuel modifyMaximumAmountBy: aMagnitude.
+	
 ]
 
 { #category : 'initialization' }
@@ -178,11 +170,11 @@ Ship >> initializeCalled: aName [
 
 	name := aName.
 	position := Position at: 0 in: 1.
-	fuel := 0.
+	fuel := Fuel with: 0 upTo: 0 in: DoesntHaveFuelState new.
 	turnsLeftToWait := 0.
 	gravityPenalty := 0.
 	cards := OrderedCollection new.
-	rollPenalty := 0.
+	rollModifier := 0.
 	allies := OrderedCollection new.
 	allies add: NullShip new
 ]
@@ -193,7 +185,24 @@ Ship >> losesTwoTurns [
 	turnsLeftToWait := 2
 ]
 
-{ #category : 'update' }
+{ #category : 'accessing' }
+Ship >> modifyFuelBy: aFuelAmount [
+
+	fuel := fuel modifyBy: aFuelAmount
+]
+
+{ #category : 'move' }
+Ship >> moveBackwards: aMagnitude in: aBoard [
+
+	| shipNewPosition |
+	shipNewPosition := aBoard update: position with: aMagnitude negated.
+
+	self performMovementFrom: position to: shipNewPosition on: aBoard.
+	^ shipNewPosition.
+	
+]
+
+{ #category : 'move' }
 Ship >> moveTo: aPosition [
 
 	position := aPosition
@@ -213,6 +222,53 @@ Ship >> penalizeAndReturnTo: shipInitialPosition [
 	self restoreFuel.
 	allies first losesTwoTurns.
 	allies first restoreFuel
+]
+
+{ #category : 'move' }
+Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
+	
+	| squaresTraveled |
+	squaresTraveled := aBoard
+		                   calculateDistanceBetween: position
+		                   and: aFinalPosition.
+
+	self moveTo: aFinalPosition.
+	self consumeFuel: squaresTraveled from: anInitialPosition
+]
+
+{ #category : 'move' }
+Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
+
+	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
+	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
+	initialPosition := position.
+	adjustedRolledNumber := self adjust: aRolledNumber.
+
+	positionBeforeWormHole := aBoard
+		                          update: position
+		                          with: adjustedRolledNumber.
+	squaresTraveledWithDice := aBoard
+		                           calculateDistanceBetween: position
+		                           and: positionBeforeWormHole.
+	positionAfterWormHole := aBoard moveIfWormHoleAt:
+		                         positionBeforeWormHole.
+	self moveTo: positionAfterWormHole.
+	self consumeFuel: squaresTraveledWithDice from: initialPosition.
+
+	positionAfterSquareEffect := aBoard
+		                             applyEfectOn: self
+		                             with: position
+		                             in: aGame.
+
+	squaresTraveledWithSquareEffect := aBoard
+		                                   calculateDistanceBetween:
+		                                   position
+		                                   and: positionAfterSquareEffect.
+
+	self moveTo: positionAfterSquareEffect.
+	self
+		consumeFuel: squaresTraveledWithSquareEffect
+		from: initialPosition
 ]
 
 { #category : 'penalty' }
@@ -239,7 +295,7 @@ Ship >> removeAlly: anAlly [
 { #category : 'accessing' }
 Ship >> restoreFuel [
 
-	fuel := maximumFuel
+	fuel := fuel restore.
 ]
 
 { #category : 'comparing' }

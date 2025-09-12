@@ -23,7 +23,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAfterAShipsMovesThenTheCardDonApp
 	sideToRoll := #(3) asOrderedCollection.
 
 	expectedPosition := Position at: 6 in: 1.
-	expectedFuel := 0.
+	expectedFuel := Fuel with: 0 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -96,7 +96,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsABackHoleEfectT
 	sideToRoll := #( 10 ) asOrderedCollection.
 
 	expectedPosition := Position at: 2 in: 1.
-	expectedFuel := 2.
+	expectedFuel := Fuel with: 2 upTo: 20 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -161,13 +161,13 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsABackHoleEfectT
 ]
 
 { #category : 'tests' }
-RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsACardEffectThenItsApplyCorrecty [
+RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsACardEffectThenItsAppliedCorrectly [
 
 	| twentySquares aWormHole aGame sidesToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aCardSquare aCardSquareProbabilisticEvent expectedSize aNullCard |
 	twentySquares := 20.
 	sidesToRoll := #( 2 2 10 ) asOrderedCollection.
 
-	expectedSize := 3.
+	expectedSize := 2.
 
 	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -238,7 +238,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperGavityEfe
 	sidesToRoll := #( 2 5 2 ) asOrderedCollection.
 
 	expectedPosition := Position at: 7 in: 1.
-	expectedFuel := 3.
+	expectedFuel := Fuel with: 3 upTo: 10 in: HasFuelState new.
 
 	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -313,7 +313,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperJumpEfect
 	sidesToRoll := #( 2 10 ) asOrderedCollection.
 
 	expectedPosition := Position at: 17 in: 1.
-	expectedFuel := 3.
+	expectedFuel := Fuel with: 3 upTo: 20 in: HasFuelState new.
 	aRatio := 1.
 
 	aWormHole := WormHole between: 15 and: 16.
@@ -394,7 +394,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAMoonWalkEfectT
 	sidesToRoll := #(2 2 10) asOrderedCollection.
 
 	expectedPosition := Position at: 1 in: 1.
-	expectedFuel := 17.
+	expectedFuel := Fuel with: 17 upTo: 20 in: HasFuelState new.
 
 	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -466,7 +466,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsANullEfectThenI
 	sideToRoll := #(3) asOrderedCollection.
 
 	expectedPosition := Position at: 6 in: 1.
-	expectedFuel := 0.
+	expectedFuel := Fuel with: 0 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -539,7 +539,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAnAtomicBombEff
 	sidesToRoll := #(2 2 10) asOrderedCollection.
 
 	expectedPosition := Position at: 0 in: 1.
-	expectedFuel := 18.
+	expectedFuel := Fuel with: 18 upTo: 20 in: HasFuelState new.
 
 	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -604,6 +604,80 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAnAtomicBombEff
 ]
 
 { #category : 'tests' }
+RepeatCardTest >> testWhenAShipPlaysARepeatCardThenItIsNoLongerInItsHand [
+
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aRepeatCard aRepeatCardProbabilisticEvent expectedCards anAccelerationCard anAccelerationCardProbabilisticEvent aSetCardManager aNullCard |
+	fiveSquares := 5.
+	sideToRoll := #( 10 ) asOrderedCollection.
+
+	aWormHole := WormHole between: 2 and: 3.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aPlainSquare := PlainSquare new.
+	aProbabilityOfOne := 1.
+	aPlainSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aPlainSquare
+		                                  with: aProbabilityOfOne.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
+
+	aBoard := Board
+		          with: fiveSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	aRewardManager := ProbablisiticEventsManager new.
+	zeroReward := FuelDecreaseReward of: 0.
+	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
+		                                      for: zeroReward
+		                                      with: aProbabilityOfOne.
+	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aRepeatCard := RepeatCard new.
+	aRepeatCardProbabilisticEvent := ProbabilisticEvent
+		                                for: aRepeatCard
+		                                with: aProbabilityOfOne.
+	aSetCardManager add: aRepeatCardProbabilisticEvent.
+
+	anAccelerationCard := AccelerationCard new.
+	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
+		                                        for: anAccelerationCard
+		                                        with: aProbabilityOfOne.
+	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
+	aGameBuilder := GameBuilder new.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	expectedCards := OrderedCollection new.
+	expectedCards add: anAccelerationCard.
+
+	aNullCard := NullCard new.
+	aGame
+		play: aRepeatCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+
+	self assert: aBlueShip cards equals: expectedCards
+]
+
+{ #category : 'tests' }
 RepeatCardTest >> testWhenAShipPlaysARepeatCardWhenIsNotItsTurn [
 
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aRepeatCard aRepeatCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition expectedFuel aNullCard |
@@ -611,7 +685,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardWhenIsNotItsTurn [
 	sideToRoll := #( 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 6 in: 1.
-	expectedFuel := 0.
+	expectedFuel := Fuel with: 0 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -674,4 +748,73 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardWhenIsNotItsTurn [
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
 	self assert: (aBlueShip fuelEquals: expectedFuel)
+]
+
+{ #category : 'tests' }
+RepeatCardTest >> testWhenAShipTriesToPlayARepeatCardThatIsNotInItsHandThenInvalid [
+
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard aRepeatCard anAllyCardProbabilisticEvent aNullCard |
+	fiveSquares := 5.
+	sideToRoll := #( 10 ) asOrderedCollection.
+
+	aWormHole := WormHole between: 2 and: 3.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aPlainSquare := PlainSquare new.
+	aProbabilityOfOne := 1.
+	aPlainSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aPlainSquare
+		                                  with: aProbabilityOfOne.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: fiveSquares.
+
+	aBoard := Board
+		          with: fiveSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	aRewardManager := ProbablisiticEventsManager new.
+	zeroReward := FuelDecreaseReward of: 0.
+	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
+		                                      for: zeroReward
+		                                      with: aProbabilityOfOne.
+	aRewardManager add: zeroRewardRewardProbabilisticEvent.
+
+	aCardManager := ProbablisiticEventsManager new.
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                        for: anAllyCard
+		                                        with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
+	aGameBuilder := GameBuilder new.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager.
+	aGame := aGameBuilder build.
+
+	aRepeatCard := RepeatCard new.
+	aNullCard := NullCard new.
+
+	self
+		should: [
+			aGame
+				play: aRepeatCard
+				by: aBlueShip
+				affecting: aNullCard
+				and: aBlackShip ]
+		raise: Error
+		withMessageText: 'The ship does not have that card on its hand.'
 ]

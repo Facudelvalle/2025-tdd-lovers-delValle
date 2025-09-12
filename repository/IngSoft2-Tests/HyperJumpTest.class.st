@@ -238,7 +238,7 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenItsFuelIsConsumedCorrectl
 	sideToRoll := #( 7 ) asOrderedCollection.
 	aRatio := 1.
 
-	expectedFuel := 1.
+	expectedFuel := Fuel with: 1 upTo: 14 in: HasFuelState new.
 
 	aWormHole := WormHole between: 17 and: 18.
 	aBlueShip := Ship called: 'BlueShip'.

@@ -8,11 +8,18 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'playing' }
-CancellationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+{ #category : 'as yet unclassified' }
+CancellationCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
 	aGame remove: anAffectedCard playedBy: anAffectedShip.
 	aGame lastPlayedCard: self
+]
+
+{ #category : 'playing' }
+CancellationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+
+	self applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame.
+	aPlayingShip remove: self
 ]
 
 { #category : 'comparing' }

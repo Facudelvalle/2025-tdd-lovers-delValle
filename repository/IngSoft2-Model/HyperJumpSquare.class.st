@@ -50,6 +50,8 @@ HyperJumpSquare >> normalize: aUnitDistance [
 HyperJumpSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 
 	^ self applyOn: aShip and: aPosition in: aGame
+
+	
 ]
 
 { #category : 'validation' }

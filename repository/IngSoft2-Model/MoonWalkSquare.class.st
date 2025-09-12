@@ -35,7 +35,7 @@ MoonWalkSquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitude [
 { #category : 'effect' }
 MoonWalkSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 
-	^ aGame move: aShip backward: magnitude.
+	^ aGame move: aShip backwardsBy: magnitude.
 ]
 
 { #category : 'validation' }

@@ -23,7 +23,7 @@ NullShip >> canLendFuelFor: aShip [
 { #category : 'update' }
 NullShip >> consumeFuelByAlly: squaresTraveled [
 
-	Error signal: 'Ship does not have enough fuel to move.'
+	^ DoesntHaveFuelState new
 ]
 
 { #category : 'comparing' }

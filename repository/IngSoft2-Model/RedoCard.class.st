@@ -14,5 +14,12 @@ RedoCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetShip 
 	aGame
 		playLastCardBy: aPlayingShip
 		affecting: anAffectedCard
-		and: aTargetShip
+		and: aTargetShip.
+	aPlayingShip remove: self
+]
+
+{ #category : 'comparing' }
+RedoCard >> compare: aShip and: anotherShip [
+
+	^ false
 ]

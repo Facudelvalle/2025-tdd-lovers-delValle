@@ -8,17 +8,34 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'playing' }
-OverloadCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetShip in: aGame [
+{ #category : 'as yet unclassified' }
+OverloadCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
-	aTargetShip applyRollPenalty: -2.
+	anAffectedShip applyRollModifier: -2.
 	aGame lastPlayedCard: self.
 	aGame addActiveCard: self
+]
+
+{ #category : 'playing' }
+OverloadCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+
+	self
+		applyEffectPlayedBy: aPlayingShip
+		affecting: anAffectedCard
+		and: anAffectedShip
+		in: aGame.
+	aPlayingShip remove: self
 ]
 
 { #category : 'cancelling' }
 OverloadCard >> cancelEffectIn: aGame [
 
-	aGame applyRollPenalty: 2
+	aGame applyRollModifier: 2
+]
+
+{ #category : 'comparing' }
+OverloadCard >> compare: aShip and: anotherShip [
+
+	^ false
 ]

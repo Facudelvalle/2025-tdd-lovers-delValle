@@ -8,17 +8,34 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'playing' }
-AccelerationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAfectedShip in: aGame [
+{ #category : 'as yet unclassified' }
+AccelerationCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
-	aGame applyRollPenalty: 1.
+	aGame applyRollModifier: 1.
 	aGame lastPlayedCard: self.
 	aGame addActiveCard: self
+]
+
+{ #category : 'playing' }
+AccelerationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+
+	self
+		applyEffectPlayedBy: aPlayingShip
+		affecting: anAffectedCard
+		and: anAffectedShip
+		in: aGame.
+	aPlayingShip remove: self
 ]
 
 { #category : 'cancelling' }
 AccelerationCard >> cancelEffectIn: aGame [
 
-	aGame applyRollPenalty: -1
+	aGame applyRollModifier: -1
+]
+
+{ #category : 'comparing' }
+AccelerationCard >> compare: firstAlly and: secondAlly [
+
+	^ false
 ]

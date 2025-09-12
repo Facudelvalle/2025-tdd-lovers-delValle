@@ -75,7 +75,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRollANumberLow
 	tenSquares := 10.
 	sideToRoll := #(1 1 2) asOrderedCollection.
 
-	expectedFuel := 3.
+	expectedFuel := Fuel with: 3 upTo: 4 in: HasFuelState new.
 
 	aWormHole := WormHole between: 5 and: 6.
 	aBlueShip := Ship called: 'BlueShip'.

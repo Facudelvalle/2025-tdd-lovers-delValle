@@ -13,7 +13,7 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenAllTheOtherShipsFuel
 	sideToRoll := #(2) asOrderedCollection.
 	twoLaps := 2.
 
-	expectedFuel := 4.
+	expectedFuel := Fuel with: 4 upTo: 4 in: HasFuelState new.
 
 	aWormHole := WormHole between: 3 and: 8.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -199,7 +199,7 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItsFuelDoesNotChange
 	sideToRoll := #(2) asOrderedCollection.
 	twoLaps := 2.
 
-	expectedFuel := 2.
+	expectedFuel := Fuel with: 2 upTo: 4 in: HasFuelState new.
 
 	aWormHole := WormHole between: 3 and: 8.
 	aBlueShip := Ship called: 'BlueShip'.

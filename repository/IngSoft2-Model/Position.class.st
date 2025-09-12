@@ -92,7 +92,7 @@ Position >> lapsEquals: aLap [
 	^ lap = aLap
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Position >> positionOn: aBoardLength [
 
 	^ (lap - 1) * aBoardLength + square
