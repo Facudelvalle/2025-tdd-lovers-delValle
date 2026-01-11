@@ -1,9 +1,41 @@
 Class {
 	#name : 'BoardTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'twentySquares',
+		'aDistributionManager',
+		'aPlainSquare',
+		'aProbability',
+		'aPlainSquareProbabilisticEvent',
+		'fiveSquares',
+		'aBlackHoleSquare',
+		'aBlackHoleSquareProbabilisticEvent'
+	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
+
+{ #category : 'running' }
+BoardTest >> setUp [
+
+	super setUp.
+
+	twentySquares := 20.
+	fiveSquares := 5.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aPlainSquare := PlainSquare new.
+	aProbability := 1.
+	aPlainSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aPlainSquare
+		                                  with: aProbability.
+
+	aBlackHoleSquare := BlackHoleSquare new.
+	aProbability := 1.
+	aBlackHoleSquareProbabilisticEvent := ProbabilisticEvent
+		                                      for: aBlackHoleSquare
+		                                      with: aProbability
+]
 
 { #category : 'asserting' }
 BoardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMessage [
@@ -18,16 +50,9 @@ BoardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMe
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInvalid [
 
-	| twentySquares aWormHole aDistributionManager aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
-	twentySquares := 20.
+	| aWormHole aDistribution |
 	aWormHole := WormHole between: 15 and: 30.
 
-	aDistributionManager := ProbablisiticEventsManager new.
-	aPlainSquare := PlainSquare new.
-	aProbability := 1.
-	aPlainSquareProbabilisticEvent := ProbabilisticEvent
-		                                  for: aPlainSquare
-		                                  with: aProbability.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 	
@@ -45,16 +70,9 @@ BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInval
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThenInvalid [
 
-	| twentySquares aWormHole aDistributionManager aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
-	twentySquares := 20.
+	| aWormHole aDistribution |
 	aWormHole := WormHole between: 25 and: 30.
 
-	aDistributionManager := ProbablisiticEventsManager new.
-	aPlainSquare := PlainSquare new.
-	aProbability := 1.
-	aPlainSquareProbabilisticEvent := ProbabilisticEvent
-		                                  for: aPlainSquare
-		                                  with: aProbability.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 	
@@ -72,8 +90,7 @@ BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThen
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereThereIsAWormHoleIsAWormHoleEndpoint [
 
-	| aWormHole fiveSquares aBoard expectedDistribution aDistributionManager aDistribution aBlackHoleSquare aProbability aBlackHoleSquareProbabilisticEvent |
-	fiveSquares := 5.
+	| aWormHole aBoard expectedDistribution aDistribution |
 	aWormHole := WormHole between: 1 and: 2.
 	expectedDistribution := 'a BlackHoleSquare' , String cr
 	                        , 'a WormHoleEndpoint' , String cr
@@ -81,12 +98,6 @@ BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereT
 	                        , 'a BlackHoleSquare' , String cr
 	                        , 'a BlackHoleSquare'.
 
-	aDistributionManager := ProbablisiticEventsManager new.
-	aBlackHoleSquare := BlackHoleSquare new.
-	aProbability := 1.
-	aBlackHoleSquareProbabilisticEvent := ProbabilisticEvent
-		                                      for: aBlackHoleSquare
-		                                      with: aProbability.
 	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: fiveSquares.
 
@@ -100,16 +111,10 @@ BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereT
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedWithLessThanTwoSquaresThenInvalid [
 
-	| aLength aWormHole aDistributionManager aDistribution aPlainSquare aProbability aPlainSquareProbabilisticEvent |
+	| aLength aWormHole aDistribution |
 	aLength := -1.
 	aWormHole := WormHole between: 1 and: 2.
 
-	aDistributionManager := ProbablisiticEventsManager new.
-	aPlainSquare := PlainSquare new.
-	aProbability := 1.
-	aPlainSquareProbabilisticEvent := ProbabilisticEvent
-		                                  for: aPlainSquare
-		                                  with: aProbability.
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: aLength.
 

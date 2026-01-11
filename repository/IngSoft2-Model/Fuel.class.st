@@ -80,7 +80,7 @@ Fuel >> initializeWith: anAmount upTo: aMaximumAmount in: aState [
 	
 ]
 
-{ #category : 'accessing' }
+{ #category : 'comparing' }
 Fuel >> maximumEquals: aMaximumAmount [
 
 	^ maximumAmount = aMaximumAmount.
