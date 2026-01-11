@@ -66,7 +66,6 @@ OverloadCardTest >> setUp [
 
 	aGameBuilder setShips: someShips.
 	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
 
 	aNullCard := NullCard new
 ]
@@ -104,6 +103,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 
@@ -123,7 +123,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenItIsNoLongerInItsHand [
 
-	| aGame sideToRoll aLoadedDice aBoard someDices  aDistribution expectedCards anAccelerationCard anAccelerationCardProbabilisticEvent aSetCardManager |
+	| aGame sideToRoll aLoadedDice aBoard someDices aDistribution expectedCards anAccelerationCard anAccelerationCardProbabilisticEvent |
 	sideToRoll := #( 10 ) asOrderedCollection.
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
@@ -135,22 +135,18 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenItIsNoLongerInItsHand [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-
-	aSetCardManager := SetProbablisiticEventsManager new.
-	aSetCardManager add: anOverloadCardProbabilisticEvent.
-
 	anAccelerationCard := AccelerationCard new.
 	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
 		                                        for: anAccelerationCard
 		                                        with: aProbabilityOfOne.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aCardManager add: anAccelerationCardProbabilisticEvent.
 
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
-	aGameBuilder setAvailableCards: aSetCardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	expectedCards := OrderedCollection new.
@@ -168,7 +164,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenItIsNoLongerInItsHand [
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTargetShipIsReducedByTwo [
 
-	|  aGame sideToRoll aLoadedDice aBoard someDices aDistribution expectedPosition expectedFuel |
+	| aGame sideToRoll aLoadedDice aBoard someDices aDistribution expectedPosition expectedFuel |
 	sideToRoll := #( 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 4 in: 1.
@@ -188,6 +184,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -207,30 +204,31 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardThatIsNotInItsHandThenInvalid [
 
-	| aGame sideToRoll aLoadedDice aBoard someDices aDistribution anAllyCard  anAllyCardProbabilisticEvent  |
-
+	| aGame sideToRoll aLoadedDice aBoard someDices anotherCardManager aDistribution anAllyCard anAllyCardProbabilisticEvent |
 	sideToRoll := #( 10 ) asOrderedCollection.
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aDistribution := aDistributionManager generateFor: twentySquares .
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
-		          with: twentySquares 
+		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	anotherCardManager := ProbablisiticEventsManager new.
 	anAllyCard := AllyCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAllyCard
-		                                        with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
+		                                for: anAllyCard
+		                                with: aProbabilityOfOne.
+	anotherCardManager add: anAllyCardProbabilisticEvent.
 
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
+	aGameBuilder setAvailableCards: anotherCardManager.
 	aGame := aGameBuilder build.
 
 	self
@@ -264,6 +262,7 @@ OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardWhenItIsNotItsTurnThen
 
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	self
