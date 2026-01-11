@@ -9,6 +9,13 @@ Class {
 }
 
 { #category : 'playing' }
+RedoCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+	"este metodo nunca es alcanzado, pero corresponde por la herencia"
+
+	
+]
+
+{ #category : 'playing' }
 RedoCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetShip in: aGame [
 
 	aGame

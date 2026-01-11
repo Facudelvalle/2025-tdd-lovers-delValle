@@ -15,3 +15,10 @@ NullCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anA
 	Error signal:
 		'A Redo card can not be played when there are no played cards yet.'
 ]
+
+{ #category : 'playing' }
+NullCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+	"este metodo nunca es alcanzado, pero corresponde por la herencia"
+
+	
+]

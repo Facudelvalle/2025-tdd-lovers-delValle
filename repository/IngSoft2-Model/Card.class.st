@@ -9,6 +9,12 @@ Class {
 }
 
 { #category : 'playing' }
+Card >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+
+	self subclassResponsibility
+]
+
+{ #category : 'playing' }
 Card >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
 	self subclassResponsibility

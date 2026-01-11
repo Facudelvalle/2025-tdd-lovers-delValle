@@ -18,7 +18,7 @@ AllyCard >> = aCard [
 	^ aCard compare: allyOne and: allyTwo
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 AllyCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
