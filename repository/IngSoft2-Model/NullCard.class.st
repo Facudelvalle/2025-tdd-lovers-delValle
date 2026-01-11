@@ -18,7 +18,7 @@ NullCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anA
 
 { #category : 'playing' }
 NullCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
-	"este metodo nunca es alcanzado, pero corresponde por la herencia"
+	"This method is never reached but we consider its presence necessary because of the inherentance design."
 
 	
 ]
