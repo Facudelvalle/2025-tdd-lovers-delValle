@@ -19,7 +19,12 @@ Class {
 		'someShips',
 		'someDices',
 		'aGameBuilder',
-		'twentySquares'
+		'twentySquares',
+		'sideToRoll',
+		'aLoadedDice',
+		'aWormHole',
+		'aDistribution',
+		'aBoardWithAtomicBombSquares'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -34,8 +39,13 @@ AtomicBombTest >> setUp [
 	twentySquares := 20.
 	twoLaps := 2.
 
+	sideToRoll := #( 2 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
+
+	aWormHole := WormHole between: 7 and: 8.
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	anAtomicBombSquare := AtomicBombSquare new.
@@ -43,57 +53,50 @@ AtomicBombTest >> setUp [
 	anAtomicBombProbabilisticEvent := ProbabilisticEvent
 		                                  for: anAtomicBombSquare
 		                                  with: aProbabilityOfOne.
+	aDistributionManager add: anAtomicBombProbabilisticEvent.
+
+	aDistribution := aDistributionManager generateFor: tenSquares.
+
+	aBoardWithAtomicBombSquares := Board
+		                               with: tenSquares
+		                               and: aWormHole
+		                               distributedBy: aDistribution.
 
 	aRewardManager := ProbablisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
+	aRewardManager add: zeroRewardProbabilisticEvent.
 
 	aCardManager := ProbablisiticEventsManager new.
 	anAllyCard := AllyCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent
 		                                for: anAllyCard
 		                                with: aProbabilityOfOne.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
 	aGameBuilder := GameBuilder new.
+	aGameBuilder setLaps: twoLaps.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setAvailableCards: aCardManager
 ]
 
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenAllTheOtherShipsFuelDoesNotChange [
 
-	| sideToRoll aWormHole aLoadedDice aDistribution aBoard aGame expectedFuel |
-	sideToRoll := #(2) asOrderedCollection.
-
+	| aGame expectedFuel |
 	expectedFuel := Fuel with: 4 upTo: 4 in: HasFuelState new.
 
-	aWormHole := WormHole between: 3 and: 8.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: tenSquares.
-
-	aBoard := Board
-		          with: tenSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardProbabilisticEvent.
-	
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-	
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setLaps: twoLaps.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setBoard: aBoardWithAtomicBombSquares.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -104,35 +107,10 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenAllTheOtherShipsFuel
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirstSquareOfTheBoard [
 
-	| expectedPosition sideToRoll aWormHole aLoadedDice aDistribution aBoard aGame |
-	sideToRoll := #(2) asOrderedCollection.
-
+	| expectedPosition aGame |
 	expectedPosition := Position at: 0 in: 1.
 
-	aWormHole := WormHole between: 7 and: 8.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardProbabilisticEvent.
-	
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-	
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setBoard: aBoardWithAtomicBombSquares.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -143,36 +121,17 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirst
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirstSquareOfTheCurrentLap [
 
-	| expectedPosition sideToRoll aWormHole aLoadedDice aDistribution aBoard aGame |
-	sideToRoll := #(2) asOrderedCollection.
-
+	| expectedPosition anotherWormHole anotherBoard aGame |
 	expectedPosition := Position at: 0 in: 2.
 
-	aWormHole := WormHole between: 2 and: 8.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
+	anotherWormHole := WormHole between: 2 and: 8.
 
-	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: tenSquares.
+	anotherBoard := Board
+		                with: tenSquares
+		                and: anotherWormHole
+		                distributedBy: aDistribution.
 
-	aBoard := Board
-		          with: tenSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardProbabilisticEvent.
-	
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setLaps: twoLaps.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setBoard: anotherBoard.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -185,36 +144,10 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItGoesBackToTheFirst
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItsFuelDoesNotChange [
 
-	| sideToRoll aWormHole aLoadedDice aDistribution aBoard aGame expectedFuel |
-	sideToRoll := #(2) asOrderedCollection.
-
+	| aGame expectedFuel |
 	expectedFuel := Fuel with: 2 upTo: 4 in: HasFuelState new.
 
-	aWormHole := WormHole between: 3 and: 8.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: tenSquares.
-
-	aBoard := Board
-		          with: tenSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardProbabilisticEvent.
-	
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setLaps: twoLaps.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setBoard: aBoardWithAtomicBombSquares.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -225,36 +158,10 @@ AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenItsFuelDoesNotChange
 { #category : 'tests' }
 AtomicBombTest >> testWhenAShipLandsOnAnAtomicBombSquareThenTheOtherShipsGoBackToTheFirstSquareOfTheirCurrentLap [
 
-	| expectedPosition sideToRoll aWormHole aLoadedDice aDistribution aBoard aGame |
-	sideToRoll := #(2) asOrderedCollection.
-
+	| expectedPosition aGame |
 	expectedPosition := Position at: 0 in: 1.
 
-	aWormHole := WormHole between: 2 and: 8.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: anAtomicBombProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: tenSquares.
-
-	aBoard := Board
-		          with: tenSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardProbabilisticEvent.
-	
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setLaps: twoLaps.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setBoard: aBoardWithAtomicBombSquares.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.

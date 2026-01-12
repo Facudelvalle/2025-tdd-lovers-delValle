@@ -12,7 +12,7 @@ Class {
 		'aRewardManager',
 		'zeroReward',
 		'zeroRewardRewardProbabilisticEvent',
-		'aCardManager',
+		'aSetCardManagerWithAllyCards',
 		'anAllyCard',
 		'anAllyCardProbabilisticEvent',
 		'someShips',
@@ -20,11 +20,15 @@ Class {
 		'aGameBuilder',
 		'aNullCard',
 		'fiveSquares',
-		'aSetCardManager',
 		'anAccelerationCard',
 		'anAccelerationCardProbabilisticEvent',
 		'expectedCards',
-		'aRedShip'
+		'aRedShip',
+		'sideToRoll',
+		'aWormHole',
+		'aLoadedDice',
+		'aDistribution',
+		'aBoard'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -36,7 +40,6 @@ AllyCardTest >> setUp [
 	super setUp.
 
 	twentySquares := 20.
-	fiveSquares := 5.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aRedShip := Ship called: 'RedShip'.
@@ -49,17 +52,34 @@ AllyCardTest >> setUp [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 
+	sideToRoll := #( 1 ) asOrderedCollection.
+
+	aWormHole := WormHole between: 18 and: 19.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
 	aRewardManager := ProbablisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
+	aRewardManager add: zeroRewardRewardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aSetCardManagerWithAllyCards := ProbablisiticEventsManager new.
+
 	anAllyCard := AllyCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent
 		                                for: anAllyCard
 		                                with: aProbabilityOfOne.
+	aSetCardManagerWithAllyCards add: anAllyCardProbabilisticEvent.
+
 	anAccelerationCard := AccelerationCard new.
 	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
 		                                        for: anAccelerationCard
@@ -67,9 +87,17 @@ AllyCardTest >> setUp [
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
 	aGameBuilder := GameBuilder new.
-	aNullCard := NullCard new.
-	aSetCardManager := SetProbablisiticEventsManager new
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setRewards: aRewardManager.
+
+	aNullCard := NullCard new
 ]
 
 { #category : 'asserting' }
@@ -85,36 +113,8 @@ AllyCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 { #category : 'tests' }
 AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveEnoughFuelThenBothArePenalized [
 
-	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution expectedPosition |
-	twentySquares := 20.
-	sideToRoll := #( 1 ) asOrderedCollection.
-
-	expectedPosition := Position at: 3 in: 1.
-
-	aWormHole := WormHole between: 18 and: 19.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	| aGame |
+	aGameBuilder setAvailableCards: aSetCardManagerWithAllyCards.
 	aGame := aGameBuilder build.
 
 	aGame
@@ -135,36 +135,11 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveEnoughFuelTh
 { #category : 'tests' }
 AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItCanUseTheOtherShipsFuelWhenItHasNotEnoughFuelToMove [
 
-	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution expectedPosition expectedFuel |
-	sideToRoll := #( 1 ) asOrderedCollection.
-
+	| aGame expectedPosition expectedFuel |
 	expectedPosition := Position at: 3 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
-	aWormHole := WormHole between: 18 and: 19.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setAvailableCards: aSetCardManagerWithAllyCards.
 	aGame := aGameBuilder build.
 
 	aGame
@@ -185,34 +160,11 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItCanUseTheOtherShipsFuelWhenItH
 { #category : 'tests' }
 AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItIsNoLongerInItsHand [
 
-	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution |
-	sideToRoll := #( 10 ) asOrderedCollection.
-
-	aWormHole := WormHole between: 2 and: 3.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: fiveSquares.
-
-	aBoard := Board
-		          with: fiveSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
+	| aGame aSetCardManager |
+	aSetCardManager := SetProbablisiticEventsManager new.
 	aSetCardManager add: anAllyCardProbabilisticEvent.
-
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
 	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 
@@ -230,36 +182,11 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItIsNoLongerInItsHand [
 { #category : 'tests' }
 AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItsAllyCanUseTheShipsFuelWhenItHasNotEnoughFuelToMove [
 
-	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution expectedPosition expectedFuel |
-	sideToRoll := #( 1 ) asOrderedCollection.
-
+	| aGame expectedPosition expectedFuel |
 	expectedPosition := Position at: 3 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
-	aWormHole := WormHole between: 18 and: 19.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setAvailableCards: aSetCardManagerWithAllyCards.
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
@@ -280,37 +207,13 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItsAllyCanUseTheShipsFuelWhenItH
 { #category : 'tests' }
 AllyCardTest >> testWhenAShipPlaysTwoAllyCardsAndOneOfItsAlliesDoesNotHaveEnoughFuelToLendButTheOtherDoesThenTheShipMovesCorrectly [
 
-	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution expectedPosition expectedFuel |
-	sideToRoll := #( 1 ) asOrderedCollection.
-
+	| aGame expectedPosition expectedFuel |
 	expectedPosition := Position at: 3 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
-	aWormHole := WormHole between: 18 and: 19.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
 	someShips add: aRedShip.
-	someDices add: aLoadedDice.
 
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setAvailableCards: aSetCardManagerWithAllyCards.
 	aGame := aGameBuilder build.
 
 	aGame
@@ -338,33 +241,10 @@ AllyCardTest >> testWhenAShipPlaysTwoAllyCardsAndOneOfItsAlliesDoesNotHaveEnough
 { #category : 'tests' }
 AllyCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid [
 
-	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution |
-	sideToRoll := #( 10 ) asOrderedCollection.
-
-	aWormHole := WormHole between: 2 and: 3.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: fiveSquares.
-
-	aBoard := Board
-		          with: fiveSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager add: anAccelerationCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	| aGame aSetCardManager |
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 
 	self
@@ -381,33 +261,8 @@ AllyCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid 
 { #category : 'tests' }
 AllyCardTest >> testWhenAShipTriesToPlayAnAllyCardWhenItIsNotItsTurnThenInvalid [
 
-	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution |
-	sideToRoll := #( 1 ) asOrderedCollection.
-
-	aWormHole := WormHole between: 2 and: 3.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: fiveSquares.
-
-	aBoard := Board
-		          with: fiveSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	| aGame |
+	aGameBuilder setAvailableCards: aSetCardManagerWithAllyCards.
 	aGame := aGameBuilder build.
 
 	self

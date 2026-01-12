@@ -237,7 +237,6 @@ CancellationCardTest >> testWhenAShipPlaysAnCancelationCardThenItIsNoLongerInIts
 
 	| aGame expectedCards |
 	aSetCardManager add: aCancellationCardProbabilisticEvent.
-
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 
 	aGameBuilder setDices: someDices.
