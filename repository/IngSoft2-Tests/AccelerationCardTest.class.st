@@ -112,7 +112,7 @@ AccelerationCardTest >> should: anErrorBlock raise: anErrorClass withMessageText
 
 { #category : 'tests' }
 AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenAllRolledNumbersAreIncreasedByOne [
-
+"prueba"
 	| aGame expectedPosition expectedFuel |
 	expectedPosition := Position at: 2 in: 1.
 	expectedFuel := Fuel with: 0 upTo: 2 in: HasFuelState new.
