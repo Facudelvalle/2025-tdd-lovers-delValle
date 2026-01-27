@@ -13,6 +13,10 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'assignments' }
+Board class >> assignPositionsToSquaresFrom: aDistribution [
+]
+
 { #category : 'validation' }
 Board class >> lengthIsValid: aLength [
 
@@ -46,7 +50,10 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 	self lengthIsValid: aLength.
 	self validate: aWormHole fallsInto: aLength.
 	self validate: aLength isSmallerThanTheEndingOf: aWormHole.
-	newDistribution := self replace: aDistribution withEndPointsFrom: aWormHole.
+	newDistribution := self
+		                   replace: aDistribution
+		                   withEndPointsFrom: aWormHole.
+	self assignPositionsToSquaresFrom: newDistribution.
 	^ self new
 		  initializeWith: aLength
 		  and: aWormHole
