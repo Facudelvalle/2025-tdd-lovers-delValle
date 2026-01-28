@@ -32,6 +32,12 @@ HyperGravitySquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitud
 	rollToContinue := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
 ]
 
+{ #category : 'transformations' }
+HyperGravitySquare >> invert [
+
+	^ InvertedHyperGravitySquare in: position with: rollToContinue
+]
+
 { #category : 'effect' }
 HyperGravitySquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 

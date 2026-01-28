@@ -32,6 +32,12 @@ MoonWalkSquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitude [
 	magnitude := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
 ]
 
+{ #category : 'transformations' }
+MoonWalkSquare >> invert [
+
+	^ InvertedMoonWalkSquare in: position with: magnitude
+]
+
 { #category : 'effect' }
 MoonWalkSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 

@@ -121,6 +121,12 @@ Game >> applyRollModifier: aPenalty [
 ]
 
 { #category : 'action' }
+Game >> applyToAllShipsGravityPenaltyOf: aRollToContinueValue [
+
+	ships do: [ :aShip | aShip applyGravityPenalty: aRollToContinueValue ]
+]
+
+{ #category : 'action' }
 Game >> calculateDistanceBetween: aPosition and: anotherPosition [
 
 	^ board calculateDistanceBetween: aPosition and: anotherPosition
@@ -142,6 +148,12 @@ Game >> finish [
 Game >> generateCard [
 
 	^ cards generateFor: 1.
+]
+
+{ #category : 'action' }
+Game >> giveAnotherCardToAllOtherShips [
+
+	ships do: [ :aShip | aShip addCards: self generateCard ]
 ]
 
 { #category : 'action' }
@@ -219,7 +231,7 @@ Game >> move: aShip with: rolledNumber [
 	winner := aShip
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 Game >> moveAllOtherShipsBackFourSquares [
 
 	self moveShipsBackwards: 4

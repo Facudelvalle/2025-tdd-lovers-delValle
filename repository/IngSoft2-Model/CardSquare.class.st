@@ -16,6 +16,12 @@ CardSquare >> applyOn: aShip and: aPosition in: aGame [
 	^ aPosition.
 ]
 
+{ #category : 'transformations' }
+CardSquare >> invert [
+
+	^ InvertedCardSquare in: position
+]
+
 { #category : 'effect' }
 CardSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 
