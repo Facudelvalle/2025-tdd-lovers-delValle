@@ -14,6 +14,12 @@ BlackHoleSquare >> applyOn: aShip and: aPosition in: aGame [
 	^ aGame goBackFourSquares: aShip from: aPosition
 ]
 
+{ #category : 'transformations' }
+BlackHoleSquare >> invert [
+
+	^ InvertedBlackHoleSquare in: position
+]
+
 { #category : 'effect' }
 BlackHoleSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 

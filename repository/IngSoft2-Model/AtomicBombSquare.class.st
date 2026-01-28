@@ -19,6 +19,12 @@ AtomicBombSquare >> applyOn: aShip and: aPosition in: aGame [
 	^ shipNewPosition 
 ]
 
+{ #category : 'transformations' }
+AtomicBombSquare >> invert [
+
+	^ InvertedAtomicBombSquare in: position
+]
+
 { #category : 'effect' }
 AtomicBombSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 

@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : 'playing' }
-OverloadCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+OverloadCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
 	anAffectedShip applyRollModifier: -2.
@@ -18,12 +18,13 @@ OverloadCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and:
 ]
 
 { #category : 'playing' }
-OverloadCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+OverloadCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
 	self
 		applyEffectPlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: anAffectedShip
+		and: anAffectedSquaresPosition
 		in: aGame.
 	aPlayingShip remove: self
 ]
@@ -38,4 +39,16 @@ OverloadCard >> cancelEffectIn: aGame [
 OverloadCard >> compare: aShip and: anotherShip [
 
 	^ false
+]
+
+{ #category : 'comparing' }
+OverloadCard >> equalsCard: aCard [
+
+	^ aCard isOverloadCard
+]
+
+{ #category : 'comparing' }
+OverloadCard >> isOverloadCard [
+
+	^ true
 ]

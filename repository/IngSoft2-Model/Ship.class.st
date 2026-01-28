@@ -299,7 +299,8 @@ Ship >> restoreFuel [
 ]
 
 { #category : 'comparing' }
-Ship >> validateCard: aCard [ 
-	
-	(cards includes: aCard) ifFalse: [ Error signal: 'The ship does not have that card on its hand.' ] 
+Ship >> validateCard: aCard [
+
+	(cards includes: aCard) ifFalse: [
+		Error signal: 'The ship does not have that card on its hand.' ]
 ]

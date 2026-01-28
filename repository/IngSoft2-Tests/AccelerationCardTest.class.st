@@ -124,7 +124,8 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenAllRolledNumbers
 		play: anAccelerationCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 
@@ -152,7 +153,8 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenItIsNoLongerInIt
 		play: anAccelerationCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -172,7 +174,8 @@ AccelerationCardTest >> testWhenAShipTriesToPlayAnAccelerationCardThatIsNotInIts
 				play: anAccelerationCard
 				by: aBlueShip
 				affecting: aNullCard
-				and: aBlackShip ]
+				and: aBlackShip
+				and: aPlainSquare ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
@@ -190,7 +193,8 @@ AccelerationCardTest >> testWhenAShipTriesToPlayAnAccelerationCardWhenItIsNotIts
 				play: anAccelerationCard
 				by: aBlackShip
 				affecting: aNullCard
-				and: aBlueShip ]
+				and: aBlueShip
+				and: aPlainSquare ]
 		raise: Error
 		withMessageText:
 		'A permanent card cannot be played when it is not your turn.'

@@ -173,6 +173,12 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	activePermanentCards := OrderedCollection new
 ]
 
+{ #category : 'changing state' }
+Game >> invertSquareIn: anAffectedSquaresPosition [
+
+	board invertSquareIn: anAffectedSquaresPosition
+]
+
 { #category : 'action' }
 Game >> jump: squaresToJump from: aPosition [ 
 	
@@ -213,6 +219,12 @@ Game >> move: aShip with: rolledNumber [
 	winner := aShip
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> moveAllOtherShipsBackFourSquares [
+
+	self moveShipsBackwards: 4
+]
+
 { #category : 'action' }
 Game >> moveShipsBackwards: aMagnitude [
 
@@ -247,7 +259,7 @@ Game >> nextTurnPlay [
 ]
 
 { #category : 'action' }
-Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip [
+Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip and: anAffectedSquare [
 
 	aPlayingShip validateCard: aPlayedCard.
 
@@ -255,17 +267,19 @@ Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfec
 		bePlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: anAfectedShip
+		and: anAffectedSquare
 		in: self
 ]
 
 { #category : 'action' }
-Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip [
+Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip and: anAffectedSquare [
 
 	lastPlayedCard
 		applyEffectPlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: aTargetShip
-		in: self.
+		and: anAffectedSquare
+		in: self
 ]
 
 { #category : 'printing' }

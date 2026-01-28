@@ -121,7 +121,9 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveEnoughFuelTh
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -146,7 +148,9 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItCanUseTheOtherShipsFuelWhenItH
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -174,7 +178,8 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItIsNoLongerInItsHand [
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -194,7 +199,9 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItsAllyCanUseTheShipsFuelWhenItH
 		play: anAllyCard
 		by: aBlackShip
 		affecting: aNullCard
-		and: aBlueShip.
+		and: aBlueShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPass.
@@ -220,12 +227,16 @@ AllyCardTest >> testWhenAShipPlaysTwoAllyCardsAndOneOfItsAlliesDoesNotHaveEnough
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
+
 	aGame
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aRedShip.
+		and: aRedShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPass.
@@ -253,7 +264,8 @@ AllyCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid 
 				play: anAllyCard
 				by: aBlueShip
 				affecting: aNullCard
-				and: aBlackShip ]
+				and: aBlackShip
+				and: aPlainSquare ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
@@ -271,7 +283,8 @@ AllyCardTest >> testWhenAShipTriesToPlayAnAllyCardWhenItIsNotItsTurnThenInvalid 
 				play: anAllyCard
 				by: aBlackShip
 				affecting: aNullCard
-				and: aBlueShip ]
+				and: aBlueShip
+				and: aPlainSquare ]
 		raise: Error
 		withMessageText:
 		'A permanent card cannot be played when it is not your turn.'

@@ -10,15 +10,22 @@ Class {
 }
 
 { #category : 'playing' }
-NullCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+NullCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
 	Error signal:
 		'A Redo card can not be played when there are no played cards yet.'
 ]
 
 { #category : 'playing' }
-NullCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+NullCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 	"This method is never reached but we consider its presence necessary because of the inherentance design."
+
+	
+]
+
+{ #category : 'comparing' }
+NullCard >> equalsCard: aCard [
+	"This method is never reached but I consider its presence necessary because of the inheretance design."
 
 	
 ]

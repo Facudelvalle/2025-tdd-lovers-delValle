@@ -9,16 +9,21 @@ Class {
 }
 
 { #category : 'playing' }
-CancellationCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+CancellationCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
 	aGame remove: anAffectedCard playedBy: anAffectedShip.
 	aGame lastPlayedCard: self
 ]
 
 { #category : 'playing' }
-CancellationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+CancellationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
-	self applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame.
+	self
+		applyEffectPlayedBy: aPlayingShip
+		affecting: anAffectedCard
+		and: anAffectedShip
+		and: anAffectedSquaresPosition
+		in: aGame.
 	aPlayingShip remove: self
 ]
 
@@ -26,4 +31,16 @@ CancellationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAf
 CancellationCard >> compare: aShip and: anotherShip [
 
 	^ false
+]
+
+{ #category : 'comparing' }
+CancellationCard >> equalsCard: aCard [
+
+	^ aCard isCancellationCard 
+]
+
+{ #category : 'comparing' }
+CancellationCard >> isCancellationCard [
+
+	^ true
 ]

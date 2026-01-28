@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : 'playing' }
-AccelerationCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+AccelerationCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
 	aGame applyRollModifier: 1.
@@ -18,12 +18,13 @@ AccelerationCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard 
 ]
 
 { #category : 'playing' }
-AccelerationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+AccelerationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
 	self
 		applyEffectPlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: anAffectedShip
+		and: anAffectedSquaresPosition
 		in: aGame.
 	aPlayingShip remove: self
 ]
@@ -38,4 +39,16 @@ AccelerationCard >> cancelEffectIn: aGame [
 AccelerationCard >> compare: firstAlly and: secondAlly [
 
 	^ false
+]
+
+{ #category : 'comparing' }
+AccelerationCard >> equalsCard: aCard [
+
+	^ aCard isAccelerationCard
+]
+
+{ #category : 'comparing' }
+AccelerationCard >> isAccelerationCard [
+
+	^ true
 ]

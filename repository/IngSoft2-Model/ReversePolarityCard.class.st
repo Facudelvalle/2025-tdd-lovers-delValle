@@ -9,18 +9,33 @@ Class {
 }
 
 { #category : 'playing' }
-ReversePolarityCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip in: aGame [
+ReversePolarityCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
-	aGame validateNextPlayer: aPlayingShip
+	aGame validateNextPlayer: aPlayingShip.
+	aGame invertSquareIn: anAffectedSquaresPosition
 ]
 
 { #category : 'playing' }
-ReversePolarityCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+ReversePolarityCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
 	self
 		applyEffectPlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: anAffectedShip
+		and: anAffectedSquaresPosition
 		in: aGame.
+
 	aPlayingShip remove: self
+]
+
+{ #category : 'comparing' }
+ReversePolarityCard >> equalsCard: aCard [
+
+	^ aCard isReversePolarityCard
+]
+
+{ #category : 'comparing' }
+ReversePolarityCard >> isReversePolarityCard [
+
+	^ true
 ]
