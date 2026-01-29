@@ -30,7 +30,7 @@ OverloadCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffect
 ]
 
 { #category : 'cancelling' }
-OverloadCard >> cancelEffectIn: aGame [
+OverloadCard >> cancelEffectIn: aGame on: aPosition [
 
 	aGame applyRollModifier: 2
 ]

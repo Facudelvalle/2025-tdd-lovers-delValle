@@ -20,7 +20,8 @@ Class {
 		'aGameBuilder',
 		'aBoard',
 		'aNullCard',
-		'twentySquares'
+		'twentySquares',
+		'anAffectedSquaresPosition'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -33,6 +34,8 @@ RedoCardTest >> setUp [
 
 	fiveSquares := 5.
 	twentySquares := 20.
+
+	anAffectedSquaresPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -128,7 +131,7 @@ RedoCardTest >> testWhenAShipPlaysARedoCardThenItIsNoLongerInItsHand [
 		by: aBlueShip
 		affecting: anAccelerationCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -171,7 +174,7 @@ RedoCardTest >> testWhenAShipTriesToPlayARedoCardThatIsNotInItsHandThenInvalid [
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
@@ -228,7 +231,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -237,7 +240,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -246,7 +249,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		by: aBlueShip
 		affecting: anAccelerationCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -255,7 +258,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		by: aBlackShip
 		affecting: anAccelerationCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -299,7 +302,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThen
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -310,7 +313,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThen
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText:
 		'A permanent card cannot be played when it is not your turn.'
@@ -353,7 +356,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -362,7 +365,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -371,7 +374,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -425,14 +428,14 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARepeatCardThenTheEffectIsAppliedPr
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame
 		play: aRedoCard
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip amountOfCards equals: expectedSize
 ]
@@ -473,7 +476,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAp
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -482,7 +485,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAp
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
@@ -533,7 +536,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAllyCardThenTheEffectIsAppliedPro
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPass.
@@ -543,7 +546,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAllyCardThenTheEffectIsAppliedPro
 		by: aRedShip
 		affecting: aNullCard
 		and: aPinkShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPass.
@@ -597,7 +600,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsApplie
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -606,7 +609,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsApplie
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
@@ -651,7 +654,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedBeforeAnyCardIsPlayedThenItFails [
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText:
 		'A Redo card can not be played when there are no played cards yet.'

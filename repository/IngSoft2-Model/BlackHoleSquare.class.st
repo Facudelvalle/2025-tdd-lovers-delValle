@@ -11,7 +11,7 @@ Class {
 { #category : 'effect' }
 BlackHoleSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
 
-	aGame moveAllOtherShipsBackFourSquares.
+	aGame moveShipsBackwards: 4.
 	^ aPosition
 ]
 

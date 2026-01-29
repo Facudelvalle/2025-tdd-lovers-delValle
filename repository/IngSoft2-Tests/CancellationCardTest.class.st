@@ -25,7 +25,8 @@ Class {
 		'aGameBuilder',
 		'anAccelerationCard',
 		'anAccelerationCardProbabilisticEvent',
-		'aSetCardManager'
+		'aSetCardManager',
+		'anAffectedSquaresPosition'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -39,10 +40,12 @@ CancellationCardTest >> setUp [
 	twentySquares := 20.
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
 
-	aWormHole := WormHole between: 18 and: 19.
+	aWormHole := WormHole between: 5 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	anAffectedSquaresPosition := Position at: 5 in: 1.
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
@@ -103,6 +106,48 @@ CancellationCardTest >> should: anErrorBlock raise: anErrorClass withMessageText
 ]
 
 { #category : 'tests' }
+CancellationCardTest >> testWhenACancellationCardIsUsedAfterAReversePolarityCardThenTheEffectIsEliminated [
+
+	| expectedPosition aGame aReversePolarityCard aReversePolarityCardProbabilisticEvent |
+	expectedPosition := Position at: 19 in: 1.
+
+	aReversePolarityCard := ReversePolarityCard new.
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+
+	aSetCardManager add: aReversePolarityCardProbabilisticEvent.
+	aSetCardManager add: aCancellationCardProbabilisticEvent.
+
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame
+		play: aCancellationCard
+		by: aBlueShip
+		affecting: aReversePolarityCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
 CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAccelerationCardThenTheEffectIsEliminated [
 
 	| expectedPosition expectedFuel aGame |
@@ -121,7 +166,7 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAccelerationCardTh
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -130,7 +175,7 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAccelerationCardTh
 		by: aBlackShip
 		affecting: anAccelerationCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
@@ -165,7 +210,7 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAllyCardThenTheEff
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -176,7 +221,7 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAllyCardThenTheEff
 		by: aBlackShip
 		affecting: anAllyCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
@@ -208,7 +253,7 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnOverloadCardThenTh
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 	aGame
@@ -216,12 +261,62 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnOverloadCardThenTh
 		by: aBlackShip
 		affecting: anOverloadCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
 	self assert: (aBlackShip currentPositionEquals: expectedPosition).
 	self assert: (aBlackShip fuelEquals: expectedFuel)
+]
+
+{ #category : 'tests' }
+CancellationCardTest >> testWhenACancellationCardIsUsedAfterTwoReversePolarityCardsThenTheEffectOfTheSquareIsInverted [
+
+	| expectedPosition aGame aReversePolarityCard aReversePolarityCardProbabilisticEvent |
+	expectedPosition := Position at: 19 in: 1.
+
+	aReversePolarityCard := ReversePolarityCard new.
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+
+	aSetCardManager add: aReversePolarityCardProbabilisticEvent.
+	aSetCardManager add: aCancellationCardProbabilisticEvent.
+
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip
+		and: anAffectedSquaresPosition.
+
+	aGame
+		play: aCancellationCard
+		by: aBlackShip
+		affecting: aReversePolarityCard
+		and: aBlueShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+
+	self assert: (aBlackShip currentPositionEquals: expectedPosition)
 ]
 
 { #category : 'tests' }
@@ -242,7 +337,7 @@ CancellationCardTest >> testWhenACancellationCardIsUsedBeforeHavingAnActiveCardT
 				by: aBlackShip
 				affecting: anAccelerationCard
 				and: aBlueShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The card is not active.'
 ]
@@ -265,13 +360,14 @@ CancellationCardTest >> testWhenAShipPlaysAnCancelationCardThenItIsNoLongerInIts
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
+
 	aGame
 		play: aCancellationCard
 		by: aBlueShip
 		affecting: anAccelerationCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -293,7 +389,7 @@ CancellationCardTest >> testWhenAShipTriesToPlayACancellationCardThatIsNotInItsH
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]

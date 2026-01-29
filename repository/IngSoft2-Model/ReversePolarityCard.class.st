@@ -12,7 +12,9 @@ Class {
 ReversePolarityCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
-	aGame invertSquareIn: anAffectedSquaresPosition
+	aGame invertSquareIn: anAffectedSquaresPosition.
+	aGame lastPlayedCard: self.
+	aGame addActiveCard: self
 ]
 
 { #category : 'playing' }
@@ -26,6 +28,12 @@ ReversePolarityCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: a
 		in: aGame.
 
 	aPlayingShip remove: self
+]
+
+{ #category : 'cancelling' }
+ReversePolarityCard >> cancelEffectIn: aGame on: aPosition [
+
+	aGame invertSquareIn: aPosition
 ]
 
 { #category : 'comparing' }

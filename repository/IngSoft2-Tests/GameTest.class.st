@@ -472,7 +472,6 @@ GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMa
 
 	aGame := aGameBuilder build.
 
-
 	self assert: (aBlueShip fuelEquals: expectedFuel).
 	self assert: (aBlackShip fuelEquals: expectedFuel)
 ]

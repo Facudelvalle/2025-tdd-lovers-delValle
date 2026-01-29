@@ -36,6 +36,12 @@ Ship >> adjust: aRolledNumber [
 	^ aRolledNumber + rollModifier
 ]
 
+{ #category : 'adding' }
+Ship >> adjustSquare: aSquare [
+
+	position := position adjustSquare: aSquare
+]
+
 { #category : 'accessing' }
 Ship >> amountOfCards [
 

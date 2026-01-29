@@ -11,7 +11,7 @@ Class {
 { #category : 'effect' }
 WormHoleEnd >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
 
-
+	^ wormHole applyEndInvertedEffectOn: aPosition in: aGame
 ]
 
 { #category : 'effect' }

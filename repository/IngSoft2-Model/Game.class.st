@@ -238,15 +238,15 @@ Game >> move: aShip with: rolledNumber [
 ]
 
 { #category : 'action' }
-Game >> moveAllOtherShipsBackFourSquares [
-
-	self moveShipsBackwards: 4
-]
-
-{ #category : 'action' }
 Game >> moveShipsBackwards: aMagnitude [
 
 	ships do: [ :aShip | aShip moveBackwards: aMagnitude in: board ]
+]
+
+{ #category : 'as yet unclassified' }
+Game >> moveShipsTo: aSquare [
+
+	ships do: [ :aShip | aShip adjustSquare: aSquare ]
 ]
 
 { #category : 'action' }
@@ -317,11 +317,11 @@ Game >> printBoard [
 ]
 
 { #category : 'removing' }
-Game >> remove: anAffectedCard playedBy: aShip [
+Game >> remove: anAffectedCard playedBy: aShip on: aPosition [
 
 	self validateIsActive: anAffectedCard.
 	activePermanentCards remove: anAffectedCard.
-	anAffectedCard cancelEffectIn: self
+	anAffectedCard cancelEffectIn: self on: aPosition
 ]
 
 { #category : 'action' }

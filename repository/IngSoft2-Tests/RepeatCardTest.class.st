@@ -19,7 +19,8 @@ Class {
 		'anAccelerationCard',
 		'anAccelerationCardProbabilisticEvent',
 		'aPlainSquare',
-		'aPlainSquareProbabilisticEvent'
+		'aPlainSquareProbabilisticEvent',
+		'anAffectedSquaresPosition'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -31,6 +32,8 @@ RepeatCardTest >> setUp [
 	super setUp.
 
 	twentySquares := 20.
+
+	anAffectedSquaresPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -111,7 +114,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAfterAShipMovesThenTheCardDoesntA
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPass.
@@ -156,7 +159,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsABackHoleEfectT
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -200,7 +203,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsACardEffectThen
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -242,7 +245,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAMoonWalkEfectT
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -282,7 +285,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsANullEfectThenI
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
@@ -327,7 +330,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAnAtomicBombEff
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -373,7 +376,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAnHyperGavityEf
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
@@ -426,7 +429,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAnHyperJumpEfec
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -465,7 +468,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardThenItIsNoLongerInItsHand [
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -503,7 +506,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardWhenIsNotItsTurnThenItsEffectIsAp
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -554,7 +557,7 @@ RepeatCardTest >> testWhenAShipTriesToPlayARepeatCardThatIsNotInItsHandThenInval
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]

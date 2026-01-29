@@ -46,6 +46,7 @@ WormHole class >> cannotEndInANegative: anEnd [
 { #category : 'as yet unclassified' }
 WormHole >> applyBeginningInvertedEffectOn: aPosition in: aGame [
 
+	aGame moveShipsTo: end position currentSquare.
 	^ aPosition
 ]
 
@@ -58,6 +59,7 @@ WormHole >> applyBeginningRegularEffectOn: aPosition [
 { #category : 'as yet unclassified' }
 WormHole >> applyEndInvertedEffectOn: aPosition in: aGame [
 
+	aGame moveShipsTo: beginning position currentSquare.
 	^ aPosition
 ]
 

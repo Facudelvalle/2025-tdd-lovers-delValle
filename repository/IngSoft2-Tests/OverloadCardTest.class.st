@@ -18,7 +18,8 @@ Class {
 		'anOverloadCardProbabilisticEvent',
 		'someShips',
 		'aGameBuilder',
-		'aNullCard'
+		'aNullCard',
+		'anAffectedSquaresPosition'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -30,6 +31,8 @@ OverloadCardTest >> setUp [
 	super setUp.
 
 	twentySquares := 20.
+
+	anAffectedSquaresPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -113,8 +116,8 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
-		
+		and: anAffectedSquaresPosition.
+
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
@@ -167,7 +170,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenItIsNoLongerInItsHand [
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -204,7 +207,8 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
+
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
@@ -250,7 +254,7 @@ OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardThatIsNotInItsHandThen
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
@@ -284,7 +288,7 @@ OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardWhenItIsNotItsTurnThen
 				by: aBlackShip
 				affecting: aNullCard
 				and: aBlueShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText:
 		'A permanent card cannot be played when it is not your turn.'
