@@ -121,6 +121,12 @@ Game >> applyRollModifier: aPenalty [
 ]
 
 { #category : 'action' }
+Game >> applyToAllShipsGravityPenaltyOf: aRollToContinueValue [
+
+	ships do: [ :aShip | aShip applyGravityPenalty: aRollToContinueValue ]
+]
+
+{ #category : 'action' }
 Game >> calculateDistanceBetween: aPosition and: anotherPosition [
 
 	^ board calculateDistanceBetween: aPosition and: anotherPosition
@@ -142,6 +148,12 @@ Game >> finish [
 Game >> generateCard [
 
 	^ cards generateFor: 1.
+]
+
+{ #category : 'action' }
+Game >> giveAnotherCardToAllOtherShips [
+
+	ships do: [ :aShip | aShip addCards: self generateCard ]
 ]
 
 { #category : 'action' }
@@ -171,6 +183,12 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	lastPlayedCard := NullCard new.
 	raceGoal := Position at: 0 in: someLaps.
 	activePermanentCards := OrderedCollection new
+]
+
+{ #category : 'changing state' }
+Game >> invertSquareIn: anAffectedSquaresPosition [
+
+	board invertSquareIn: anAffectedSquaresPosition
 ]
 
 { #category : 'action' }
@@ -214,6 +232,12 @@ Game >> move: aShip with: rolledNumber [
 ]
 
 { #category : 'action' }
+Game >> moveAllOtherShipsBackFourSquares [
+
+	self moveShipsBackwards: 4
+]
+
+{ #category : 'action' }
 Game >> moveShipsBackwards: aMagnitude [
 
 	ships do: [ :aShip | aShip moveBackwards: aMagnitude in: board ]
@@ -247,7 +271,7 @@ Game >> nextTurnPlay [
 ]
 
 { #category : 'action' }
-Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip [
+Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip and: anAffectedSquare [
 
 	aPlayingShip validateCard: aPlayedCard.
 
@@ -255,17 +279,19 @@ Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfec
 		bePlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: anAfectedShip
+		and: anAffectedSquare
 		in: self
 ]
 
 { #category : 'action' }
-Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip [
+Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip and: anAffectedSquare [
 
 	lastPlayedCard
 		applyEffectPlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: aTargetShip
-		in: self.
+		and: anAffectedSquare
+		in: self
 ]
 
 { #category : 'printing' }

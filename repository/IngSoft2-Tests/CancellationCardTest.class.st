@@ -9,7 +9,7 @@ Class {
 		'aBlackShip',
 		'aLoadedDice',
 		'aDistributionManager',
-		'aPlainSquareSquare',
+		'aPlainSquare',
 		'aProbabilityOfOne',
 		'aPlainSquareSquareProbabilisticEvent',
 		'aDistribution',
@@ -45,10 +45,10 @@ CancellationCardTest >> setUp [
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionManager := ProbablisiticEventsManager new.
-	aPlainSquareSquare := PlainSquare new.
+	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
 	aPlainSquareSquareProbabilisticEvent := ProbabilisticEvent
-		                                        for: aPlainSquareSquare
+		                                        for: aPlainSquare
 		                                        with: aProbabilityOfOne.
 	aDistributionManager add: aPlainSquareSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
@@ -120,13 +120,18 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAccelerationCardTh
 		play: anAccelerationCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
+
 	aGame
 		play: aCancellationCard
 		by: aBlackShip
 		affecting: anAccelerationCard
-		and: aBlueShip.
+		and: aBlueShip
+		and: aPlainSquare.
+
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
@@ -159,15 +164,20 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAllyCardThenTheEff
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
+
 	aGame
 		play: aCancellationCard
 		by: aBlackShip
 		affecting: anAllyCard
-		and: aBlueShip.
+		and: aBlueShip
+		and: aPlainSquare.
+
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
@@ -197,13 +207,17 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnOverloadCardThenTh
 		play: anOverloadCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
 	aGame
 		play: aCancellationCard
 		by: aBlackShip
 		affecting: anOverloadCard
-		and: aBlueShip.
+		and: aBlueShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
 
 	self assert: (aBlackShip currentPositionEquals: expectedPosition).
@@ -227,7 +241,8 @@ CancellationCardTest >> testWhenACancellationCardIsUsedBeforeHavingAnActiveCardT
 				play: aCancellationCard
 				by: aBlackShip
 				affecting: anAccelerationCard
-				and: aBlueShip ]
+				and: aBlueShip
+				and: aPlainSquare ]
 		raise: Error
 		withMessageText: 'The card is not active.'
 ]
@@ -249,12 +264,14 @@ CancellationCardTest >> testWhenAShipPlaysAnCancelationCardThenItIsNoLongerInIts
 		play: anAccelerationCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
 	aGame
 		play: aCancellationCard
 		by: aBlueShip
 		affecting: anAccelerationCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -275,7 +292,8 @@ CancellationCardTest >> testWhenAShipTriesToPlayACancellationCardThatIsNotInItsH
 				play: aCancellationCard
 				by: aBlueShip
 				affecting: aNullCard
-				and: aBlackShip ]
+				and: aBlackShip
+				and: aPlainSquare ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]

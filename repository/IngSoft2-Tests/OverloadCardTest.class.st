@@ -112,7 +112,9 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 		play: anOverloadCard
 		by: aBlackShip
 		affecting: aNullCard
-		and: aBlueShip.
+		and: aBlueShip
+		and: aPlainSquare.
+		
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
@@ -164,7 +166,8 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenItIsNoLongerInItsHand [
 		play: anOverloadCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: aPlainSquare.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -200,7 +203,8 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 		play: anOverloadCard
 		by: aBlackShip
 		affecting: aNullCard
-		and: aBlueShip.
+		and: aBlueShip
+		and: aPlainSquare.
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
@@ -245,7 +249,8 @@ OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardThatIsNotInItsHandThen
 				play: anOverloadCard
 				by: aBlueShip
 				affecting: aNullCard
-				and: aBlackShip ]
+				and: aBlackShip
+				and: aPlainSquare ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
@@ -254,14 +259,13 @@ OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardThatIsNotInItsHandThen
 OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardWhenItIsNotItsTurnThenInvalid [
 
 	| aGame sideToRoll aLoadedDice aBoard someDices aDistribution |
-	
 	sideToRoll := #( 1 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aDistribution := aDistributionManager generateFor: twentySquares .
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
-		          with: twentySquares 
+		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
@@ -276,10 +280,11 @@ OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardWhenItIsNotItsTurnThen
 	self
 		should: [
 			aGame
-				play: anOverloadCard 
+				play: anOverloadCard
 				by: aBlackShip
 				affecting: aNullCard
-				and: aBlueShip ]
+				and: aBlueShip
+				and: aPlainSquare ]
 		raise: Error
 		withMessageText:
 		'A permanent card cannot be played when it is not your turn.'

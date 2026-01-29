@@ -13,6 +13,13 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'assignments' }
+Board class >> assignPositionsToSquaresFrom: aDistribution [
+
+	aDistribution withIndexCollect: [ :aSquare :index |
+		aSquare assignToPosition: index - 1 ]
+]
+
 { #category : 'validation' }
 Board class >> lengthIsValid: aLength [
 
@@ -46,7 +53,10 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 	self lengthIsValid: aLength.
 	self validate: aWormHole fallsInto: aLength.
 	self validate: aLength isSmallerThanTheEndingOf: aWormHole.
-	newDistribution := self replace: aDistribution withEndPointsFrom: aWormHole.
+	newDistribution := self
+		                   replace: aDistribution
+		                   withEndPointsFrom: aWormHole.
+	self assignPositionsToSquaresFrom: newDistribution.
 	^ self new
 		  initializeWith: aLength
 		  and: aWormHole
@@ -54,12 +64,12 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 ]
 
 { #category : 'action' }
-Board >> applyEfectOn: aShip with: aPosition in: aGame [ 
-	
+Board >> applyEfectOn: aShip with: aPosition in: aGame [
+
 	| effect |
 	effect := self effectIn: aPosition currentSquare + 1.
 	aGame lastEffect: effect.
-	^ effect applyOn: aShip and: aPosition in: aGame .
+	^ effect applyOn: aShip and: aPosition in: aGame
 ]
 
 { #category : 'action' }
@@ -93,6 +103,12 @@ Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [
 	length := aLength.
 	wormHole := aWormHole.
 	distribution := aDistribution
+]
+
+{ #category : 'changing state' }
+Board >> invertSquareIn: anAffectedSquaresPosition [
+
+	(distribution at: anAffectedSquaresPosition currentSquare + 1) invert
 ]
 
 { #category : 'testing' }

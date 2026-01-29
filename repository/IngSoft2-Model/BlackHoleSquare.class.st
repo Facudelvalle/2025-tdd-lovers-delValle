@@ -9,13 +9,14 @@ Class {
 }
 
 { #category : 'effect' }
-BlackHoleSquare >> applyOn: aShip and: aPosition in: aGame [
+BlackHoleSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
 
-	^ aGame goBackFourSquares: aShip from: aPosition
+	aGame moveAllOtherShipsBackFourSquares.
+	^ aPosition
 ]
 
 { #category : 'effect' }
-BlackHoleSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+BlackHoleSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 
-	^ self applyOn: aShip and: aPosition in: aGame
+	^ aGame goBackFourSquares: aShip from: aPosition
 ]

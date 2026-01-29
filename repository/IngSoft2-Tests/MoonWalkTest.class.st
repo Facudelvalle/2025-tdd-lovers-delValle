@@ -131,13 +131,11 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
-
 
 	self
 		should: [ aGameBuilder build ]

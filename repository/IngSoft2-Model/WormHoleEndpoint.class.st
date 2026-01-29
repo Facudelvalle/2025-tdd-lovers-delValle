@@ -36,6 +36,11 @@ WormHoleEndpoint >> applyOn: aShip and: aPosition in: aGame [
 	^ aPosition
 ]
 
+{ #category : 'assignments' }
+WormHoleEndpoint >> assignToPosition: aNumber [
+
+]
+
 { #category : 'evaluating' }
 WormHoleEndpoint >> in: aPosition [
 

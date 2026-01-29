@@ -370,8 +370,7 @@ HyperJumpTest >> testWhenAllTheParsecsHaveBeenTakenThenTheNextShipTakesTheFirstP
 { #category : 'tests' }
 HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrectly [
 
-	| aBoard someDices aLoadedDice sideToRoll threeLaps aDistribution someParsecs aGame expectedPosition aRatio aDistributionManager aHyperJumpSquare  aPlainSquareProbabilisticEvent aParsecJumpOfTwo anotherParsecJumpOfTwo aParsecJumpOfThree anotherParsecJumpOfThree |
-
+	| aBoard someDices aLoadedDice sideToRoll threeLaps aDistribution someParsecs aGame expectedPosition aRatio aDistributionManager aHyperJumpSquare aHyperJumpSquareProbabilisticEvent aParsecJumpOfTwo anotherParsecJumpOfTwo aParsecJumpOfThree anotherParsecJumpOfThree |
 	sideToRoll := #( 7 ) asOrderedCollection.
 	threeLaps := 3.
 	aRatio := 2.
@@ -392,10 +391,10 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aPlainSquareProbabilisticEvent := ProbabilisticEvent
-		                                  for: aHyperJumpSquare
-		                                  with: aProbabilityOfOne.
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aHyperJumpSquareProbabilisticEvent := ProbabilisticEvent
+		                                      for: aHyperJumpSquare
+		                                      with: aProbabilityOfOne.
+	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
@@ -403,7 +402,6 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
