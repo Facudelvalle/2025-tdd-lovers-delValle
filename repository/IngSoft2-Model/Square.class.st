@@ -5,7 +5,8 @@ Class {
 	#name : 'Square',
 	#superclass : 'Object',
 	#instVars : [
-		'position'
+		'position',
+		'state'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -18,7 +19,23 @@ Square >> = aSquare [
 ]
 
 { #category : 'effect' }
+Square >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
+
+	self subclassResponsibility
+]
+
+{ #category : 'effect' }
 Square >> applyOn: aShip and: aPosition in: aGame [
+
+	^ state
+		  applyEffectOf: self
+		  on: aShip
+		  and: aPosition
+		  in: aGame
+]
+
+{ #category : 'effect' }
+Square >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 
 	self subclassResponsibility
 ]
@@ -29,16 +46,22 @@ Square >> assignToPosition: aNumber [
 	position := Position at: aNumber in: 1
 ]
 
+{ #category : 'initialization' }
+Square >> initialize [
+
+	state := RegularState new
+]
+
 { #category : 'transformations' }
 Square >> invert [
 
-	self subclassResponsibility
+	state := state invert
 ]
 
 { #category : 'effect' }
 Square >> repeatEffectFor: aShip on: aPosition in: aGame [
 
-	self subclassResponsibility
+	^ self applyOn: aShip and: aPosition in: aGame
 ]
 
 { #category : 'validation' }
