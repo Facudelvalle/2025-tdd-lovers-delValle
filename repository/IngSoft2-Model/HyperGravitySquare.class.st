@@ -20,14 +20,7 @@ HyperGravitySquare class >> between: aMinimumMagnitude and: aMaximumMagnitude [
 ]
 
 { #category : 'effect' }
-HyperGravitySquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
-
-	aGame applyToAllShipsGravityPenaltyOf: rollToContinue.
-	^ aPosition
-]
-
-{ #category : 'effect' }
-HyperGravitySquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
+HyperGravitySquare >> applyOn: aShip and: aPosition in: aGame [
 
 	aShip applyGravityPenalty: rollToContinue.
 	^ aPosition
@@ -36,8 +29,19 @@ HyperGravitySquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 { #category : 'initialization' }
 HyperGravitySquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitude [
 
-	super initialize.
 	rollToContinue := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
+]
+
+{ #category : 'transformations' }
+HyperGravitySquare >> invert [
+
+	^ InvertedHyperGravitySquare in: position with: rollToContinue
+]
+
+{ #category : 'effect' }
+HyperGravitySquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ self applyOn: aShip and: aPosition in: aGame
 ]
 
 { #category : 'validation' }

@@ -10,15 +10,20 @@ Class {
 }
 
 { #category : 'effect' }
-CardSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
-
-	aGame giveAnotherCardToAllOtherShips.
-	^ aPosition
-]
-
-{ #category : 'effect' }
-CardSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
+CardSquare >> applyOn: aShip and: aPosition in: aGame [
 
 	aShip addCards: (aGame generateCard).
 	^ aPosition.
+]
+
+{ #category : 'transformations' }
+CardSquare >> invert [
+
+	^ InvertedCardSquare in: position
+]
+
+{ #category : 'effect' }
+CardSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ self applyOn: aShip and: aPosition in: aGame
 ]

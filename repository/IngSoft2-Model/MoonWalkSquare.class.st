@@ -20,13 +20,7 @@ MoonWalkSquare class >> between: aMinimumMagnitude and: aMaximumMagnitude [
 ]
 
 { #category : 'effect' }
-MoonWalkSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
-
-	^ aGame move: aShip backwardsBy: magnitude
-]
-
-{ #category : 'effect' }
-MoonWalkSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [ 
+MoonWalkSquare >> applyOn: aShip and: aPosition in: aGame [ 
 	
 	aGame moveShipsBackwards: magnitude.
 	^ aPosition 
@@ -35,14 +29,19 @@ MoonWalkSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 { #category : 'initialization' }
 MoonWalkSquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitude [
 
-	super initialize.
 	magnitude := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
+]
+
+{ #category : 'transformations' }
+MoonWalkSquare >> invert [
+
+	^ InvertedMoonWalkSquare in: position with: magnitude
 ]
 
 { #category : 'effect' }
 MoonWalkSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 
-	^ aGame move: aShip backwardsBy: magnitude
+	^ aGame move: aShip backwardsBy: magnitude.
 ]
 
 { #category : 'validation' }

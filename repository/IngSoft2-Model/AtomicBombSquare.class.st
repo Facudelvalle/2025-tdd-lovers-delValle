@@ -9,22 +9,20 @@ Class {
 }
 
 { #category : 'effect' }
-AtomicBombSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
-
-	^ aPosition
-]
-
-{ #category : 'effect' }
-AtomicBombSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
-
+AtomicBombSquare >> applyOn: aShip and: aPosition in: aGame [ 
+	
 	| shipNewPosition squaresTraveled |
 	aGame moveShipsToSquareZero.
 	shipNewPosition := aPosition adjustSquare: 0.
-	squaresTraveled := aGame
-		                   calculateDistanceBetween: aPosition
-		                   and: shipNewPosition.
-	aShip modifyFuelBy: squaresTraveled.
-	^ shipNewPosition
+	squaresTraveled := aGame calculateDistanceBetween: aPosition and: shipNewPosition.
+	aShip modifyFuelBy: squaresTraveled. 
+	^ shipNewPosition 
+]
+
+{ #category : 'transformations' }
+AtomicBombSquare >> invert [
+
+	^ InvertedAtomicBombSquare in: position
 ]
 
 { #category : 'effect' }
