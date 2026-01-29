@@ -19,7 +19,7 @@ HyperJumpSquare class >> with: anArrayLength and: aRatio [
 ]
 
 { #category : 'effect' }
-HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
+HyperJumpSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 
 	| aUnitDistance positionAfterJump squaresToMove |
 	aUnitDistance := units removeFirst.
@@ -36,6 +36,8 @@ HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
 { #category : 'initialization' }
 HyperJumpSquare >> initializeWith: someUnits and: aRatio [
 
+	super initialize.
+
 	units := someUnits sort: [ :aUnit :nextUnit | aUnit > nextUnit ].
 	ratio := aRatio
 ]
@@ -44,14 +46,6 @@ HyperJumpSquare >> initializeWith: someUnits and: aRatio [
 HyperJumpSquare >> normalize: aUnitDistance [
 
 	^ aUnitDistance toParsec * ratio
-]
-
-{ #category : 'effect' }
-HyperJumpSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
-
-	^ self applyOn: aShip and: aPosition in: aGame
-
-	
 ]
 
 { #category : 'validation' }

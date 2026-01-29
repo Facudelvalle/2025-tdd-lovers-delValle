@@ -9,19 +9,13 @@ Class {
 }
 
 { #category : 'effect' }
-PlainSquare >> applyOn: aShip and: aPosition in: aGame [
+PlainSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
 
 	^ aPosition
 ]
 
-{ #category : 'transformations' }
-PlainSquare >> invert [
-
-	^ self
-]
-
 { #category : 'effect' }
-PlainSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+PlainSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 
-	^ self applyOn: aShip and: aPosition in: aGame
+	^ aPosition
 ]

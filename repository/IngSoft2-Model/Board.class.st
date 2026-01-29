@@ -108,13 +108,7 @@ Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [
 { #category : 'changing state' }
 Board >> invertSquareIn: anAffectedSquaresPosition [
 
-	| affectedSquare |
-	affectedSquare := distribution at:
-		                  anAffectedSquaresPosition currentSquare + 1.
-
-	distribution
-		at: anAffectedSquaresPosition currentSquare + 1
-		put: affectedSquare invert
+	(distribution at: anAffectedSquaresPosition currentSquare + 1) invert
 ]
 
 { #category : 'testing' }
