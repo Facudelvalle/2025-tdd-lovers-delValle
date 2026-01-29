@@ -179,6 +179,24 @@ Ship >> initializeCalled: aName [
 	allies add: NullShip new
 ]
 
+{ #category : 'instruction decoding' }
+Ship >> jump: squaresToMove on: aBoard [
+
+	| positionAfterJump initialPosition squaresTraveledWithSquareEffect |
+	initialPosition := position.
+	positionAfterJump := aBoard jump: squaresToMove from: initialPosition.
+
+	squaresTraveledWithSquareEffect := aBoard
+		                                   calculateDistanceBetween:
+		                                   initialPosition
+		                                   and: positionAfterJump.
+
+	self moveTo: positionAfterJump.
+	self
+		consumeFuel: squaresTraveledWithSquareEffect
+		from: initialPosition
+]
+
 { #category : 'penalty' }
 Ship >> losesTwoTurns [
 
@@ -247,11 +265,16 @@ Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 	positionBeforeWormHole := aBoard
 		                          update: position
 		                          with: adjustedRolledNumber.
+
 	squaresTraveledWithDice := aBoard
 		                           calculateDistanceBetween: position
 		                           and: positionBeforeWormHole.
-	positionAfterWormHole := aBoard moveIfWormHoleAt:
-		                         positionBeforeWormHole.
+
+	positionAfterWormHole := aBoard
+		                         move: self
+		                         ifWormHoleAt: positionBeforeWormHole
+		                         in: aGame.
+
 	self moveTo: positionAfterWormHole.
 	self consumeFuel: squaresTraveledWithDice from: initialPosition.
 

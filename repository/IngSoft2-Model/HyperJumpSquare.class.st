@@ -19,6 +19,21 @@ HyperJumpSquare class >> with: anArrayLength and: aRatio [
 ]
 
 { #category : 'effect' }
+HyperJumpSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
+
+	| aUnitDistance squaresToMove |
+	aUnitDistance := units removeFirst.
+
+	squaresToMove := self normalize: aUnitDistance.
+
+	aGame jumpOtherShipsADistanceOf: squaresToMove.
+
+	units add: aUnitDistance.
+
+	^ position
+]
+
+{ #category : 'effect' }
 HyperJumpSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 
 	| aUnitDistance positionAfterJump squaresToMove |

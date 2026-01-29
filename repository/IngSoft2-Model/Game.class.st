@@ -197,6 +197,12 @@ Game >> jump: squaresToJump from: aPosition [
 	^ board jump: squaresToJump from: aPosition 
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> jumpOtherShipsADistanceOf: squaresToMove [
+
+	ships do: [ :aShip | aShip jump: squaresToMove on: board ]
+]
+
 { #category : 'accessing' }
 Game >> lastEffect: anEffect [
 

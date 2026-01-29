@@ -33,7 +33,11 @@ Class {
 		'aHyperGravitySquare',
 		'aHyperGravitySquareProbabilisticEvent',
 		'aCardSquare',
-		'aCardSquareProbabilisticEvent'
+		'aCardSquareProbabilisticEvent',
+		'aRatioOfOne',
+		'aParsecJumpOfOne',
+		'aParsecJumpOfTwo',
+		'aParsecJumpOfThree'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -45,6 +49,12 @@ ReversePolarityCardTest >> setUp [
 	super setUp.
 
 	sixSquares := 6.
+
+	aRatioOfOne := 1.
+
+	aParsecJumpOfOne := Parsec with: 1.
+	aParsecJumpOfTwo := Parsec with: 2.
+	aParsecJumpOfThree := Parsec with: 3.
 
 	aDistributionManager := ProbablisiticEventsManager new.
 
@@ -242,6 +252,52 @@ ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAHyper
 ]
 
 { #category : 'tests' }
+ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAHyperJumpSquareThenItsEffectIsInverted [
+
+	| aGame aDistribution aBoard blackShipsExpectedPosition anAffectedSquaresPosition blueShipsExpectedPosition someParsecs aHyperJumpSquare aHyperJumpSquareProbabilisticEvent |
+	blueShipsExpectedPosition := Position at: 2 in: 1.
+	blackShipsExpectedPosition := Position at: 3 in: 1.
+
+	someParsecs := OrderedCollection new.
+	someParsecs add: aParsecJumpOfOne.
+	someParsecs add: aParsecJumpOfTwo.
+	someParsecs add: aParsecJumpOfThree.
+
+	aHyperJumpSquare := HyperJumpSquare
+		                    with: someParsecs
+		                    and: aRatioOfOne.
+	aHyperJumpSquareProbabilisticEvent := ProbabilisticEvent
+		                                      for: aHyperJumpSquare
+		                                      with: aProbabilityOfOne.
+	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: sixSquares.
+
+	aBoard := Board
+		          with: sixSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	anAffectedSquaresPosition := Position at: 2 in: 1.
+
+	aGameBuilder setBoard: aBoard.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+
+	self assert:
+		(aBlueShip currentPositionEquals: blueShipsExpectedPosition).
+	self assert:
+		(aBlackShip currentPositionEquals: blackShipsExpectedPosition)
+]
+
+{ #category : 'tests' }
 ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAMoonWalkSquareThenItsEffectIsInverted [
 
 	| aGame aDistribution aBoard anAffectedSquaresPosition blueShipsExpectedPosition |
@@ -271,6 +327,43 @@ ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAMoonW
 
 	self assert:
 		(aBlueShip currentPositionEquals: blueShipsExpectedPosition)
+]
+
+{ #category : 'tests' }
+ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAWormHoleEndpointThenItsEffectIsInverted [
+
+	| aGame aDistribution aBoard blackShipsExpectedPosition anAffectedSquaresPosition blueShipsExpectedPosition |
+	blueShipsExpectedPosition := Position at: 4 in: 1.
+	blackShipsExpectedPosition := Position at: 5 in: 1.
+
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: sixSquares.
+
+	aBoard := Board
+		          with: sixSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	anAffectedSquaresPosition := Position at: 4 in: 1.
+
+	aGameBuilder setBoard: aBoard.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+
+	self assert:
+		(aBlueShip currentPositionEquals: blueShipsExpectedPosition).
+	self assert:
+		(aBlackShip currentPositionEquals: blackShipsExpectedPosition)
 ]
 
 { #category : 'tests' }

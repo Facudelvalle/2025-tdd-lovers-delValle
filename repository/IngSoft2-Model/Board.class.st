@@ -124,9 +124,9 @@ Board >> jump: squaresToJump from: aPosition [
 ]
 
 { #category : 'accessing' }
-Board >> moveIfWormHoleAt: aPosition [
+Board >> move: aShip ifWormHoleAt: aPosition in: aGame [
 
-	^ wormHole moveIfEndPointAt: aPosition
+	^ wormHole move: aShip ifEndPointAt: aPosition in: aGame
 ]
 
 { #category : 'updating' }
