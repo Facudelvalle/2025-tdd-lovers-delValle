@@ -20,7 +20,25 @@ Class {
 		'aGameBuilder',
 		'aBoard',
 		'aNullCard',
-		'twentySquares'
+		'twentySquares',
+		'anAffectedSquaresPosition',
+		'aReversePolarityCard',
+		'aBlackHoleSquareProbabilisticEvent',
+		'aBlackHoleSquare',
+		'someDices',
+		'anAccelerationCard',
+		'anAccelerationCardProbabilisticEvent',
+		'anAllyCard',
+		'anAllyCardProbabilisticEvent',
+		'aCardSquare',
+		'aCardSquareProbabilisticEvent',
+		'aCancellationCard',
+		'aCancellationCardProbabilisticEvent',
+		'aRepeatCard',
+		'aRepeatCardProbabilisticEvent',
+		'aReversePolarityCardProbabilisticEvent',
+		'anOverloadCard',
+		'anOverloadCardProbabilisticEvent'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -33,6 +51,8 @@ RedoCardTest >> setUp [
 
 	fiveSquares := 5.
 	twentySquares := 20.
+
+	anAffectedSquaresPosition := Position at: 2 in: 1.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -59,8 +79,8 @@ RedoCardTest >> setUp [
 	aRedoCardProbabilisticEvent := ProbabilisticEvent
 		                               for: aRedoCard
 		                               with: aProbabilityOfOne.
-	aSetCardManager add: aRedoCardProbabilisticEvent.
 
+	someDices := OrderedCollection new.
 	someShips := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
@@ -71,8 +91,47 @@ RedoCardTest >> setUp [
 	aGameBuilder setRewards: aRewardManager.
 	aGameBuilder setAvailableCards: aSetCardManager.
 
+	aNullCard := NullCard new.
 
-	aNullCard := NullCard new
+	aBlackHoleSquare := BlackHoleSquare new.
+	aBlackHoleSquareProbabilisticEvent := ProbabilisticEvent
+		                                      for: aBlackHoleSquare
+		                                      with: aProbabilityOfOne.
+
+	anAccelerationCard := AccelerationCard new.
+	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
+		                                        for: anAccelerationCard
+		                                        with: aProbabilityOfOne.
+
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                for: anAllyCard
+		                                with: aProbabilityOfOne.
+
+	aCardSquare := CardSquare new.
+	aCardSquareProbabilisticEvent := ProbabilisticEvent
+		                                 for: aCardSquare
+		                                 with: aProbabilityOfOne.
+
+	aCancellationCard := CancellationCard new.
+	aCancellationCardProbabilisticEvent := ProbabilisticEvent
+		                                       for: aCancellationCard
+		                                       with: aProbabilityOfOne.
+
+	aRepeatCard := RepeatCard new.
+	aRepeatCardProbabilisticEvent := ProbabilisticEvent
+		                                 for: aRepeatCard
+		                                 with: aProbabilityOfOne.
+
+	aReversePolarityCard := ReversePolarityCard new.
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+
+	anOverloadCard := OverloadCard new.
+	anOverloadCardProbabilisticEvent := ProbabilisticEvent
+		                                    for: anOverloadCard
+		                                    with: aProbabilityOfOne
 ]
 
 { #category : 'asserting' }
@@ -88,10 +147,9 @@ RedoCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 { #category : 'tests' }
 RedoCardTest >> testWhenAShipPlaysARedoCardThenItIsNoLongerInItsHand [
 
-	| aGame sideToRoll aDistribution expectedCards anAccelerationCard anAccelerationCardProbabilisticEvent aLoadedDice someDices |
+	| aGame sideToRoll aDistribution expectedCards aLoadedDice |
 	sideToRoll := #( 10 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aDistribution := aDistributionManager generateFor: twentySquares.
@@ -101,11 +159,8 @@ RedoCardTest >> testWhenAShipPlaysARedoCardThenItIsNoLongerInItsHand [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne.
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
@@ -119,16 +174,16 @@ RedoCardTest >> testWhenAShipPlaysARedoCardThenItIsNoLongerInItsHand [
 		affecting: aNullCard
 		and: aBlackShip
 		and: aPlainSquare.
-		
+
 	aGame nextTurnPass.
 	aGame nextTurnPass.
-	
+
 	aGame
 		play: aRedoCard
 		by: aBlueShip
 		affecting: anAccelerationCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -136,10 +191,9 @@ RedoCardTest >> testWhenAShipPlaysARedoCardThenItIsNoLongerInItsHand [
 { #category : 'tests' }
 RedoCardTest >> testWhenAShipTriesToPlayARedoCardThatIsNotInItsHandThenInvalid [
 
-	| aGame sideToRoll aLoadedDice someDices aDistribution aCardManager anAllyCard anAllyCardProbabilisticEvent |
+	| aGame sideToRoll aLoadedDice aDistribution |
 	sideToRoll := #( 10 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
 
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -148,20 +202,12 @@ RedoCardTest >> testWhenAShipTriesToPlayARedoCardThatIsNotInItsHandThenInvalid [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
+	aSetCardManager add: anAllyCardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
-	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	self
@@ -171,7 +217,7 @@ RedoCardTest >> testWhenAShipTriesToPlayARedoCardThatIsNotInItsHandThenInvalid [
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
@@ -179,19 +225,14 @@ RedoCardTest >> testWhenAShipTriesToPlayARedoCardThatIsNotInItsHandThenInvalid [
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsAppliedProperly [
 
-	| sideToRoll expectedPosition expectedFuel aLoadedDice aCardSquare aCardSquareProbabilisticEvent aDistribution someDices aGame anAccelerationCard anAccelerationCardProbabilisticEvent aCancellationCard aCancellationCardProbabilisticEvent |
+	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution aGame |
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 2 in: 1.
 	expectedFuel := Fuel with: 5 upTo: 6 in: HasFuelState new.
 
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
 	aDistributionManager := ProbablisiticEventsManager new.
-	aCardSquare := CardSquare new.
-	aCardSquareProbabilisticEvent := ProbabilisticEvent
-		                                 for: aCardSquare
-		                                 with: aProbabilityOfOne.
 	aDistributionManager add: aCardSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -200,20 +241,10 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne.
-
-	aCancellationCard := CancellationCard new.
-	aCancellationCardProbabilisticEvent := ProbabilisticEvent
-		                                       for: aCancellationCard
-		                                       with: aProbabilityOfOne.
-
-	aSetCardManager add: aCancellationCardProbabilisticEvent.
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: aCancellationCardProbabilisticEvent.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -228,7 +259,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -237,7 +268,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -246,7 +277,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		by: aBlueShip
 		affecting: anAccelerationCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -255,7 +286,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 		by: aBlackShip
 		affecting: anAccelerationCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -267,11 +298,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThenItFails [
 
-	| sideToRoll aLoadedDice aDistribution someDices aGame anAccelerationCard anAccelerationCardProbabilisticEvent |
+	| sideToRoll aLoadedDice aDistribution aGame |
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
-
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
 
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -280,14 +309,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThen
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne.
-
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -299,7 +323,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThen
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -310,7 +334,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThen
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText:
 		'A permanent card cannot be played when it is not your turn.'
@@ -319,13 +343,12 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThen
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThenTheEffectIsAppliedProperly [
 
-	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution someDices aGame anAccelerationCard anAccelerationCardProbabilisticEvent |
+	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution aGame |
 	sideToRoll := #( 1 1 10 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 6 in: 1.
 	expectedFuel := Fuel with: 14 upTo: 20 in: HasFuelState new.
-
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -334,14 +357,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne.
-
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -353,7 +371,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -362,7 +380,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 
@@ -371,7 +389,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -382,19 +400,13 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedAfterARepeatCardThenTheEffectIsAppliedProperly [
 
-	| sideToRoll aLoadedDice aCardSquare aCardSquareProbabilisticEvent aDistribution someDices aGame aRepeatCard aRepeatCardProbabilisticEvent expectedSize |
+	| sideToRoll aLoadedDice aDistribution aGame expectedSize |
 	sideToRoll := #( 1 1 10 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedSize := 3.
 
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
 	aDistributionManager := ProbablisiticEventsManager new.
-	aCardSquare := CardSquare new.
-	aProbabilityOfOne := 1.
-	aCardSquareProbabilisticEvent := ProbabilisticEvent
-		                                 for: aCardSquare
-		                                 with: aProbabilityOfOne.
 	aDistributionManager add: aCardSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -403,14 +415,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARepeatCardThenTheEffectIsAppliedPr
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRepeatCard := RepeatCard new.
-	aRepeatCardProbabilisticEvent := ProbabilisticEvent
-		                                 for: aRepeatCard
-		                                 with: aProbabilityOfOne.
-
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: aRepeatCardProbabilisticEvent.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -425,28 +432,29 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARepeatCardThenTheEffectIsAppliedPr
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame
 		play: aRedoCard
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip amountOfCards equals: expectedSize
 ]
 
 { #category : 'tests' }
-RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAppliedProperly [
+RedoCardTest >> testWhenAnRedoCardIsUsedAfterAReversePolarityCardThenTheEffectIsAppliedProperly [
 
-	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution someDices aGame anAccelerationCard anAccelerationCardProbabilisticEvent |
-	sideToRoll := #( 1 1 3 ) asOrderedCollection.
-
-	expectedPosition := Position at: 5 in: 1.
-	expectedFuel := Fuel with: 1 upTo: 6 in: HasFuelState new.
-
+	| aGame aDistribution expectedPosition sideToRoll aLoadedDice |
+	sideToRoll := #( 10 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	expectedPosition := Position at: 6 in: 1.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	aBoard := Board
@@ -454,14 +462,56 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAp
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne.
+	anAffectedSquaresPosition := Position at: 10 in: 1.
 
+	aSetCardManager add: aRedoCardProbabilisticEvent.
+	aSetCardManager add: aReversePolarityCardProbabilisticEvent.
+
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame
+		play: aRedoCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAppliedProperly [
+
+	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution aGame |
+	sideToRoll := #( 1 1 3 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	expectedPosition := Position at: 5 in: 1.
+	expectedFuel := Fuel with: 1 upTo: 6 in: HasFuelState new.
+
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -473,7 +523,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAp
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -482,7 +532,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAp
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
@@ -494,15 +544,15 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAp
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAllyCardThenTheEffectIsAppliedProperly [
 
-	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution someDices aGame aRedShip aPinkShip anAllyCard anAllyCardProbabilisticEvent |
+	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution aGame aRedShip aPinkShip |
 	sideToRoll := #( 3 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 9 in: 1.
 	expectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
 
 	aRedShip := Ship called: 'RedShip'.
 	aPinkShip := Ship called: 'PinkShip'.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -511,15 +561,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAllyCardThenTheEffectIsAppliedPro
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-
-
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: anAllyCardProbabilisticEvent.
 
-	someDices := OrderedCollection new.
 	someShips add: aRedShip.
 	someShips add: aPinkShip.
 	someDices add: aLoadedDice.
@@ -533,7 +577,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAllyCardThenTheEffectIsAppliedPro
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPass.
@@ -543,7 +587,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAllyCardThenTheEffectIsAppliedPro
 		by: aRedShip
 		affecting: aNullCard
 		and: aPinkShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPass.
@@ -562,13 +606,12 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAllyCardThenTheEffectIsAppliedPro
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsAppliedProperly [
 
-	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution someDices aGame anOverloadCard anOverloadCardProbabilisticEvent |
+	| sideToRoll expectedPosition expectedFuel aLoadedDice aDistribution aGame |
 	sideToRoll := #( 3 1 3 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 2 in: 1.
 	expectedFuel := Fuel with: 2 upTo: 6 in: HasFuelState new.
-
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -577,15 +620,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsApplie
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-
-	anOverloadCard := OverloadCard new.
-	anOverloadCardProbabilisticEvent := ProbabilisticEvent
-		                                    for: anOverloadCard
-		                                    with: aProbabilityOfOne.
-
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: anOverloadCardProbabilisticEvent.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -597,7 +634,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsApplie
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPlay.
 
@@ -606,7 +643,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsApplie
 		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip
-		and: aPlainSquare.
+		and: anAffectedSquaresPosition.
 
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
@@ -618,9 +655,8 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsApplie
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedBeforeAnyCardIsPlayedThenItFails [
 
-	| sideToRoll aLoadedDice aDistribution someDices aGame anAccelerationCard anAccelerationCardProbabilisticEvent |
+	| sideToRoll aLoadedDice aDistribution aGame |
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
-
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistribution := aDistributionManager generateFor: twentySquares.
@@ -630,14 +666,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedBeforeAnyCardIsPlayedThenItFails [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne.
-
+	aSetCardManager add: aRedoCardProbabilisticEvent.
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -651,7 +682,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedBeforeAnyCardIsPlayedThenItFails [
 				by: aBlueShip
 				affecting: aNullCard
 				and: aBlackShip
-				and: aPlainSquare ]
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText:
 		'A Redo card can not be played when there are no played cards yet.'

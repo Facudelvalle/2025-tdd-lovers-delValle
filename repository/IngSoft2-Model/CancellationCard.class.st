@@ -11,7 +11,10 @@ Class {
 { #category : 'playing' }
 CancellationCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip and: anAffectedSquaresPosition in: aGame [
 
-	aGame remove: anAffectedCard playedBy: anAffectedShip.
+	aGame
+		remove: anAffectedCard
+		playedBy: anAffectedShip
+		on: anAffectedSquaresPosition.
 	aGame lastPlayedCard: self
 ]
 

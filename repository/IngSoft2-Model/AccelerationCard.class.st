@@ -30,7 +30,7 @@ AccelerationCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAf
 ]
 
 { #category : 'cancelling' }
-AccelerationCard >> cancelEffectIn: aGame [
+AccelerationCard >> cancelEffectIn: aGame on: aPosition [
 
 	aGame applyRollModifier: -1
 ]

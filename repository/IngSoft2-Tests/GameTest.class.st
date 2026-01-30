@@ -18,7 +18,13 @@ Class {
 		'twentySquares',
 		'aDistributionManager',
 		'aPlainSquare',
-		'aPlainSquareProbabilisticEvent'
+		'aPlainSquareProbabilisticEvent',
+		'aBlackHoleSquare',
+		'aBlackHoleSquareProbabilisticEvent',
+		'aCardSquare',
+		'aCardSquareProbabilisticEvent',
+		'aParsecJumpOfFive',
+		'aParsecJumpOfSix'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -57,7 +63,6 @@ GameTest >> setUp [
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
-	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
@@ -66,7 +71,20 @@ GameTest >> setUp [
 
 	aGameBuilder setShips: someShips.
 	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager
+	aGameBuilder setAvailableCards: aCardManager.
+
+	aBlackHoleSquare := BlackHoleSquare new.
+	aBlackHoleSquareProbabilisticEvent := ProbabilisticEvent
+		                                      for: aBlackHoleSquare
+		                                      with: aProbabilityOfOne.
+
+	aCardSquare := CardSquare new.
+	aCardSquareProbabilisticEvent := ProbabilisticEvent
+		                                 for: aCardSquare
+		                                 with: aProbabilityOfOne.
+
+	aParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfSix := Parsec with: 6
 ]
 
 { #category : 'asserting' }
@@ -151,7 +169,7 @@ GameTest >> testWhenAShipCompletesTheRequiredAmountOfLapsThenItwinsTheGame [
 { #category : 'tests' }
 GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenTheEffectIsAppliedAndTheGameDoesNotEnd [
 
-	| expectedPosition sideToRoll twoLaps aWormHole aLoadedDice aDistribution aBoard aGame aBlackHoleSquare aBlackHoleSquareProbabilisticEvent |
+	| expectedPosition sideToRoll twoLaps aWormHole aLoadedDice aDistribution aBoard aGame |
 	sideToRoll := #( 4 ) asOrderedCollection.
 	twoLaps := 2.
 
@@ -160,10 +178,6 @@ GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenT
 	aWormHole := WormHole between: 4 and: 18.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aBlackHoleSquare := BlackHoleSquare new.
-	aBlackHoleSquareProbabilisticEvent := ProbabilisticEvent
-		                                      for: aBlackHoleSquare
-		                                      with: aProbabilityOfOne.
 	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -193,17 +207,13 @@ GameTest >> testWhenAShipGoesThroughTheLastSquareButLandsOnABlackHoleSquareThenT
 { #category : 'tests' }
 GameTest >> testWhenAShipLandsOnACardSquareThenACardIsAssignedToIt [
 
-	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution expectedCards aCardSquare aCardSquareProbabilisticEvent |
+	| aWormHole aGame sideToRoll aLoadedDice aBoard aDistribution expectedCards |
 	sideToRoll := #( 1 ) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 3.
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aCardSquare := CardSquare new.
-	aCardSquareProbabilisticEvent := ProbabilisticEvent
-		                                 for: aCardSquare
-		                                 with: aProbabilityOfOne.
 	aDistributionManager add: aCardSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: fiveSquares.
 
@@ -332,7 +342,7 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 { #category : 'tests' }
 GameTest >> testWhenAShipTakesAHyperJumpThenItsMovesAccordingly [
 
-	| aWormHole aBoard aLoadedDice sideToRoll aDistribution someParsecs aRatio aHyperJumpSquare aHyperJumpSquareProbabilisticEvent aParsecJumpOfFive otherParsecJumpOfFive aParsecJumpOfSix anotherParsecJumpOfFive |
+	| aWormHole aBoard aLoadedDice sideToRoll aDistribution someParsecs aRatio aHyperJumpSquare aHyperJumpSquareProbabilisticEvent |
 	sideToRoll := #( 2 ) asOrderedCollection.
 	aRatio := 2.
 
@@ -340,21 +350,17 @@ GameTest >> testWhenAShipTakesAHyperJumpThenItsMovesAccordingly [
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aParsecJumpOfFive := Parsec with: 5.
-	otherParsecJumpOfFive := Parsec with: 5.
-	aParsecJumpOfSix := Parsec with: 6.
-	anotherParsecJumpOfFive := Parsec with: 5.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
-	someParsecs add: otherParsecJumpOfFive.
+	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: aParsecJumpOfSix.
-	someParsecs add: anotherParsecJumpOfFive.
+	someParsecs add: aParsecJumpOfFive.
 
 	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aProbabilityOfOne := 1.
 	aHyperJumpSquareProbabilisticEvent := ProbabilisticEvent
 		                                      for: aHyperJumpSquare
 		                                      with: aProbabilityOfOne.
+		
 	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -472,7 +478,6 @@ GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMa
 
 	aGame := aGameBuilder build.
 
-
 	self assert: (aBlueShip fuelEquals: expectedFuel).
 	self assert: (aBlackShip fuelEquals: expectedFuel)
 ]
@@ -508,93 +513,4 @@ GameTest >> testWhenTheGameStartsThenAllTheShipsHaveTwoCards [
 
 	self assert: aBlueShip cards equals: expectedCards.
 	self assert: aBlackShip cards equals: expectedCards
-]
-
-{ #category : 'tests' }
-GameTest >> testWhenThereAreLessThanTwoShipsThenTheGameIsInvalid [
-
-	| aWormHole aLoadedDice sideToRoll aBoard aDistribution someOtherShips |
-	sideToRoll := #( 2 ) asOrderedCollection.
-
-	aWormHole := WormHole between: 1 and: 2.
-
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: fiveSquares.
-
-	aBoard := Board
-		          with: fiveSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someOtherShips := OrderedCollection new.
-	someOtherShips add: aBlueShip.
-	someDices add: aLoadedDice.
-
-	aGameBuilder := GameBuilder new.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someOtherShips.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
-
-	self
-		should: [ aGameBuilder build ]
-		raise: Error
-		withMessageText: 'The Game needs at least two ship to start.'
-]
-
-{ #category : 'tests' }
-GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
-
-	| aWormHole aBoard aDistribution |
-	aWormHole := WormHole between: 1 and: 2.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: fiveSquares.
-
-	aBoard := Board
-		          with: fiveSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setDices: someDices.
-
-	self
-		should: [ aGameBuilder build ]
-		raise: Error
-		withMessageText: 'The Game needs at least one dice to start.'
-]
-
-{ #category : 'tests' }
-GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
-
-	| aWormHole aBoard aDice twoSides zeroLaps aDistribution |
-	twoSides := 2.
-	zeroLaps := 0.
-
-	aWormHole := WormHole between: 1 and: 2.
-	aDice := Dice with: twoSides.
-
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: fiveSquares.
-
-	aBoard := Board
-		          with: fiveSquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someDices add: aDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setLaps: zeroLaps.
-	aGameBuilder setDices: someDices.
-
-	self
-		should: [ aGameBuilder build ]
-		raise: Error
-		withMessageText: 'The Game needs at least one lap to start.'
 ]

@@ -43,7 +43,7 @@ AllyCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip a
 ]
 
 { #category : 'cancelling' }
-AllyCard >> cancelEffectIn: aGame [
+AllyCard >> cancelEffectIn: aGame on: aPosition [
 
 	allyOne removeAlly: allyTwo.
 	allyTwo removeAlly: allyOne.
