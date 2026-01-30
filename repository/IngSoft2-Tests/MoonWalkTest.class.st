@@ -6,10 +6,7 @@ Class {
 		'aBlueShip',
 		'aBlackShip',
 		'aDistributionManager',
-		'aMoonWalkSquare',
 		'aProbabilityOfOne',
-		'aMoonWalkSquareProbabilisticEvent',
-		'aDistribution',
 		'aRewardManager',
 		'zeroReward',
 		'zeroRewardProbabilisticEvent',
@@ -19,7 +16,8 @@ Class {
 		'aNullCard',
 		'aReversePolarityCard',
 		'aReversePolarityCardProbabilisticEvent',
-		'aSetCardManagerWithReversePolarityCards'
+		'aSetCardManagerWithReversePolarityCards',
+		'someDices'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -40,14 +38,6 @@ MoonWalkTest >> setUp [
 	aProbabilityOfOne := 1.
 
 	aDistributionManager := ProbablisiticEventsManager new.
-	aMoonWalkSquare := MoonWalkSquare between: 7 and: 7.
-	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
-		                                     for: aMoonWalkSquare
-		                                     with: aProbabilityOfOne.
-
-	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
 
 	aRewardManager := ProbablisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
@@ -68,6 +58,7 @@ MoonWalkTest >> setUp [
 	aSetCardManagerWithReversePolarityCards add:
 		aReversePolarityCardProbabilisticEvent.
 
+	someDices := OrderedCollection new.
 	someShips := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
@@ -92,15 +83,15 @@ MoonWalkTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 { #category : 'tests' }
 MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 
-	| sideToRoll aLoadedDice aBoard someDices |
+	| sideToRoll aLoadedDice aBoard aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aDistribution |
 	sideToRoll := #( 1 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aMoonWalkSquare := MoonWalkSquare between: -1 and: -1.
-
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
+
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -109,7 +100,6 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -125,7 +115,7 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkEffectOnTheFirstLapTheMagnitudeOfWhichIsGreaterThanAnothersShipSquareThenThatShipGoesBackToTheFirstSquare [
 
-	| expectedPosition sideToRoll aLoadedDice someDices aBoard aGame |
+	| expectedPosition sideToRoll aLoadedDice aBoard aGame aDistribution aMoonWalkSquare aMoonWalkSquareProbabilisticEvent |
 	expectedPosition := Position at: 0 in: 1.
 
 	sideToRoll := #( 5 ) asOrderedCollection.
@@ -133,12 +123,19 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkEffectOnTheFirstLapTheMagnitudeOfWh
 
 	aWormHole := WormHole between: 5 and: 6.
 
+	aMoonWalkSquare := MoonWalkSquare between: 7 and: 7.
+	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
+		                                     for: aMoonWalkSquare
+		                                     with: aProbabilityOfOne.
+
+	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
 	aBoard := Board
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -157,19 +154,19 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkEffectOnTheFirstLapTheMagnitudeOfWh
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnoughFuelToGoBackwardsThenTheyDoNotMoveAndLoseTwoTurns [
 
-	| expectedPosition sideToRoll aLoadedDice aBoard someDices aGame |
+	| expectedPosition sideToRoll aLoadedDice aBoard aGame aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aDistribution |
 	expectedPosition := Position at: 8 in: 1.
-	sideToRoll := #( 2 ) asOrderedCollection.
 
-	aWormHole := WormHole between: 2 and: 8.
+	sideToRoll := #( 2 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aProbabilityOfOne := 1.
-	aDistributionManager := ProbablisiticEventsManager new.
+	aWormHole := WormHole between: 2 and: 8.
+
 	aMoonWalkSquare := MoonWalkSquare between: 3 and: 3.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
+
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -178,7 +175,6 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -198,19 +194,19 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccordingWithTheSquareMagnitude [
 
-	| expectedPosition sideToRoll aLoadedDice aBoard someDices aGame |
+	| expectedPosition sideToRoll aLoadedDice aBoard aGame aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aDistribution |
 	expectedPosition := Position at: 6 in: 1.
-	sideToRoll := #( 2 ) asOrderedCollection.
 
-	aWormHole := WormHole between: 2 and: 8.
+	sideToRoll := #( 2 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aWormHole := WormHole between: 2 and: 8.
+
 	aMoonWalkSquare := MoonWalkSquare between: 2 and: 2.
-	aProbabilityOfOne := 1.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
+
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -219,7 +215,6 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -236,19 +231,17 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 
-	| expectedPosition sideToRoll aLoadedDice aBoard someDices aGame |
+	| expectedPosition sideToRoll aLoadedDice aBoard aGame aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aDistribution |
 	expectedPosition := Position at: 1 in: 1.
-	twentySquares := 20.
-	sideToRoll := #( 1 ) asOrderedCollection.
 
+	sideToRoll := #( 1 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aProbabilityOfOne := 1.
-	aDistributionManager := ProbablisiticEventsManager new.
 	aMoonWalkSquare := MoonWalkSquare between: 1 and: 2.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
+
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -256,8 +249,6 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
-
-	someDices := OrderedCollection new.
 
 	someDices add: aLoadedDice.
 
@@ -272,12 +263,21 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAnInvertedMoonWalkEffectTheMagnitudeOfWhichIsGreaterThanTheSquareInTheFirstLapThenTheShipGoesBackToTheFirstSquare [
 
-	| expectedPosition sideToRoll aLoadedDice someDices aBoard aGame anAffectedSquaresPosition |
+	| expectedPosition sideToRoll aLoadedDice aBoard aGame anAffectedSquaresPosition aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aDistribution |
 	expectedPosition := Position at: 0 in: 1.
+
 	sideToRoll := #( 4 1 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aWormHole := WormHole between: 4 and: 5.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aMoonWalkSquare := MoonWalkSquare between: 7 and: 7.
+	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
+		                                     for: aMoonWalkSquare
+		                                     with: aProbabilityOfOne.
+
+	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
 
 	anAffectedSquaresPosition := Position at: 6 in: 1.
 
@@ -286,7 +286,6 @@ MoonWalkTest >> testWhenAShipLandsOnAnInvertedMoonWalkEffectTheMagnitudeOfWhichI
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
@@ -311,11 +310,16 @@ MoonWalkTest >> testWhenAShipLandsOnAnInvertedMoonWalkEffectTheMagnitudeOfWhichI
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAnInvertedMoonWalkSquareThenTheOtherShipsDoNotMove [
 
-	| aGame aBoard anAffectedSquaresPosition expectedPosition sideToRoll aLoadedDice someDices |
+	| aGame aBoard anAffectedSquaresPosition expectedPosition sideToRoll aLoadedDice aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aDistribution |
 	expectedPosition := Position at: 9 in: 1.
 
 	sideToRoll := #( 9 7 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aMoonWalkSquare := MoonWalkSquare between: 7 and: 7.
+	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
+		                                     for: aMoonWalkSquare
+		                                     with: aProbabilityOfOne.
 
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
@@ -327,7 +331,6 @@ MoonWalkTest >> testWhenAShipLandsOnAnInvertedMoonWalkSquareThenTheOtherShipsDoN
 
 	anAffectedSquaresPosition := Position at: 7 in: 1.
 
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.

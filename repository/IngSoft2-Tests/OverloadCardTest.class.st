@@ -19,7 +19,14 @@ Class {
 		'someShips',
 		'aGameBuilder',
 		'aNullCard',
-		'anAffectedSquaresPosition'
+		'anAffectedSquaresPosition',
+		'aDistribution',
+		'aBoard',
+		'someDices',
+		'anAllyCard',
+		'anAllyCardProbabilisticEvent',
+		'anAccelerationCard',
+		'anAccelerationCardProbabilisticEvent'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -47,6 +54,13 @@ OverloadCardTest >> setUp [
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
 
 
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
 	aRewardManager := ProbablisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
@@ -61,6 +75,17 @@ OverloadCardTest >> setUp [
 		                                    with: aProbabilityOfOne.
 	aCardManager add: anOverloadCardProbabilisticEvent.
 
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                for: anAllyCard
+		                                with: aProbabilityOfOne.
+
+	anAccelerationCard := AccelerationCard new.
+	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
+		                                        for: anAccelerationCard
+		                                        with: aProbabilityOfOne.
+
+	someDices := OrderedCollection new.
 	someShips := OrderedCollection new.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
@@ -69,6 +94,7 @@ OverloadCardTest >> setUp [
 
 	aGameBuilder setShips: someShips.
 	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder setBoard: aBoard.
 
 	aNullCard := NullCard new
 ]
@@ -86,29 +112,18 @@ OverloadCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: an
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerThanTwoThenTheShipMovesBackwards [
 
-	| aGame sideToRoll aLoadedDice aBoard aDistribution expectedPosition expectedFuel someDices |
+	| aGame sideToRoll aLoadedDice expectedPosition expectedFuel |
 	sideToRoll := #( 1 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 0 in: 1.
 	expectedFuel := Fuel with: 0 upTo: 2 in: HasFuelState new.
 
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
-
 
 	aGame nextTurnPlay.
 	aGame
@@ -128,38 +143,19 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenItIsNoLongerInItsHand [
 
-	| aGame sideToRoll aLoadedDice aBoard someDices aDistribution expectedCards anAccelerationCard anAccelerationCardProbabilisticEvent aSetCardManager |
+	| aGame sideToRoll aLoadedDice expectedCards |
 	sideToRoll := #( 10 ) asOrderedCollection.
-
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aSetCardManager := SetProbablisiticEventsManager new.
-	anOverloadCard := OverloadCard new.
-	anOverloadCardProbabilisticEvent := ProbabilisticEvent
-		                                    for: anOverloadCard
-		                                    with: aProbabilityOfOne.
-	aSetCardManager add: anOverloadCardProbabilisticEvent.
-
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
-
+	aCardManager := SetProbablisiticEventsManager new.
+	aCardManager add: anOverloadCardProbabilisticEvent.
+	aCardManager add: anAccelerationCardProbabilisticEvent.
 
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
-	aGameBuilder setAvailableCards: aSetCardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	expectedCards := OrderedCollection new.
@@ -178,25 +174,15 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenItIsNoLongerInItsHand [
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTargetShipIsReducedByTwo [
 
-	| aGame sideToRoll aLoadedDice aBoard someDices aDistribution expectedPosition expectedFuel |
+	| aGame sideToRoll aLoadedDice expectedPosition expectedFuel |
 	sideToRoll := #( 3 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 4 in: 1.
 	expectedFuel := Fuel with: 2 upTo: 6 in: HasFuelState new.
 
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
@@ -212,7 +198,6 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
-
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
 	self assert: (aBlueShip fuelEquals: expectedFuel)
 ]
@@ -220,31 +205,17 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardThatIsNotInItsHandThenInvalid [
 
-	| aGame sideToRoll aLoadedDice aBoard someDices anotherCardManager aDistribution anAllyCard anAllyCardProbabilisticEvent |
+	| aGame sideToRoll aLoadedDice |
 	sideToRoll := #( 10 ) asOrderedCollection.
-
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aDistribution := aDistributionManager generateFor: twentySquares.
+	aCardManager := ProbablisiticEventsManager new.
+	aCardManager add: anAllyCardProbabilisticEvent.
 
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	anotherCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	anotherCardManager add: anAllyCardProbabilisticEvent.
-
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
-	aGameBuilder setAvailableCards: anotherCardManager.
+	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
 	self
@@ -262,21 +233,12 @@ OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardThatIsNotInItsHandThen
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipTriesToPlayAnOverloadCardWhenItIsNotItsTurnThenInvalid [
 
-	| aGame sideToRoll aLoadedDice aBoard someDices aDistribution |
+	| aGame sideToRoll aLoadedDice |
 	sideToRoll := #( 1 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.

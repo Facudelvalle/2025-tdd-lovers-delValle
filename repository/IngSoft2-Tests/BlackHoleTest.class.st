@@ -76,11 +76,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoe
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame |
 	sideToRoll := #( 4 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 7 in: 1.
 
 	aWormHole := WormHole between: 4 and: 7.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares
@@ -105,11 +105,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFou
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame |
 	sideToRoll := #( 4 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 0 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares
@@ -132,11 +132,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenI
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame |
 	sideToRoll := #( 4 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 9 in: 1.
 
 	aWormHole := WormHole between: 4 and: 9.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares
@@ -163,11 +163,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstL
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame |
 	sideToRoll := #( 2 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 0 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares
@@ -190,13 +190,13 @@ BlackHoleTest >> testWhenAShipLandsOnAnInvertedBlackHoleAndOneOfTheOtherShipsDoe
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame anAffectedSquaresPosition |
 	sideToRoll := #( 4 4 1 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 5 in: 1.
 
 	anAffectedSquaresPosition := Position at: 6 in: 1.
 
 	aWormHole := WormHole between: 4 and: 5.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares

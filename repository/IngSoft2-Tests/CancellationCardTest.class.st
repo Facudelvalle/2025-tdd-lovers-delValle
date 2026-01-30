@@ -26,7 +26,13 @@ Class {
 		'anAccelerationCard',
 		'anAccelerationCardProbabilisticEvent',
 		'aSetCardManager',
-		'anAffectedSquaresPosition'
+		'anAffectedSquaresPosition',
+		'aReversePolarityCard',
+		'aReversePolarityCardProbabilisticEvent',
+		'anAllyCard',
+		'anAllyCardProbabilisticEvent',
+		'anOverloadCard',
+		'anOverloadCardProbabilisticEvent'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -92,7 +98,22 @@ CancellationCardTest >> setUp [
 	anAccelerationCard := AccelerationCard new.
 	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
 		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne
+		                                        with: aProbabilityOfOne.
+
+	aReversePolarityCard := ReversePolarityCard new.
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                for: anAllyCard
+		                                with: aProbabilityOfOne.
+
+	anOverloadCard := OverloadCard new.
+	anOverloadCardProbabilisticEvent := ProbabilisticEvent
+		                                    for: anOverloadCard
+		                                    with: aProbabilityOfOne
 ]
 
 { #category : 'asserting' }
@@ -108,13 +129,8 @@ CancellationCardTest >> should: anErrorBlock raise: anErrorClass withMessageText
 { #category : 'tests' }
 CancellationCardTest >> testWhenACancellationCardIsUsedAfterAReversePolarityCardThenTheEffectIsEliminated [
 
-	| expectedPosition aGame aReversePolarityCard aReversePolarityCardProbabilisticEvent |
+	| expectedPosition aGame |
 	expectedPosition := Position at: 19 in: 1.
-
-	aReversePolarityCard := ReversePolarityCard new.
-	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
-		                                          for: aReversePolarityCard
-		                                          with: aProbabilityOfOne.
 
 	aSetCardManager add: aReversePolarityCardProbabilisticEvent.
 	aSetCardManager add: aCancellationCardProbabilisticEvent.
@@ -187,22 +203,18 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAccelerationCardTh
 { #category : 'tests' }
 CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAllyCardThenTheEffectIsEliminated [
 
-	| aGame anAllyCard anAllyCardProbabilisticEvent sidesToRoll anotherLoadedDice someOtherDices |
+	| aGame sidesToRoll |
 	sidesToRoll := #( 1 1 ) asOrderedCollection.
-	anotherLoadedDice := LoadedDice toRoll: sidesToRoll.
+	aLoadedDice := LoadedDice toRoll: sidesToRoll.
 
-	someOtherDices := OrderedCollection new.
-	someOtherDices add: anotherLoadedDice.
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
 
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
 	aSetCardManager add: anAllyCardProbabilisticEvent.
 	aSetCardManager add: aCancellationCardProbabilisticEvent.
 
 	aGameBuilder setAvailableCards: aSetCardManager.
-	aGameBuilder setDices: someOtherDices.
+	aGameBuilder setDices: someDices.
 	aGame := aGameBuilder build.
 
 	aGame
@@ -232,14 +244,9 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAllyCardThenTheEff
 { #category : 'tests' }
 CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnOverloadCardThenTheEffectIsEliminated [
 
-	| expectedPosition expectedFuel aGame anOverloadCard anOverloadCardProbabilisticEvent |
+	| expectedPosition expectedFuel aGame |
 	expectedPosition := Position at: 1 in: 1.
 	expectedFuel := Fuel with: 5 upTo: 6 in: HasFuelState new.
-
-	anOverloadCard := OverloadCard new.
-	anOverloadCardProbabilisticEvent := ProbabilisticEvent
-		                                    for: anOverloadCard
-		                                    with: aProbabilityOfOne.
 
 	aSetCardManager add: anOverloadCardProbabilisticEvent.
 	aSetCardManager add: aCancellationCardProbabilisticEvent.
@@ -272,13 +279,8 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnOverloadCardThenTh
 { #category : 'tests' }
 CancellationCardTest >> testWhenACancellationCardIsUsedAfterTwoReversePolarityCardsThenTheEffectOfTheSquareIsInverted [
 
-	| expectedPosition aGame aReversePolarityCard aReversePolarityCardProbabilisticEvent |
+	| expectedPosition aGame |
 	expectedPosition := Position at: 19 in: 1.
-
-	aReversePolarityCard := ReversePolarityCard new.
-	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
-		                                          for: aReversePolarityCard
-		                                          with: aProbabilityOfOne.
 
 	aSetCardManager add: aReversePolarityCardProbabilisticEvent.
 	aSetCardManager add: aCancellationCardProbabilisticEvent.
