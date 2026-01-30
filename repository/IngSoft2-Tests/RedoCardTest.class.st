@@ -21,7 +21,10 @@ Class {
 		'aBoard',
 		'aNullCard',
 		'twentySquares',
-		'anAffectedSquaresPosition'
+		'anAffectedSquaresPosition',
+		'aReversePolarityCard',
+		'aBlackHoleSquareProbabilisticEvent',
+		'aBlackHoleSquare'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -36,6 +39,8 @@ RedoCardTest >> setUp [
 	twentySquares := 20.
 
 	anAffectedSquaresPosition := Position at: 2 in: 1.
+
+	aReversePolarityCard := ReversePolarityCard new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -74,8 +79,12 @@ RedoCardTest >> setUp [
 	aGameBuilder setRewards: aRewardManager.
 	aGameBuilder setAvailableCards: aSetCardManager.
 
+	aNullCard := NullCard new.
 
-	aNullCard := NullCard new
+	aBlackHoleSquare := BlackHoleSquare new.
+	aBlackHoleSquareProbabilisticEvent := ProbabilisticEvent
+		                                      for: aBlackHoleSquare
+		                                      with: aProbabilityOfOne
 ]
 
 { #category : 'asserting' }
@@ -438,6 +447,58 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARepeatCardThenTheEffectIsAppliedPr
 		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip amountOfCards equals: expectedSize
+]
+
+{ #category : 'tests' }
+RedoCardTest >> testWhenAnRedoCardIsUsedAfterAReversePolarityCardThenTheEffectIsAppliedProperly [
+
+	| aGame aDistribution expectedPosition sideToRoll aLoadedDice someDices aReversePolarityCardProbabilisticEvent aSetDistributionManager |
+	sideToRoll := #( 10 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	expectedPosition := Position at: 6 in: 1.
+
+	aSetDistributionManager := ProbablisiticEventsManager new.
+	aSetDistributionManager add: aBlackHoleSquareProbabilisticEvent.
+	aDistribution := aSetDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	anAffectedSquaresPosition := Position at: 10 in: 1.
+
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+
+	aSetCardManager add: aReversePolarityCardProbabilisticEvent.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame
+		play: aRedoCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
 
 { #category : 'tests' }

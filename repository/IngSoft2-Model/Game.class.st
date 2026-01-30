@@ -243,6 +243,12 @@ Game >> moveShipsBackwards: aMagnitude [
 	ships do: [ :aShip | aShip moveBackwards: aMagnitude in: board ]
 ]
 
+{ #category : 'action' }
+Game >> moveShipsFourSquaresBackwardsFrom: aPosition [
+
+	ships do: [ :aShip | board goBackFourSquares: aShip from: aPosition ]
+]
+
 { #category : 'as yet unclassified' }
 Game >> moveShipsTo: aSquare [
 

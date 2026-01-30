@@ -11,10 +11,14 @@ Class {
 		'zeroRewardRewardProbabilisticEvent',
 		'aProbabilityOfOne',
 		'aCardManager',
-		'anAllyCard',
-		'anAllyCardProbabilisticEvent',
 		'someShips',
-		'aGameBuilder'
+		'aGameBuilder',
+		'aParsecJumpOfFive',
+		'aParsecJumpOfFour',
+		'aParsecJumpOfSix',
+		'aReversePolarityCard',
+		'aReversePolarityCardProbabilisticEvent',
+		'aNullCard'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -27,6 +31,9 @@ HyperJumpTest >> setUp [
 
 	twentySquares := 20.
 
+	aParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfFour := Parsec with: 4.
+	aParsecJumpOfSix := Parsec with: 6.
 
 	aWormHole := WormHole between: 17 and: 18.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -42,11 +49,11 @@ HyperJumpTest >> setUp [
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
 
 	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
+	aReversePolarityCard := ReversePolarityCard new.
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+	aCardManager add: aReversePolarityCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someShips add: aBlueShip.
@@ -56,7 +63,14 @@ HyperJumpTest >> setUp [
 
 	aGameBuilder setShips: someShips.
 	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager
+	aGameBuilder setAvailableCards: aCardManager.
+
+	aReversePolarityCard := ReversePolarityCard new.
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+
+	aNullCard := NullCard new
 ]
 
 { #category : 'asserting' }
@@ -115,6 +129,56 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 	aGame nextTurnPlay.
 
 	self assert: (aBlackShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+HyperJumpTest >> testWhenAShipLandsOnAnInvertedHyperJumpSquareThenTheOtherShipsFuelIsConsumedCorrectly [
+
+	| aBoard someDices aLoadedDice sideToRoll aDistribution someParsecs aGame expectedFuel aRatio aDistributionManager aHyperJumpSquare aPlainSquareProbabilisticEvent anAffectedSquaresPosition |
+	sideToRoll := #( 7 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+	aRatio := 1.
+
+	expectedFuel := Fuel with: 8 upTo: 14 in: HasFuelState new.
+
+	anAffectedSquaresPosition := Position at: 7 in: 1.
+
+	someParsecs := OrderedCollection new.
+	someParsecs add: aParsecJumpOfFive.
+	someParsecs add: aParsecJumpOfFour.
+	someParsecs add: aParsecJumpOfSix.
+	someParsecs add: aParsecJumpOfFive.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
+	aPlainSquareProbabilisticEvent := ProbabilisticEvent
+		                                  for: aHyperJumpSquare
+		                                  with: aProbabilityOfOne.
+	aDistributionManager add: aPlainSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+
+	self assert: (aBlackShip fuelEquals: expectedFuel)
 ]
 
 { #category : 'tests' }

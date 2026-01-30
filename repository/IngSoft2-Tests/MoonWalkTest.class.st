@@ -13,11 +13,13 @@ Class {
 		'aRewardManager',
 		'zeroReward',
 		'zeroRewardProbabilisticEvent',
-		'aCardManager',
-		'anAllyCard',
-		'anAllyCardProbabilisticEvent',
 		'someShips',
-		'aGameBuilder'
+		'aGameBuilder',
+		'aWormHole',
+		'aNullCard',
+		'aReversePolarityCard',
+		'aReversePolarityCardProbabilisticEvent',
+		'aSetCardManagerWithReversePolarityCards'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -30,15 +32,19 @@ MoonWalkTest >> setUp [
 
 	twentySquares := 20.
 
+	aWormHole := WormHole between: 17 and: 18.
+
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 
+	aProbabilityOfOne := 1.
+
 	aDistributionManager := ProbablisiticEventsManager new.
 	aMoonWalkSquare := MoonWalkSquare between: 7 and: 7.
-	aProbabilityOfOne := 1.
 	aMoonWalkSquareProbabilisticEvent := ProbabilisticEvent
 		                                     for: aMoonWalkSquare
 		                                     with: aProbabilityOfOne.
+
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -50,12 +56,17 @@ MoonWalkTest >> setUp [
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
+	aNullCard := NullCard new.
+
+	aReversePolarityCard := ReversePolarityCard new.
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+
+	aSetCardManagerWithReversePolarityCards := ProbablisiticEventsManager
+		                                           new.
+	aSetCardManagerWithReversePolarityCards add:
+		aReversePolarityCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someShips add: aBlueShip.
@@ -64,7 +75,8 @@ MoonWalkTest >> setUp [
 
 	aGameBuilder setShips: someShips.
 	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setAvailableCards:
+		aSetCardManagerWithReversePolarityCards
 ]
 
 { #category : 'asserting' }
@@ -78,44 +90,10 @@ MoonWalkTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 ]
 
 { #category : 'tests' }
-MoonWalkTest >> testWhenAMoonWalkEffectWhichMagnitudeIsGreaterThanAShipSquareInTheFirstLapThenTheShipGoesBackToTheFirstSquare [
-
-	| expectedPosition sideToRoll aWormHole aLoadedDice someDices aBoard aGame|
-	expectedPosition := Position at: 0 in: 1.
-	sideToRoll := #(5) asOrderedCollection.
-
-	aWormHole := WormHole between: 5 and: 6.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someDices := OrderedCollection new.
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setDices: someDices.
-	aGame := aGameBuilder build.
-
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPass.
-	aGame nextTurnPass.
-	aGame nextTurnPlay.
-
-	self assert: (aBlackShip currentPositionEquals: expectedPosition)
-]
-
-{ #category : 'tests' }
 MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 
-	| sideToRoll aWormHole  aLoadedDice aBoard someDices |
-	sideToRoll := #(1) asOrderedCollection.
-
-	aWormHole := WormHole between: 17 and: 18.
+	| sideToRoll aLoadedDice aBoard someDices |
+	sideToRoll := #( 1 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aMoonWalkSquare := MoonWalkSquare between: -1 and: -1.
@@ -145,11 +123,43 @@ MoonWalkTest >> testWhenAMoonWalkSquareMagnitudeIsSmallerThanOneThenInvalid [
 ]
 
 { #category : 'tests' }
-MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnoughFuelToGoBkacwardThenTheyDoNotMoveAndLoseTwoTurns [
+MoonWalkTest >> testWhenAShipLandsOnAMoonWalkEffectOnTheFirstLapTheMagnitudeOfWhichIsGreaterThanAnothersShipSquareThenThatShipGoesBackToTheFirstSquare [
 
-	| expectedPosition sideToRoll aWormHole aLoadedDice aBoard someDices aGame  |
+	| expectedPosition sideToRoll aLoadedDice someDices aBoard aGame |
+	expectedPosition := Position at: 0 in: 1.
+
+	sideToRoll := #( 5 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aWormHole := WormHole between: 5 and: 6.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+
+	self assert: (aBlackShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnoughFuelToGoBackwardsThenTheyDoNotMoveAndLoseTwoTurns [
+
+	| expectedPosition sideToRoll aLoadedDice aBoard someDices aGame |
 	expectedPosition := Position at: 8 in: 1.
-	sideToRoll := #(2) asOrderedCollection.
+	sideToRoll := #( 2 ) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 8.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
@@ -167,7 +177,6 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 		          with: twentySquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
-
 
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
@@ -189,9 +198,9 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareAndTheOtherShipsDoNotHaveEnou
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccordingWithTheSquareMagnitude [
 
-	| expectedPosition sideToRoll aWormHole aLoadedDice aBoard someDices aGame |
+	| expectedPosition sideToRoll aLoadedDice aBoard someDices aGame |
 	expectedPosition := Position at: 6 in: 1.
-	sideToRoll := #(2) asOrderedCollection.
+	sideToRoll := #( 2 ) asOrderedCollection.
 
 	aWormHole := WormHole between: 2 and: 8.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
@@ -227,12 +236,11 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenAllTheOtherShipsMoveAccor
 { #category : 'tests' }
 MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 
-	| expectedPosition sideToRoll aWormHole  aLoadedDice aBoard someDices aGame  |
+	| expectedPosition sideToRoll aLoadedDice aBoard someDices aGame |
 	expectedPosition := Position at: 1 in: 1.
 	twentySquares := 20.
-	sideToRoll := #(1) asOrderedCollection.
+	sideToRoll := #( 1 ) asOrderedCollection.
 
-	aWormHole := WormHole between: 17 and: 18.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aProbabilityOfOne := 1.
@@ -256,6 +264,84 @@ MoonWalkTest >> testWhenAShipLandsOnAMoonWalkSquareThenItDoesNotMove [
 	aGameBuilder setBoard: aBoard.
 	aGameBuilder setDices: someDices.
 	aGame := aGameBuilder build.
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+MoonWalkTest >> testWhenAShipLandsOnAnInvertedMoonWalkEffectTheMagnitudeOfWhichIsGreaterThanTheSquareInTheFirstLapThenTheShipGoesBackToTheFirstSquare [
+
+	| expectedPosition sideToRoll aLoadedDice someDices aBoard aGame anAffectedSquaresPosition |
+	expectedPosition := Position at: 0 in: 1.
+	sideToRoll := #( 4 1 ) asOrderedCollection.
+
+	aWormHole := WormHole between: 4 and: 5.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	anAffectedSquaresPosition := Position at: 6 in: 1.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+
+	self assert: (aBlackShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+MoonWalkTest >> testWhenAShipLandsOnAnInvertedMoonWalkSquareThenTheOtherShipsDoNotMove [
+
+	| aGame aBoard anAffectedSquaresPosition expectedPosition sideToRoll aLoadedDice someDices |
+	expectedPosition := Position at: 9 in: 1.
+
+	sideToRoll := #( 9 7 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	anAffectedSquaresPosition := Position at: 7 in: 1.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
