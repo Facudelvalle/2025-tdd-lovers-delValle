@@ -340,48 +340,6 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 ]
 
 { #category : 'tests' }
-GameTest >> testWhenAShipTakesAHyperJumpThenItsMovesAccordingly [
-
-	| aWormHole aBoard aLoadedDice sideToRoll aDistribution someParsecs aRatio aHyperJumpSquare aHyperJumpSquareProbabilisticEvent |
-	sideToRoll := #( 2 ) asOrderedCollection.
-	aRatio := 2.
-
-	aWormHole := WormHole between: 17 and: 18.
-
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-	someParsecs := OrderedCollection new.
-	someParsecs add: aParsecJumpOfFive.
-	someParsecs add: aParsecJumpOfFive.
-	someParsecs add: aParsecJumpOfSix.
-	someParsecs add: aParsecJumpOfFive.
-
-	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
-	aHyperJumpSquareProbabilisticEvent := ProbabilisticEvent
-		                                      for: aHyperJumpSquare
-		                                      with: aProbabilityOfOne.
-		
-	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	someDices add: aLoadedDice.
-
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setDices: someDices.
-
-	self
-		should: [ aGameBuilder build ]
-		raise: Error
-		withMessageText:
-		'The magnitude of the Hyper Jump Square Parsecs is not valid.'
-]
-
-{ #category : 'tests' }
 GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 
 	| aWormHole aGame expectedDetails sideToRoll aLoadedDice aBoard aDistribution |
@@ -513,4 +471,46 @@ GameTest >> testWhenTheGameStartsThenAllTheShipsHaveTwoCards [
 
 	self assert: aBlueShip cards equals: expectedCards.
 	self assert: aBlackShip cards equals: expectedCards
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenTryingToCreateAGameWithHyperJumpSquaresTheUnitsOfWhichDoNotAddUpToTheLengthOfTheBoardThenItFails [
+
+	| aWormHole aBoard aLoadedDice sideToRoll aDistribution someParsecs aRatio aHyperJumpSquare aHyperJumpSquareProbabilisticEvent |
+	sideToRoll := #( 2 ) asOrderedCollection.
+	aRatio := 2.
+
+	aWormHole := WormHole between: 17 and: 18.
+
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	someParsecs := OrderedCollection new.
+	someParsecs add: aParsecJumpOfFive.
+	someParsecs add: aParsecJumpOfFive.
+	someParsecs add: aParsecJumpOfSix.
+	someParsecs add: aParsecJumpOfFive.
+
+	aHyperJumpSquare := HyperJumpSquare with: someParsecs and: aRatio.
+	aHyperJumpSquareProbabilisticEvent := ProbabilisticEvent
+		                                      for: aHyperJumpSquare
+		                                      with: aProbabilityOfOne.
+		
+	aDistributionManager add: aHyperJumpSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+
+	self
+		should: [ aGameBuilder build ]
+		raise: Error
+		withMessageText:
+		'The magnitude of the Hyper Jump Square Parsecs is not valid.'
 ]

@@ -92,9 +92,10 @@ Board >> effectIn: aSquare [
 ]
 
 { #category : 'action' }
-Board >> goBackFourSquares: aShip from: aPosition [ 
-	
-	^ aPosition goBackFourSquaresIn: length 
+Board >> goBackFourSquares: aShip from: aPosition [
+
+	aShip loseATurbine.
+	^ aPosition goBackFourSquaresIn: length
 ]
 
 { #category : 'initialization' }
