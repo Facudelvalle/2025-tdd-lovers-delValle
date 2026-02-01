@@ -12,7 +12,8 @@ Class {
 		'gravityPenalty',
 		'cards',
 		'allies',
-		'rollModifier'
+		'rollModifier',
+		'turbines'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -84,11 +85,12 @@ Ship >> canPlay: aRolledNumber [
 
 	| hasToWait |
 	hasToWait := turnsLeftToWait > 0.
-	
-	hasToWait ifTrue: [
-		self reducePenalty ].
-	
-	^  hasToWait not and: gravityPenalty <= aRolledNumber 
+
+	hasToWait ifTrue: [ self reducePenalty ].
+
+	gravityPenalty > aRolledNumber ifTrue: [ self loseATurbine ].
+
+	^ hasToWait not and: gravityPenalty <= aRolledNumber
 ]
 
 { #category : 'accessing' }
@@ -164,6 +166,12 @@ Ship >> hasAFuelPenalty [
 	^ turnsLeftToWait > 0
 ]
 
+{ #category : 'testing' }
+Ship >> hasEnoughTurbines [
+
+	^ turbines > 0
+]
+
 { #category : 'accessing' }
 Ship >> increaseMaxFuel: aMagnitude [
 
@@ -182,7 +190,8 @@ Ship >> initializeCalled: aName [
 	cards := OrderedCollection new.
 	rollModifier := 0.
 	allies := OrderedCollection new.
-	allies add: NullShip new
+	allies add: NullShip new.
+	turbines := 3
 ]
 
 { #category : 'instruction decoding' }
@@ -201,6 +210,12 @@ Ship >> jump: squaresToMove on: aBoard [
 	self
 		consumeFuel: squaresTraveledWithSquareEffect
 		from: initialPosition
+]
+
+{ #category : 'penalty' }
+Ship >> loseATurbine [
+
+	turbines := turbines - 1
 ]
 
 { #category : 'penalty' }
@@ -245,7 +260,9 @@ Ship >> penalizeAndReturnTo: shipInitialPosition [
 	self losesTwoTurns.
 	self restoreFuel.
 	allies first losesTwoTurns.
-	allies first restoreFuel
+	allies first restoreFuel.
+	self loseATurbine.
+	allies first loseATurbine
 ]
 
 { #category : 'move' }
@@ -264,7 +281,12 @@ Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
 Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 
 	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
+	self hasEnoughTurbines ifFalse: [
+		Error signal:
+			'This ship cannot keep playing because it ran out of turbines.' ].
 	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
+
+
 	initialPosition := position.
 	adjustedRolledNumber := self adjust: aRolledNumber.
 
@@ -325,6 +347,12 @@ Ship >> removeAlly: anAlly [
 Ship >> restoreFuel [
 
 	fuel := fuel restore.
+]
+
+{ #category : 'accessing' }
+Ship >> turbines [
+
+	^ turbines
 ]
 
 { #category : 'comparing' }

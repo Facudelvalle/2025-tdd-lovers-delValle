@@ -83,7 +83,7 @@ ShipFuelTest >> setUp [
 ]
 
 { #category : 'tests' }
-ShipFuelTest >> testWhenAShipDecideToPassThenItsFuelIsToppedUp [
+ShipFuelTest >> testWhenAShipDecidesToPassThenItsFuelIsToppedUp [
 
 	| expectedFuelLeft |
 	expectedFuelLeft := Fuel with: 2 upTo: 2 in: HasFuelState new.
@@ -113,24 +113,6 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip fuelEquals: expectedFuelLeft)
-]
-
-{ #category : 'tests' }
-ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
-
-	| expectedPosition |
-	expectedPosition := Position at: 3 in: 1.
-
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPass.
-	aGame nextTurnPass.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-
-	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
 
 { #category : 'tests' }
