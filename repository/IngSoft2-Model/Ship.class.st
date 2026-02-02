@@ -25,7 +25,7 @@ Ship class >> called: aName [
 	^ self new initializeCalled: aName
 ]
 
-{ #category : 'adding' }
+{ #category : 'update' }
 Ship >> addCards: someCards [
 	
 	someCards do: [ :aCard | cards add: aCard ]
@@ -37,7 +37,7 @@ Ship >> adjust: aRolledNumber [
 	^ aRolledNumber + rollModifier
 ]
 
-{ #category : 'adding' }
+{ #category : 'update' }
 Ship >> adjustSquare: aSquare [
 
 	position := position adjustSquare: aSquare
@@ -120,7 +120,7 @@ Ship >> currentPosition [
 	^ position
 ]
 
-{ #category : 'comparing' }
+{ #category : 'testing' }
 Ship >> currentPositionEquals: aPosition [ 
 	
 	^ position equals: aPosition 
@@ -147,14 +147,14 @@ Ship >> formAllianceWith: aShip [
 	allies remove: aNullShip ifAbsent: [ Error signal: 'pepe' ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'update' }
 Ship >> fuel: someFuel [
 	
 	fuel := fuel modifyMaximumAmountBy: someFuel.
 	fuel := fuel restore.
 ]
 
-{ #category : 'comparing' }
+{ #category : 'testing' }
 Ship >> fuelEquals: someFuel [
 	
 	^ fuel equals: someFuel
@@ -172,7 +172,7 @@ Ship >> hasEnoughTurbines [
 	^ turbines > 0
 ]
 
-{ #category : 'accessing' }
+{ #category : 'update' }
 Ship >> increaseMaxFuel: aMagnitude [
 
 	fuel := fuel modifyMaximumAmountBy: aMagnitude.
@@ -194,7 +194,7 @@ Ship >> initializeCalled: aName [
 	turbines := 3
 ]
 
-{ #category : 'instruction decoding' }
+{ #category : 'move' }
 Ship >> jump: squaresToMove on: aBoard [
 
 	| positionAfterJump initialPosition squaresTraveledWithSquareEffect |
@@ -209,7 +209,9 @@ Ship >> jump: squaresToMove on: aBoard [
 	self moveTo: positionAfterJump.
 	self
 		consumeFuel: squaresTraveledWithSquareEffect
-		from: initialPosition
+		from: initialPosition.
+
+	^ positionAfterJump
 ]
 
 { #category : 'penalty' }
@@ -224,7 +226,7 @@ Ship >> losesTwoTurns [
 	turnsLeftToWait := 2
 ]
 
-{ #category : 'accessing' }
+{ #category : 'update' }
 Ship >> modifyFuelBy: aFuelAmount [
 
 	fuel := fuel modifyBy: aFuelAmount
@@ -307,7 +309,7 @@ Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 	self consumeFuel: squaresTraveledWithDice from: initialPosition.
 
 	positionAfterSquareEffect := aBoard
-		                             applyEfectOn: self
+		                             applyEffectOn: self
 		                             with: position
 		                             in: aGame.
 
@@ -328,7 +330,7 @@ Ship >> reducePenalty [
 	turnsLeftToWait := turnsLeftToWait - 1
 ]
 
-{ #category : 'removing' }
+{ #category : 'update' }
 Ship >> remove: aCard [
 
 	| indexOfCard |
@@ -336,14 +338,14 @@ Ship >> remove: aCard [
 	cards removeIndex: indexOfCard
 ]
 
-{ #category : 'removing' }
+{ #category : 'update' }
 Ship >> removeAlly: anAlly [
 
 	allies remove: anAlly.
 	allies isEmpty ifTrue: [ allies add: NullShip new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'update' }
 Ship >> restoreFuel [
 
 	fuel := fuel restore.

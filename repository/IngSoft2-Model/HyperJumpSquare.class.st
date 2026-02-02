@@ -38,10 +38,13 @@ HyperJumpSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 
 	| aUnitDistance positionAfterJump squaresToMove |
 	aUnitDistance := units removeFirst.
-	
+
 	squaresToMove := self normalize: aUnitDistance.
 
-	positionAfterJump := aGame jump: squaresToMove from: aPosition .
+	positionAfterJump := aGame
+		                     jump: aShip
+		                     theDistanceOf: squaresToMove
+		                     from: aPosition.
 
 	units add: aUnitDistance.
 

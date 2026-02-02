@@ -32,7 +32,7 @@ NullShip >> equals: aShip [
 	^ true
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'update' }
 NullShip >> loseATurbine [
 
 	

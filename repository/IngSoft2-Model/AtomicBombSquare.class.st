@@ -18,7 +18,7 @@ AtomicBombSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
 AtomicBombSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 
 	| shipNewPosition squaresTraveled |
-	aGame moveShipsToSquareZero.
+	aGame moveShipsTo: 0.
 	shipNewPosition := aPosition adjustSquare: 0.
 	squaresTraveled := aGame
 		                   calculateDistanceBetween: aPosition

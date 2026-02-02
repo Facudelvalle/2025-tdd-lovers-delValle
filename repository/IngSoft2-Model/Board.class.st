@@ -64,7 +64,7 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 ]
 
 { #category : 'action' }
-Board >> applyEfectOn: aShip with: aPosition in: aGame [
+Board >> applyEffectOn: aShip with: aPosition in: aGame [
 
 	| effect |
 	effect := self effectIn: aPosition currentSquare + 1.
@@ -89,13 +89,6 @@ Board >> distributionEquals: aDistribution [
 Board >> effectIn: aSquare [
 
 	^ distribution at: aSquare
-]
-
-{ #category : 'action' }
-Board >> goBackFourSquares: aShip from: aPosition [
-
-	aShip loseATurbine.
-	^ aPosition goBackFourSquaresIn: length
 ]
 
 { #category : 'initialization' }

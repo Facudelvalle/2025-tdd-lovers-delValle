@@ -94,6 +94,12 @@ Game >> addActiveCard: aCard [
 ]
 
 { #category : 'action' }
+Game >> allOtherShipsLoseATurbine [
+
+	ships do: [ :aShip | aShip loseATurbine ]
+]
+
+{ #category : 'action' }
 Game >> applyLastEffectTo: aShip [
 
 	| shipInitialPosition shipPositionAfterEffect |
@@ -156,12 +162,6 @@ Game >> giveAnotherCardToAllOtherShips [
 	ships do: [ :aShip | aShip addCards: self generateCard ]
 ]
 
-{ #category : 'action' }
-Game >> goBackFourSquares: aShip from: aPosition [ 
-	
-	^ board goBackFourSquares: aShip from: aPosition 
-]
-
 { #category : 'validation' }
 Game >> hasFinished [
 
@@ -191,13 +191,13 @@ Game >> invertSquareIn: anAffectedSquaresPosition [
 	board invertSquareIn: anAffectedSquaresPosition
 ]
 
-{ #category : 'action' }
-Game >> jump: squaresToJump from: aPosition [ 
-	
-	^ board jump: squaresToJump from: aPosition 
+{ #category : 'move' }
+Game >> jump: aShip theDistanceOf: squaresToJump from: aPosition [
+
+	^ aShip jump: squaresToJump on: board
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'move' }
 Game >> jumpOtherShipsADistanceOf: squaresToMove [
 
 	ships do: [ :aShip | aShip jump: squaresToMove on: board ]
@@ -221,13 +221,13 @@ Game >> maximumRoll [
 	^ dices sum: [ :aDice | aDice rollMaximum ]
 ]
 
-{ #category : 'action' }
+{ #category : 'move' }
 Game >> move: aShip backwardsBy: aMagnitude [
 
 	^ aShip moveBackwards: aMagnitude in: board.
 ]
 
-{ #category : 'action' }
+{ #category : 'move' }
 Game >> move: aShip with: rolledNumber [
 
 	self applyRewardTo: aShip for: rolledNumber.
@@ -237,31 +237,19 @@ Game >> move: aShip with: rolledNumber [
 	winner := aShip
 ]
 
-{ #category : 'action' }
+{ #category : 'move' }
 Game >> moveShipsBackwards: aMagnitude [
 
 	ships do: [ :aShip | aShip moveBackwards: aMagnitude in: board ]
 ]
 
-{ #category : 'action' }
-Game >> moveShipsFourSquaresBackwardsFrom: aPosition [
-
-	ships do: [ :aShip | board goBackFourSquares: aShip from: aPosition ]
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'move' }
 Game >> moveShipsTo: aSquare [
 
 	ships do: [ :aShip | aShip adjustSquare: aSquare ]
 ]
 
-{ #category : 'action' }
-Game >> moveShipsToSquareZero [
-	
-	ships do: [ :aShip | aShip moveTo: (aShip currentPosition adjustSquare: 0) ]
-]
-
-{ #category : 'action' }
+{ #category : 'playing' }
 Game >> nextTurnPass [
 
 	| shipToMove |
@@ -271,7 +259,7 @@ Game >> nextTurnPass [
 	ships add: shipToMove.
 ]
 
-{ #category : 'action' }
+{ #category : 'playing' }
 Game >> nextTurnPlay [
 
 	| shipToMove rolledNumber |
@@ -282,7 +270,7 @@ Game >> nextTurnPlay [
 	ships add: shipToMove
 ]
 
-{ #category : 'action' }
+{ #category : 'playing' }
 Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip and: anAffectedSquare [
 
 	aPlayingShip validateCard: aPlayedCard.
@@ -295,7 +283,7 @@ Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfec
 		in: self
 ]
 
-{ #category : 'action' }
+{ #category : 'playing' }
 Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip and: anAffectedSquare [
 
 	lastPlayedCard

@@ -69,9 +69,3 @@ AllyCard >> initialize [
 	allyOne := NullShip new.
 	allyTwo := NullShip new
 ]
-
-{ #category : 'comparing' }
-AllyCard >> isAllyCard [ 
-
-	^ true
-]

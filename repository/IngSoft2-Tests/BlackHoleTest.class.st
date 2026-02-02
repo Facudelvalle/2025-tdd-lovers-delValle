@@ -189,14 +189,14 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstL
 BlackHoleTest >> testWhenAShipLandsOnAnInvertedBlackHoleAndOneOfTheOtherShipsDoesNotHaveEnoughFuelThenItGoesBackToItsInitialPosition [
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame anAffectedSquaresPosition |
-	sideToRoll := #( 4 4 1 ) asOrderedCollection.
+	sideToRoll := #( 2 2 1 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 5 in: 1.
 
 	anAffectedSquaresPosition := Position at: 6 in: 1.
 
-	aWormHole := WormHole between: 4 and: 5.
+	aWormHole := WormHole between: 2 and: 5.
 
 	aBoard := Board
 		          with: tenSquares

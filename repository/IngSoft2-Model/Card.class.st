@@ -32,43 +32,43 @@ Card >> equalsCard: aCard [
 	self subclassResponsibility
 ]
 
-{ #category : 'testing' }
+{ #category : 'comparing' }
 Card >> isAccelerationCard [
 
 	^ false
 ]
 
-{ #category : 'testing' }
+{ #category : 'comparing' }
 Card >> isAllyCard [
 
 	^ false
 ]
 
-{ #category : 'testing' }
+{ #category : 'comparing' }
 Card >> isCancellationCard [
 
 	^ false
 ]
 
-{ #category : 'testing' }
+{ #category : 'comparing' }
 Card >> isOverloadCard [
 
 	^ false
 ]
 
-{ #category : 'testing' }
+{ #category : 'comparing' }
 Card >> isRedoCard [
 
 	^ false
 ]
 
-{ #category : 'testing' }
+{ #category : 'comparing' }
 Card >> isRepeatCard [
 
 	^ false
 ]
 
-{ #category : 'testing' }
+{ #category : 'comparing' }
 Card >> isReversePolarityCard [
 
 	^ false
