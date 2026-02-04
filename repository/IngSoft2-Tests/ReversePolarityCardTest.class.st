@@ -149,12 +149,16 @@ ReversePolarityCardTest >> should: anErrorBlock raise: anErrorClass withMessageT
 { #category : 'tests' }
 ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingABlackHoleSquareThenItsEffectIsInverted [
 
-	| aGame aDistribution aBoard blackShipsExpectedPosition anAffectedSquaresPosition blueShipsExpectedPosition |
-	blueShipsExpectedPosition := Position at: 0 in: 1.
+	| aGame aDistribution aBoard blackShipsExpectedPosition anAffectedSquaresPosition blueShipsExpectedPosition blueShipsExpectedFuel blackShipsExpectedFuel |
+	blueShipsExpectedPosition := Position at: 1 in: 1.
+	blueShipsExpectedFuel := Fuel with: 0 upTo: 6 in: HasFuelState new.
 	blackShipsExpectedPosition := Position at: 3 in: 1.
+	blackShipsExpectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
 
 	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: sixSquares.
+	
+	aWormHole := WormHole between: 2 and: 5.
 
 	aBoard := Board
 		          with: sixSquares
@@ -179,8 +183,11 @@ ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingABlack
 
 	self assert:
 		(aBlueShip currentPositionEquals: blueShipsExpectedPosition).
+	self assert: (aBlueShip fuelEquals: blueShipsExpectedFuel).
+	
 	self assert:
-		(aBlackShip currentPositionEquals: blackShipsExpectedPosition)
+		(aBlackShip currentPositionEquals: blackShipsExpectedPosition).
+	self assert: (aBlackShip fuelEquals: blackShipsExpectedFuel)
 ]
 
 { #category : 'tests' }
@@ -253,9 +260,11 @@ ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAHyper
 { #category : 'tests' }
 ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAHyperJumpSquareThenItsEffectIsInverted [
 
-	| aGame aDistribution aBoard blackShipsExpectedPosition anAffectedSquaresPosition blueShipsExpectedPosition someParsecs aHyperJumpSquare aHyperJumpSquareProbabilisticEvent |
+	| aGame aDistribution aBoard blackShipsExpectedPosition anAffectedSquaresPosition blueShipsExpectedPosition someParsecs aHyperJumpSquare aHyperJumpSquareProbabilisticEvent blueShipsExpectedFuel blackShipsExpectedFuel |
 	blueShipsExpectedPosition := Position at: 2 in: 1.
+	blueShipsExpectedFuel := Fuel with: 4 upTo: 6 in: HasFuelState new.
 	blackShipsExpectedPosition := Position at: 3 in: 1.
+	blackShipsExpectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
 
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfOne.
@@ -292,15 +301,19 @@ ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAHyper
 
 	self assert:
 		(aBlueShip currentPositionEquals: blueShipsExpectedPosition).
+	self assert: (aBlueShip fuelEquals: blueShipsExpectedFuel).
+
 	self assert:
-		(aBlackShip currentPositionEquals: blackShipsExpectedPosition)
+		(aBlackShip currentPositionEquals: blackShipsExpectedPosition).
+	self assert: (aBlackShip fuelEquals: blackShipsExpectedFuel)
 ]
 
 { #category : 'tests' }
 ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAMoonWalkSquareThenItsEffectIsInverted [
 
-	| aGame aDistribution aBoard anAffectedSquaresPosition expectedPosition |
+	| aGame aDistribution aBoard anAffectedSquaresPosition expectedPosition expectedFuel |
 	expectedPosition := Position at: 1 in: 1.
+	expectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
 
 	aDistributionManager add: aMoonWalkSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: sixSquares.
@@ -324,7 +337,8 @@ ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingAMoonW
 
 	aGame nextTurnPlay.
 
-	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+	self assert: (aBlueShip currentPositionEquals: expectedPosition).
+	self assert: (aBlueShip fuelEquals: expectedFuel)
 ]
 
 { #category : 'tests' }
