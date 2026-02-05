@@ -31,16 +31,10 @@ Fuel >> amountNeeded [
 	^ amount abs
 ]
 
-{ #category : 'accessing' }
-Fuel >> amountOfFuelNeeded [
-
-	^ fuelState amountOfFuelNeededBy: self
-]
-
 { #category : 'penalty' }
 Fuel >> applyPenaltyTo: aShip thatStartedFrom: aPosition [
 
-	fuelState applyPenaltyTo: aShip thatStartedFrom: aPosition.
+	fuelState applyPenaltyTo: aShip thatStartedFrom: aPosition
 ]
 
 { #category : 'consuming' }
@@ -61,7 +55,10 @@ Fuel >> consume: aFuelAmount [
 	| updatedAmount updatedFuelState |
 	updatedAmount := amount - aFuelAmount.
 	updatedFuelState := fuelState updateFor: updatedAmount.
-	^ self class with: updatedAmount upTo: maximumAmount in: updatedFuelState.
+	^ self class
+		  with: updatedAmount
+		  upTo: maximumAmount
+		  in: updatedFuelState
 ]
 
 { #category : 'comparing' }
@@ -95,17 +92,26 @@ Fuel >> maximumFuel [
 { #category : 'adding' }
 Fuel >> modifyBy: aFuelAmount [
 
-	^ self class with: amount + aFuelAmount upTo: maximumAmount in: fuelState.
+	^ self class
+		  with: amount + aFuelAmount
+		  upTo: maximumAmount
+		  in: fuelState
 ]
 
 { #category : 'accessing' }
 Fuel >> modifyMaximumAmountBy: aFuelAmount [
 
-	^ self class with: amount upTo: aFuelAmount + maximumAmount in: fuelState.
+	^ self class
+		  with: amount
+		  upTo: aFuelAmount + maximumAmount
+		  in: fuelState
 ]
 
 { #category : 'restoring' }
 Fuel >> restore [
 
-	^ self class with: maximumAmount upTo: maximumAmount in: HasFuelState new.
+	^ self class
+		  with: maximumAmount
+		  upTo: maximumAmount
+		  in: HasFuelState new
 ]

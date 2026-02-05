@@ -8,20 +8,8 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-FuelDecreaseReward class >> of: aMagnitude [
-
-	^ self new initializeOf: aMagnitude
-]
-
 { #category : 'operations' }
 FuelDecreaseReward >> applyTo: aShip [
 
 	aShip modifyFuelBy: magnitude
-]
-
-{ #category : 'initialization' }
-FuelDecreaseReward >> initializeOf: aMagnitude [
-
-	magnitude := aMagnitude
 ]

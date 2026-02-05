@@ -65,7 +65,7 @@ Ship >> applyRollModifier: aModifier [
 Ship >> borrowFuelFromAllies [
 
 	| fuelNeededToTravel lendingAlly updatedFuelState |
-	fuelNeededToTravel := fuel amountOfFuelNeeded.
+	fuelNeededToTravel := fuel amountNeeded.
 	lendingAlly := allies
 		               detect: [ :anAlly |
 		               anAlly canLendFuelFor: fuelNeededToTravel ]
@@ -149,9 +149,8 @@ Ship >> formAllianceWith: aShip [
 
 { #category : 'update' }
 Ship >> fuel: someFuel [
-	
-	fuel := fuel modifyMaximumAmountBy: someFuel.
-	fuel := fuel restore.
+
+	fuel := Fuel with: someFuel upTo: someFuel in: HasFuelState new
 ]
 
 { #category : 'testing' }

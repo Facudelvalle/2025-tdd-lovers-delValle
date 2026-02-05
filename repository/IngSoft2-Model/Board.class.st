@@ -72,10 +72,12 @@ Board >> calculateDistanceBetween: aPosition and: anotherPostion [
 ]
 
 { #category : 'compare' }
-Board >> distributionEquals: aDistribution [ 
+Board >> distributionEquals: aDistribution [
+
 	| squares |
-	squares := String cr join: (distribution collect: [ :aSquare| aSquare asString ]).
-	^ squares = aDistribution 
+	squares := String cr join:
+		           (distribution collect: [ :aSquare | aSquare asString ]).
+	^ squares = aDistribution
 ]
 
 { #category : 'accessing' }
@@ -85,7 +87,7 @@ Board >> effectIn: aSquare [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [ 
+Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [
 
 	length := aLength.
 	wormHole := aWormHole.
@@ -105,9 +107,9 @@ Board >> isEmpty [
 ]
 
 { #category : 'action' }
-Board >> jump: squaresToJump from: aPosition [ 
-	
-	^ aPosition add: squaresToJump with: length 
+Board >> jump: squaresToJump from: aPosition [
+
+	^ aPosition add: squaresToJump with: length
 ]
 
 { #category : 'accessing' }

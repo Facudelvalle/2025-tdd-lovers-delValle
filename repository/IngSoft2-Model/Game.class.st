@@ -36,55 +36,18 @@ Game class >> fuel: someShips with: aFuelQuantity [
 	someShips do: [ :aShip | aShip fuel: aFuelQuantity ]
 ]
 
-{ #category : 'validation' }
-Game class >> hasDices: someDices [
-
-	someDices size < 1 ifTrue: [
-		Error signal: 'The Game needs at least one dice to start.' ]
-]
-
-{ #category : 'validation' }
-Game class >> hasLaps: someLaps [
-
-	someLaps < 1 ifTrue: [
-		Error signal: 'The Game needs at least one lap to start.' ]
-]
-
-{ #category : 'validation' }
-Game class >> hasShips: someShips [
-
-	someShips size < 2 ifTrue: [
-		Error signal: 'The Game needs at least two ship to start.' ]
-]
-
-{ #category : 'accessing' }
-Game class >> maximumRoll: someDices [
-
-	^ someDices sum: [ :aDice | aDice rollMaximum ]
-]
-
-{ #category : 'validation' }
-Game class >> validateSquaresFrom: aBoard with: someDices [
-
-	aBoard validateSquaresWith: (self maximumRoll: someDices)
-]
-
 { #category : 'creation' }
 Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFuelQuantity and: aRewardManager and: aCardsManager [
 
-	self hasDices: someDices.
-	self hasShips: someShips.
-	self hasLaps: someLaps.
 	self fuel: someShips with: aFuelQuantity.
 	self assignCardsTo: someShips from: aCardsManager.
-	self validateSquaresFrom: aBoard with: someDices.
 	^ self new
 		  initializeWith: aBoard
 		  for: someLaps
 		  and: someShips
 		  and: someDices
 		  and: aRewardManager
-			and: aCardsManager
+		  and: aCardsManager
 ]
 
 { #category : 'accessing' }
@@ -110,7 +73,10 @@ Game >> applyLastEffectTo: aShip [
 		                           on: shipInitialPosition
 		                           in: self.
 
-	aShip performMovementFrom: shipInitialPosition to: shipPositionAfterEffect on: board
+	aShip
+		performMovementFrom: shipInitialPosition
+		to: shipPositionAfterEffect
+		on: board
 ]
 
 { #category : 'action' }

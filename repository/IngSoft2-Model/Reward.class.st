@@ -12,8 +12,9 @@ Class {
 }
 
 { #category : 'creation' }
-Reward class >> of: aMagnitude [ 
-	^ self subclassResponsibility
+Reward class >> of: aMagnitude [
+
+	^ self new initializeOf: aMagnitude
 ]
 
 { #category : 'operations' }
@@ -23,6 +24,7 @@ Reward >> applyTo: aShip [
 ]
 
 { #category : 'initializacion' }
-Reward >> initializeOf: aMagnitude [ 
-	^ self subclassResponsibility
+Reward >> initializeOf: aMagnitude [
+
+	magnitude := aMagnitude
 ]
