@@ -268,7 +268,7 @@ Ship >> penalizeAndReturnTo: shipInitialPosition [
 
 { #category : 'move' }
 Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
-	
+
 	| squaresTraveled |
 	squaresTraveled := aBoard
 		                   calculateDistanceBetween: position
