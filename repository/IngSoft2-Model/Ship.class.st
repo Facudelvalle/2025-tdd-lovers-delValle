@@ -283,11 +283,7 @@ Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
 Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 
 	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
-	self hasEnoughTurbines ifFalse: [
-		Error signal:
-			'This ship cannot keep playing because it ran out of turbines.' ].
 	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
-
 
 	initialPosition := position.
 	adjustedRolledNumber := self adjust: aRolledNumber.

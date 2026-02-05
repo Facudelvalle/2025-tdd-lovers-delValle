@@ -267,7 +267,7 @@ Game >> nextTurnPlay [
 	shipToMove := ships removeFirst.
 	rolledNumber := self rollDices.
 	self move: shipToMove with: rolledNumber.
-	ships add: shipToMove
+	shipToMove hasEnoughTurbines ifTrue: [ ships add: shipToMove ]
 ]
 
 { #category : 'playing' }
@@ -307,6 +307,21 @@ Game >> printBoard [
 		             (sortedPositions collect: [ :aShip | aShip details ]).
 
 	results := winnerShip , positions.
+	^ results
+]
+
+{ #category : 'printing' }
+Game >> printShips [
+
+	| positions results sortedPositions |
+	sortedPositions := ships sorted: [ :aShip |
+		                   board
+			                   calculateDistanceBetween: (Position at: 0 in: 1)
+			                   and: aShip currentPosition ] descending.
+	positions := String cr join:
+		             (sortedPositions collect: [ :aShip | aShip details ]).
+
+	results := positions.
 	^ results
 ]
 
