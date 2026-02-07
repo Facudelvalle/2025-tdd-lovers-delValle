@@ -13,13 +13,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'assignments' }
-Board class >> assignPositionsToSquaresFrom: aDistribution [
-
-	aDistribution withIndexCollect: [ :aSquare :index |
-		aSquare assignToPosition: index - 1 ]
-]
-
 { #category : 'validation' }
 Board class >> lengthIsValid: aLength [
 
@@ -56,7 +49,7 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 	newDistribution := self
 		                   replace: aDistribution
 		                   withEndPointsFrom: aWormHole.
-	self assignPositionsToSquaresFrom: newDistribution.
+	newDistribution assignPositionsToSquares.
 	^ self new
 		  initializeWith: aLength
 		  and: aWormHole
@@ -79,10 +72,12 @@ Board >> calculateDistanceBetween: aPosition and: anotherPostion [
 ]
 
 { #category : 'compare' }
-Board >> distributionEquals: aDistribution [ 
+Board >> distributionEquals: aDistribution [
+
 	| squares |
-	squares := String cr join: (distribution collect: [ :aSquare| aSquare asString ]).
-	^ squares = aDistribution 
+	squares := String cr join:
+		           (distribution collect: [ :aSquare | aSquare asString ]).
+	^ squares = aDistribution
 ]
 
 { #category : 'accessing' }
@@ -92,7 +87,7 @@ Board >> effectIn: aSquare [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [ 
+Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [
 
 	length := aLength.
 	wormHole := aWormHole.
@@ -112,9 +107,9 @@ Board >> isEmpty [
 ]
 
 { #category : 'action' }
-Board >> jump: squaresToJump from: aPosition [ 
-	
-	^ aPosition add: squaresToJump with: length 
+Board >> jump: squaresToJump from: aPosition [
+
+	^ aPosition add: squaresToJump with: length
 ]
 
 { #category : 'accessing' }

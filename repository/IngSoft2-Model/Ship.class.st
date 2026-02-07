@@ -65,7 +65,7 @@ Ship >> applyRollModifier: aModifier [
 Ship >> borrowFuelFromAllies [
 
 	| fuelNeededToTravel lendingAlly updatedFuelState |
-	fuelNeededToTravel := fuel amountOfFuelNeeded.
+	fuelNeededToTravel := fuel amountNeeded.
 	lendingAlly := allies
 		               detect: [ :anAlly |
 		               anAlly canLendFuelFor: fuelNeededToTravel ]
@@ -149,9 +149,8 @@ Ship >> formAllianceWith: aShip [
 
 { #category : 'update' }
 Ship >> fuel: someFuel [
-	
-	fuel := fuel modifyMaximumAmountBy: someFuel.
-	fuel := fuel restore.
+
+	fuel := Fuel with: someFuel upTo: someFuel in: HasFuelState new
 ]
 
 { #category : 'testing' }
@@ -269,7 +268,7 @@ Ship >> penalizeAndReturnTo: shipInitialPosition [
 
 { #category : 'move' }
 Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
-	
+
 	| squaresTraveled |
 	squaresTraveled := aBoard
 		                   calculateDistanceBetween: position
@@ -283,11 +282,7 @@ Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
 Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 
 	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
-	self hasEnoughTurbines ifFalse: [
-		Error signal:
-			'This ship cannot keep playing because it ran out of turbines.' ].
 	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
-
 
 	initialPosition := position.
 	adjustedRolledNumber := self adjust: aRolledNumber.

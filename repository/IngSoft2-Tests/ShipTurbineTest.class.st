@@ -104,16 +104,6 @@ ShipTurbineTest >> setUp [
 	anAffectedSquaresPosition := Position at: 9 in: 1
 ]
 
-{ #category : 'asserting' }
-ShipTurbineTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMessage [
-
-	self
-		should: anErrorBlock
-		raise: anErrorClass
-		withExceptionDo: [ :error |
-		self assert: error messageText equals: anErrorMessage ]
-]
-
 { #category : 'tests' }
 ShipTurbineTest >> testEachShipStartsTheGameWithThreeTurbines [
 
@@ -312,9 +302,11 @@ ShipTurbineTest >> testWhenAShipRunsOutOfFuelThenItLosesATurbine [
 { #category : 'tests' }
 ShipTurbineTest >> testWhenAShipRunsOutOfTurbinesThenItCannotKeepPlaying [
 
-	| sideToRoll aLoadedDice aDistribution aBoard aGame |
+	| sideToRoll aLoadedDice aDistribution aBoard aGame expectedDetails |
 	sideToRoll := #( 1 1 1 1 2 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	expectedDetails := 'BlackShip: Lap: 1 Square: 0'.
 
 	aDistributionManager add: aHyperGravitySquareOfTwoProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: tenSquares.
@@ -339,11 +331,7 @@ ShipTurbineTest >> testWhenAShipRunsOutOfTurbinesThenItCannotKeepPlaying [
 	aGame nextTurnPlay.
 	aGame nextTurnPass.
 
-	self
-		should: [ aGame nextTurnPlay ]
-		raise: Error
-		withMessageText:
-		'This ship cannot keep playing because it ran out of turbines.'
+	self assert: aGame printShips equals: expectedDetails
 ]
 
 { #category : 'tests' }

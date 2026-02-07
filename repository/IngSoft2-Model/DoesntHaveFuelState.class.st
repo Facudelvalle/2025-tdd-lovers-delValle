@@ -9,12 +9,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'borrowing' }
-DoesntHaveFuelState >> amountOfFuelNeededBy: someFuel [
-
-	^ someFuel amountNeeded
-]
-
 { #category : 'penalty' }
 DoesntHaveFuelState >> applyPenaltyTo: aShip thatStartedFrom: aPosition [
 
