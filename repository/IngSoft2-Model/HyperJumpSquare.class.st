@@ -19,14 +19,32 @@ HyperJumpSquare class >> with: anArrayLength and: aRatio [
 ]
 
 { #category : 'effect' }
-HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
+HyperJumpSquare >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
+
+	| aUnitDistance squaresToMove |
+	aUnitDistance := units removeFirst.
+
+	squaresToMove := self normalize: aUnitDistance.
+
+	aGame jumpOtherShipsADistanceOf: squaresToMove.
+
+	units add: aUnitDistance.
+
+	^ position
+]
+
+{ #category : 'effect' }
+HyperJumpSquare >> applyRegularEffectOn: aShip and: aPosition in: aGame [
 
 	| aUnitDistance positionAfterJump squaresToMove |
 	aUnitDistance := units removeFirst.
-	
+
 	squaresToMove := self normalize: aUnitDistance.
 
-	positionAfterJump := aGame jump: squaresToMove from: aPosition .
+	positionAfterJump := aGame
+		                     jump: aShip
+		                     theDistanceOf: squaresToMove
+		                     from: aPosition.
 
 	units add: aUnitDistance.
 
@@ -36,6 +54,8 @@ HyperJumpSquare >> applyOn: aShip and: aPosition in: aGame [
 { #category : 'initialization' }
 HyperJumpSquare >> initializeWith: someUnits and: aRatio [
 
+	super initialize.
+
 	units := someUnits sort: [ :aUnit :nextUnit | aUnit > nextUnit ].
 	ratio := aRatio
 ]
@@ -44,14 +64,6 @@ HyperJumpSquare >> initializeWith: someUnits and: aRatio [
 HyperJumpSquare >> normalize: aUnitDistance [
 
 	^ aUnitDistance toParsec * ratio
-]
-
-{ #category : 'effect' }
-HyperJumpSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
-
-	^ self applyOn: aShip and: aPosition in: aGame
-
-	
 ]
 
 { #category : 'validation' }

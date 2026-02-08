@@ -93,8 +93,8 @@ BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereT
 	| aWormHole aBoard expectedDistribution aDistribution |
 	aWormHole := WormHole between: 1 and: 2.
 	expectedDistribution := 'a BlackHoleSquare' , String cr
-	                        , 'a WormHoleEndpoint' , String cr
-	                        , 'a WormHoleEndpoint' , String cr
+	                        , 'a WormHoleBeginning' , String cr
+	                        , 'a WormHoleEnd' , String cr
 	                        , 'a BlackHoleSquare' , String cr
 	                        , 'a BlackHoleSquare'.
 

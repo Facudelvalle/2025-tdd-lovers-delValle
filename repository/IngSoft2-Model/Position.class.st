@@ -73,12 +73,6 @@ Position >> equals: aPosition [
 	^(aPosition squareEquals: square) and: (aPosition lapsEquals: lap)
 ]
 
-{ #category : 'adding' }
-Position >> goBackFourSquaresIn: aBoardLength [
- 
-	^ self add: -4 with: aBoardLength
-]
-
 { #category : 'initialization' }
 Position >> initializeAt: aSquare in: aLap [
 

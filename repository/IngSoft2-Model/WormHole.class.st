@@ -43,6 +43,32 @@ WormHole class >> cannotEndInANegative: anEnd [
 		Error signal: 'A Worm Hole cannot end in a negative square' ]
 ]
 
+{ #category : 'as yet unclassified' }
+WormHole >> applyBeginningInvertedEffectOn: aPosition in: aGame [
+
+	aGame moveShipsTo: end position currentSquare.
+	^ aPosition
+]
+
+{ #category : 'as yet unclassified' }
+WormHole >> applyBeginningRegularEffectOn: aPosition [
+
+	^ aPosition adjustSquare: end position currentSquare
+]
+
+{ #category : 'as yet unclassified' }
+WormHole >> applyEndInvertedEffectOn: aPosition in: aGame [
+
+	aGame moveShipsTo: beginning position currentSquare.
+	^ aPosition
+]
+
+{ #category : 'as yet unclassified' }
+WormHole >> applyEndRegularEffectOn: aPosition [
+
+	^ aPosition adjustSquare: beginning position currentSquare
+]
+
 { #category : 'validation' }
 WormHole >> endsBefore: aLength [
 
@@ -74,16 +100,18 @@ WormHole >> hasEndingAt: aSquare [
 { #category : 'initialization' }
 WormHole >> initializeBetween: aBeginning and: anEnd [
 
-	beginning := WormHoleEndpoint at: aBeginning.
-	end := WormHoleEndpoint at: anEnd 
+	beginning := WormHoleBeginning at: aBeginning in: self.
+	end := WormHoleEnd at: anEnd in: self
 ]
 
 { #category : 'comparing' }
-WormHole >> moveIfEndPointAt: aPosition [
+WormHole >> move: aShip ifEndPointAt: aPosition in: aGame [
 
+	(aPosition squareEquals: beginning position currentSquare) ifTrue: [
+		^ beginning move: aShip to: aPosition in: aGame ].
 
-	(aPosition squareEquals: beginning) ifTrue: [^ aPosition adjustSquare: end position ].
-	(aPosition squareEquals: end) ifTrue: [ ^ aPosition adjustSquare: beginning position ].
+	(aPosition squareEquals: end position currentSquare) ifTrue: [
+		^ end move: aShip to: aPosition in: aGame ].
 
 	^ aPosition
 ]

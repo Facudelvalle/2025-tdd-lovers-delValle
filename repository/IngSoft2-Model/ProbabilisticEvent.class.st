@@ -21,7 +21,7 @@ ProbabilisticEvent class >> for: anEvent with: aProbability [
 { #category : 'accessing' }
 ProbabilisticEvent >> event [
 
-	^ event
+	^ event deepCopy
 ]
 
 { #category : 'initialization' }

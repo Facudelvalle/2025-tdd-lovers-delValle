@@ -28,7 +28,8 @@ Class {
 		'aWormHole',
 		'aLoadedDice',
 		'aDistribution',
-		'aBoard'
+		'aBoard',
+		'anAffectedSquaresPosition'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -44,6 +45,7 @@ AllyCardTest >> setUp [
 	aBlackShip := Ship called: 'BlackShip'.
 	aRedShip := Ship called: 'RedShip'.
 	expectedCards := OrderedCollection new.
+	anAffectedSquaresPosition := Position at: 2 in: 1.
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
@@ -121,7 +123,9 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveEnoughFuelTh
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -146,7 +150,9 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItCanUseTheOtherShipsFuelWhenItH
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -174,7 +180,8 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItIsNoLongerInItsHand [
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -194,7 +201,9 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardThenItsAllyCanUseTheShipsFuelWhenItH
 		play: anAllyCard
 		by: aBlackShip
 		affecting: aNullCard
-		and: aBlueShip.
+		and: aBlueShip
+		and: anAffectedSquaresPosition.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPass.
@@ -220,12 +229,16 @@ AllyCardTest >> testWhenAShipPlaysTwoAllyCardsAndOneOfItsAlliesDoesNotHaveEnough
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
 	aGame
 		play: anAllyCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aRedShip.
+		and: aRedShip
+		and: aPlainSquare.
+
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPass.
@@ -253,7 +266,8 @@ AllyCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid 
 				play: anAllyCard
 				by: aBlueShip
 				affecting: aNullCard
-				and: aBlackShip ]
+				and: aBlackShip
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
@@ -271,7 +285,8 @@ AllyCardTest >> testWhenAShipTriesToPlayAnAllyCardWhenItIsNotItsTurnThenInvalid 
 				play: anAllyCard
 				by: aBlackShip
 				affecting: aNullCard
-				and: aBlueShip ]
+				and: aBlueShip
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText:
 		'A permanent card cannot be played when it is not your turn.'

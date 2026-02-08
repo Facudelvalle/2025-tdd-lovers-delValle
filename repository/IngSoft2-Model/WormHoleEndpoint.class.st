@@ -6,16 +6,18 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'position',
-		'index'
+		'index',
+		'state',
+		'wormHole'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'accessing' }
-WormHoleEndpoint class >> at: aPosition [
+WormHoleEndpoint class >> at: aPosition in: aWormHole [
 
-	^ self new initializeAt: aPosition
+	^ self new initializeAt: aPosition in: aWormHole
 ]
 
 { #category : 'comparing' }
@@ -31,9 +33,26 @@ WormHoleEndpoint >> > aLength [
 ]
 
 { #category : 'effect' }
+WormHoleEndpoint >> applyInvertedEffectOn: aShip and: aPosition in: aGame [
+
+	self subclassResponsibility
+]
+
+{ #category : 'effect' }
 WormHoleEndpoint >> applyOn: aShip and: aPosition in: aGame [
 
 	^ aPosition
+]
+
+{ #category : 'effect' }
+WormHoleEndpoint >> applyRegularEffectOn: aShip and: aPosition in: aGame [
+
+	self subclassResponsibility
+]
+
+{ #category : 'assignments' }
+WormHoleEndpoint >> assignToPosition: aNumber [
+
 ]
 
 { #category : 'evaluating' }
@@ -43,10 +62,28 @@ WormHoleEndpoint >> in: aPosition [
 ]
 
 { #category : 'accessing' }
-WormHoleEndpoint >> initializeAt: aPosition [
+WormHoleEndpoint >> initializeAt: aPosition in: aWormHole [
 
-	position := aPosition.
-	index := aPosition + 1
+	position := Position at: aPosition in: 1.
+	index := aPosition + 1.
+	wormHole := aWormHole.
+	state := RegularState new
+]
+
+{ #category : 'transformations' }
+WormHoleEndpoint >> invert [
+
+	state := state invert
+]
+
+{ #category : 'effect' }
+WormHoleEndpoint >> move: aShip to: aPosition in: aGame [
+
+	^ state
+		  applyEffectOf: self
+		  on: aShip
+		  and: aPosition
+		  in: aGame
 ]
 
 { #category : 'accessing' }

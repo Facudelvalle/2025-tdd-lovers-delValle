@@ -12,7 +12,8 @@ Class {
 		'gravityPenalty',
 		'cards',
 		'allies',
-		'rollModifier'
+		'rollModifier',
+		'turbines'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -24,7 +25,7 @@ Ship class >> called: aName [
 	^ self new initializeCalled: aName
 ]
 
-{ #category : 'adding' }
+{ #category : 'update' }
 Ship >> addCards: someCards [
 	
 	someCards do: [ :aCard | cards add: aCard ]
@@ -34,6 +35,12 @@ Ship >> addCards: someCards [
 Ship >> adjust: aRolledNumber [
 
 	^ aRolledNumber + rollModifier
+]
+
+{ #category : 'update' }
+Ship >> adjustSquare: aSquare [
+
+	position := position adjustSquare: aSquare
 ]
 
 { #category : 'accessing' }
@@ -58,7 +65,7 @@ Ship >> applyRollModifier: aModifier [
 Ship >> borrowFuelFromAllies [
 
 	| fuelNeededToTravel lendingAlly updatedFuelState |
-	fuelNeededToTravel := fuel amountOfFuelNeeded.
+	fuelNeededToTravel := fuel amountNeeded.
 	lendingAlly := allies
 		               detect: [ :anAlly |
 		               anAlly canLendFuelFor: fuelNeededToTravel ]
@@ -78,11 +85,12 @@ Ship >> canPlay: aRolledNumber [
 
 	| hasToWait |
 	hasToWait := turnsLeftToWait > 0.
-	
-	hasToWait ifTrue: [
-		self reducePenalty ].
-	
-	^  hasToWait not and: gravityPenalty <= aRolledNumber 
+
+	hasToWait ifTrue: [ self reducePenalty ].
+
+	gravityPenalty > aRolledNumber ifTrue: [ self loseATurbine ].
+
+	^ hasToWait not and: gravityPenalty <= aRolledNumber
 ]
 
 { #category : 'accessing' }
@@ -112,7 +120,7 @@ Ship >> currentPosition [
 	^ position
 ]
 
-{ #category : 'comparing' }
+{ #category : 'testing' }
 Ship >> currentPositionEquals: aPosition [ 
 	
 	^ position equals: aPosition 
@@ -139,14 +147,13 @@ Ship >> formAllianceWith: aShip [
 	allies remove: aNullShip ifAbsent: [ Error signal: 'pepe' ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'update' }
 Ship >> fuel: someFuel [
-	
-	fuel := fuel modifyMaximumAmountBy: someFuel.
-	fuel := fuel restore.
+
+	fuel := Fuel with: someFuel upTo: someFuel in: HasFuelState new
 ]
 
-{ #category : 'comparing' }
+{ #category : 'testing' }
 Ship >> fuelEquals: someFuel [
 	
 	^ fuel equals: someFuel
@@ -158,7 +165,13 @@ Ship >> hasAFuelPenalty [
 	^ turnsLeftToWait > 0
 ]
 
-{ #category : 'accessing' }
+{ #category : 'testing' }
+Ship >> hasEnoughTurbines [
+
+	^ turbines > 0
+]
+
+{ #category : 'update' }
 Ship >> increaseMaxFuel: aMagnitude [
 
 	fuel := fuel modifyMaximumAmountBy: aMagnitude.
@@ -176,7 +189,34 @@ Ship >> initializeCalled: aName [
 	cards := OrderedCollection new.
 	rollModifier := 0.
 	allies := OrderedCollection new.
-	allies add: NullShip new
+	allies add: NullShip new.
+	turbines := 3
+]
+
+{ #category : 'move' }
+Ship >> jump: squaresToMove on: aBoard [
+
+	| positionAfterJump initialPosition squaresTraveledWithSquareEffect |
+	initialPosition := position.
+	positionAfterJump := aBoard jump: squaresToMove from: initialPosition.
+
+	squaresTraveledWithSquareEffect := aBoard
+		                                   calculateDistanceBetween:
+		                                   initialPosition
+		                                   and: positionAfterJump.
+
+	self moveTo: positionAfterJump.
+	self
+		consumeFuel: squaresTraveledWithSquareEffect
+		from: initialPosition.
+
+	^ positionAfterJump
+]
+
+{ #category : 'penalty' }
+Ship >> loseATurbine [
+
+	turbines := turbines - 1
 ]
 
 { #category : 'penalty' }
@@ -185,7 +225,7 @@ Ship >> losesTwoTurns [
 	turnsLeftToWait := 2
 ]
 
-{ #category : 'accessing' }
+{ #category : 'update' }
 Ship >> modifyFuelBy: aFuelAmount [
 
 	fuel := fuel modifyBy: aFuelAmount
@@ -221,12 +261,14 @@ Ship >> penalizeAndReturnTo: shipInitialPosition [
 	self losesTwoTurns.
 	self restoreFuel.
 	allies first losesTwoTurns.
-	allies first restoreFuel
+	allies first restoreFuel.
+	self loseATurbine.
+	allies first loseATurbine
 ]
 
 { #category : 'move' }
 Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
-	
+
 	| squaresTraveled |
 	squaresTraveled := aBoard
 		                   calculateDistanceBetween: position
@@ -241,22 +283,28 @@ Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 
 	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
 	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
+
 	initialPosition := position.
 	adjustedRolledNumber := self adjust: aRolledNumber.
 
 	positionBeforeWormHole := aBoard
 		                          update: position
 		                          with: adjustedRolledNumber.
+
 	squaresTraveledWithDice := aBoard
 		                           calculateDistanceBetween: position
 		                           and: positionBeforeWormHole.
-	positionAfterWormHole := aBoard moveIfWormHoleAt:
-		                         positionBeforeWormHole.
+
+	positionAfterWormHole := aBoard
+		                         move: self
+		                         ifWormHoleAt: positionBeforeWormHole
+		                         in: aGame.
+
 	self moveTo: positionAfterWormHole.
 	self consumeFuel: squaresTraveledWithDice from: initialPosition.
 
 	positionAfterSquareEffect := aBoard
-		                             applyEfectOn: self
+		                             applyEffectOn: self
 		                             with: position
 		                             in: aGame.
 
@@ -277,7 +325,7 @@ Ship >> reducePenalty [
 	turnsLeftToWait := turnsLeftToWait - 1
 ]
 
-{ #category : 'removing' }
+{ #category : 'update' }
 Ship >> remove: aCard [
 
 	| indexOfCard |
@@ -285,21 +333,28 @@ Ship >> remove: aCard [
 	cards removeIndex: indexOfCard
 ]
 
-{ #category : 'removing' }
+{ #category : 'update' }
 Ship >> removeAlly: anAlly [
 
 	allies remove: anAlly.
 	allies isEmpty ifTrue: [ allies add: NullShip new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'update' }
 Ship >> restoreFuel [
 
 	fuel := fuel restore.
 ]
 
+{ #category : 'accessing' }
+Ship >> turbines [
+
+	^ turbines
+]
+
 { #category : 'comparing' }
-Ship >> validateCard: aCard [ 
-	
-	(cards includes: aCard) ifFalse: [ Error signal: 'The ship does not have that card on its hand.' ] 
+Ship >> validateCard: aCard [
+
+	(cards includes: aCard) ifFalse: [
+		Error signal: 'The ship does not have that card on its hand.' ]
 ]

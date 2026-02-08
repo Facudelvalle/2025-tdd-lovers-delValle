@@ -25,7 +25,8 @@ Class {
 		'aLoadedDice',
 		'aWormHole',
 		'aDistribution',
-		'aBoard'
+		'aBoard',
+		'anAffectedSquaresPosition'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -96,8 +97,12 @@ AccelerationCardTest >> setUp [
 
 	aNullCard := NullCard new.
 
-	aSetCardManagerWithAccelerationCards := ProbablisiticEventsManager new.
-	aSetCardManagerWithAccelerationCards add: anAccelerationCardProbabilisticEvent
+	anAffectedSquaresPosition := Position at: 2 in: 1.
+
+	aSetCardManagerWithAccelerationCards := ProbablisiticEventsManager
+		                                        new.
+	aSetCardManagerWithAccelerationCards add:
+		anAccelerationCardProbabilisticEvent
 ]
 
 { #category : 'asserting' }
@@ -124,7 +129,9 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenAllRolledNumbers
 		play: anAccelerationCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+		
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 
@@ -152,7 +159,8 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenItIsNoLongerInIt
 		play: anAccelerationCard
 		by: aBlueShip
 		affecting: aNullCard
-		and: aBlackShip.
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
 
 	self assert: aBlueShip cards equals: expectedCards
 ]
@@ -172,7 +180,8 @@ AccelerationCardTest >> testWhenAShipTriesToPlayAnAccelerationCardThatIsNotInIts
 				play: anAccelerationCard
 				by: aBlueShip
 				affecting: aNullCard
-				and: aBlackShip ]
+				and: aBlackShip
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
 ]
@@ -190,7 +199,8 @@ AccelerationCardTest >> testWhenAShipTriesToPlayAnAccelerationCardWhenItIsNotIts
 				play: anAccelerationCard
 				by: aBlackShip
 				affecting: aNullCard
-				and: aBlueShip ]
+				and: aBlueShip
+				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText:
 		'A permanent card cannot be played when it is not your turn.'

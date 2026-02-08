@@ -155,14 +155,10 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 { #category : 'tests' }
 HyperGravityTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTheMaximumRollThenInvalid [
 
-	| aDice twoSides aHyperGravitySquare aHyperGravitySquareProbabilisticEvent |
-	twoSides := 2.
+	| aHyperGravitySquare aHyperGravitySquareProbabilisticEvent sideToRoll aLoadedDice |
+	sideToRoll := #( 2 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aWormHole := WormHole between: 1 and: 2.
-
-	aDice := Dice with: twoSides.
-
-	aDistributionManager := ProbablisiticEventsManager new.
 	aHyperGravitySquare := HyperGravitySquare between: 10 and: 12.
 	aHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
 		                                         for: aHyperGravitySquare
@@ -175,15 +171,10 @@ HyperGravityTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTh
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	someDices add: aDice.
-
-	aGameBuilder := GameBuilder new.
+	someDices add: aLoadedDice.
 
 	aGameBuilder setBoard: aBoard.
-	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
 
 	self
 		should: [ aGameBuilder build ]

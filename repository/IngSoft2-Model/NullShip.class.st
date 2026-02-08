@@ -33,6 +33,12 @@ NullShip >> equals: aShip [
 ]
 
 { #category : 'update' }
+NullShip >> loseATurbine [
+
+	
+]
+
+{ #category : 'update' }
 NullShip >> losesTwoTurns [
 
 	

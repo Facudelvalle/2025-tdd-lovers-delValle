@@ -13,12 +13,13 @@ Class {
 		'zeroReward',
 		'zeroRewardProbabilisticEvent',
 		'aCardManager',
-		'anAllyCard',
-		'anAllyCardProbabilisticEvent',
 		'someShips',
 		'someDices',
 		'aGameBuilder',
-		'aDistributionWithBlackHolesSquares'
+		'aDistributionWithBlackHolesSquares',
+		'aReversePolarityCard',
+		'aReversePolarityCardProbabilisticEvent',
+		'aNullCard'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -40,7 +41,8 @@ BlackHoleTest >> setUp [
 		                                for: aBlackHoleSquare
 		                                with: aProbabilityOfOne.
 	aDistributionManager add: aBlackHoleProbabilisticEvent.
-	aDistributionWithBlackHolesSquares := aDistributionManager generateFor: tenSquares.
+	aDistributionWithBlackHolesSquares := aDistributionManager
+		                                      generateFor: tenSquares.
 
 	aRewardManager := ProbablisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
@@ -50,11 +52,11 @@ BlackHoleTest >> setUp [
 	aRewardManager add: zeroRewardProbabilisticEvent.
 
 	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
+	aReversePolarityCard := ReversePolarityCard new.
+	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
+		                                          for: aReversePolarityCard
+		                                          with: aProbabilityOfOne.
+	aCardManager add: aReversePolarityCardProbabilisticEvent.
 
 	someShips := OrderedCollection new.
 	someShips add: aBlueShip.
@@ -64,7 +66,9 @@ BlackHoleTest >> setUp [
 	aGameBuilder := GameBuilder new.
 	aGameBuilder setRewards: aRewardManager.
 	aGameBuilder setAvailableCards: aCardManager.
-	aGameBuilder setShips: someShips
+	aGameBuilder setShips: someShips.
+	
+	aNullCard := NullCard new
 ]
 
 { #category : 'tests' }
@@ -72,11 +76,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoe
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame |
 	sideToRoll := #( 4 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 7 in: 1.
 
 	aWormHole := WormHole between: 4 and: 7.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares
@@ -101,11 +105,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFou
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame |
 	sideToRoll := #( 4 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 0 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares
@@ -128,11 +132,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenI
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame |
 	sideToRoll := #( 4 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 9 in: 1.
 
 	aWormHole := WormHole between: 4 and: 9.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares
@@ -159,11 +163,11 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstL
 
 	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame |
 	sideToRoll := #( 2 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	expectedPosition := Position at: 0 in: 1.
 
 	aWormHole := WormHole between: 5 and: 6.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aBoard := Board
 		          with: tenSquares
@@ -179,4 +183,43 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstL
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+BlackHoleTest >> testWhenAShipLandsOnAnInvertedBlackHoleAndOneOfTheOtherShipsDoesNotHaveEnoughFuelThenItGoesBackToItsInitialPosition [
+
+	| sideToRoll expectedPosition aWormHole aLoadedDice aBoard aGame anAffectedSquaresPosition |
+	sideToRoll := #( 2 2 1 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	expectedPosition := Position at: 5 in: 1.
+
+	anAffectedSquaresPosition := Position at: 6 in: 1.
+
+	aWormHole := WormHole between: 2 and: 5.
+
+	aBoard := Board
+		          with: tenSquares
+		          and: aWormHole
+		          distributedBy: aDistributionWithBlackHolesSquares.
+
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+
+	aGame
+		play: aReversePolarityCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+
+	self assert: (aBlackShip currentPositionEquals: expectedPosition)
 ]

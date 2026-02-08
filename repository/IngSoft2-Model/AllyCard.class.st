@@ -19,7 +19,7 @@ AllyCard >> = aCard [
 ]
 
 { #category : 'playing' }
-AllyCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip in: aGame [
+AllyCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip and: anAffectedSquaresPosition in: aGame [
 
 	aGame validateNextPlayer: aPlayingShip.
 	aPlayingShip formAllianceWith: anAllyShip.
@@ -31,19 +31,19 @@ AllyCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anA
 ]
 
 { #category : 'playing' }
-AllyCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip in: aGame [
+AllyCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAllyShip and: anAffectedSquaresPosition in: aGame [
 
 	self
 		applyEffectPlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: anAllyShip
+		and: anAffectedSquaresPosition
 		in: aGame.
-	aPlayingShip remove: self.
-	
+	aPlayingShip remove: self
 ]
 
 { #category : 'cancelling' }
-AllyCard >> cancelEffectIn: aGame [
+AllyCard >> cancelEffectIn: aGame on: aPosition [
 
 	allyOne removeAlly: allyTwo.
 	allyTwo removeAlly: allyOne.
@@ -55,6 +55,12 @@ AllyCard >> cancelEffectIn: aGame [
 AllyCard >> compare: firstAlly and: secondAlly [
 
 	^ (firstAlly equals: allyOne) and: (secondAlly equals: allyTwo)
+]
+
+{ #category : 'comparing' }
+AllyCard >> equalsCard: aCard [
+
+	^ aCard isAllyCard
 ]
 
 { #category : 'initialization' }

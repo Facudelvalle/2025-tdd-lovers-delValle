@@ -36,61 +36,30 @@ Game class >> fuel: someShips with: aFuelQuantity [
 	someShips do: [ :aShip | aShip fuel: aFuelQuantity ]
 ]
 
-{ #category : 'validation' }
-Game class >> hasDices: someDices [
-
-	someDices size < 1 ifTrue: [
-		Error signal: 'The Game needs at least one dice to start.' ]
-]
-
-{ #category : 'validation' }
-Game class >> hasLaps: someLaps [
-
-	someLaps < 1 ifTrue: [
-		Error signal: 'The Game needs at least one lap to start.' ]
-]
-
-{ #category : 'validation' }
-Game class >> hasShips: someShips [
-
-	someShips size < 2 ifTrue: [
-		Error signal: 'The Game needs at least two ship to start.' ]
-]
-
-{ #category : 'accessing' }
-Game class >> maximumRoll: someDices [
-
-	^ someDices sum: [ :aDice | aDice rollMaximum ]
-]
-
-{ #category : 'validation' }
-Game class >> validateSquaresFrom: aBoard with: someDices [
-
-	aBoard validateSquaresWith: (self maximumRoll: someDices)
-]
-
 { #category : 'creation' }
 Game class >> with: aBoard for: someLaps and: someShips and: someDices and: aFuelQuantity and: aRewardManager and: aCardsManager [
 
-	self hasDices: someDices.
-	self hasShips: someShips.
-	self hasLaps: someLaps.
 	self fuel: someShips with: aFuelQuantity.
 	self assignCardsTo: someShips from: aCardsManager.
-	self validateSquaresFrom: aBoard with: someDices.
 	^ self new
 		  initializeWith: aBoard
 		  for: someLaps
 		  and: someShips
 		  and: someDices
 		  and: aRewardManager
-			and: aCardsManager
+		  and: aCardsManager
 ]
 
 { #category : 'accessing' }
 Game >> addActiveCard: aCard [
 
 	activePermanentCards add: aCard
+]
+
+{ #category : 'action' }
+Game >> allOtherShipsLoseATurbine [
+
+	ships do: [ :aShip | aShip loseATurbine ]
 ]
 
 { #category : 'action' }
@@ -104,7 +73,10 @@ Game >> applyLastEffectTo: aShip [
 		                           on: shipInitialPosition
 		                           in: self.
 
-	aShip performMovementFrom: shipInitialPosition to: shipPositionAfterEffect on: board
+	aShip
+		performMovementFrom: shipInitialPosition
+		to: shipPositionAfterEffect
+		on: board
 ]
 
 { #category : 'action' }
@@ -118,6 +90,12 @@ Game >> applyRewardTo: aShip for: aRolledNumber [
 Game >> applyRollModifier: aPenalty [
 
 	ships do: [ :aShip | aShip applyRollModifier: aPenalty ]
+]
+
+{ #category : 'action' }
+Game >> applyToAllShipsGravityPenaltyOf: aRollToContinueValue [
+
+	ships do: [ :aShip | aShip applyGravityPenalty: aRollToContinueValue ]
 ]
 
 { #category : 'action' }
@@ -145,9 +123,9 @@ Game >> generateCard [
 ]
 
 { #category : 'action' }
-Game >> goBackFourSquares: aShip from: aPosition [ 
-	
-	^ board goBackFourSquares: aShip from: aPosition 
+Game >> giveAnotherCardToAllOtherShips [
+
+	ships do: [ :aShip | aShip addCards: self generateCard ]
 ]
 
 { #category : 'validation' }
@@ -173,10 +151,22 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	activePermanentCards := OrderedCollection new
 ]
 
-{ #category : 'action' }
-Game >> jump: squaresToJump from: aPosition [ 
-	
-	^ board jump: squaresToJump from: aPosition 
+{ #category : 'changing state' }
+Game >> invertSquareIn: anAffectedSquaresPosition [
+
+	board invertSquareIn: anAffectedSquaresPosition
+]
+
+{ #category : 'move' }
+Game >> jump: aShip theDistanceOf: squaresToJump from: aPosition [
+
+	^ aShip jump: squaresToJump on: board
+]
+
+{ #category : 'move' }
+Game >> jumpOtherShipsADistanceOf: squaresToMove [
+
+	ships do: [ :aShip | aShip jump: squaresToMove on: board ]
 ]
 
 { #category : 'accessing' }
@@ -197,13 +187,13 @@ Game >> maximumRoll [
 	^ dices sum: [ :aDice | aDice rollMaximum ]
 ]
 
-{ #category : 'action' }
+{ #category : 'move' }
 Game >> move: aShip backwardsBy: aMagnitude [
 
 	^ aShip moveBackwards: aMagnitude in: board.
 ]
 
-{ #category : 'action' }
+{ #category : 'move' }
 Game >> move: aShip with: rolledNumber [
 
 	self applyRewardTo: aShip for: rolledNumber.
@@ -213,19 +203,19 @@ Game >> move: aShip with: rolledNumber [
 	winner := aShip
 ]
 
-{ #category : 'action' }
+{ #category : 'move' }
 Game >> moveShipsBackwards: aMagnitude [
 
 	ships do: [ :aShip | aShip moveBackwards: aMagnitude in: board ]
 ]
 
-{ #category : 'action' }
-Game >> moveShipsToSquareZero [
-	
-	ships do: [ :aShip | aShip moveTo: (aShip currentPosition adjustSquare: 0) ]
+{ #category : 'move' }
+Game >> moveShipsTo: aSquare [
+
+	ships do: [ :aShip | aShip adjustSquare: aSquare ]
 ]
 
-{ #category : 'action' }
+{ #category : 'playing' }
 Game >> nextTurnPass [
 
 	| shipToMove |
@@ -235,7 +225,7 @@ Game >> nextTurnPass [
 	ships add: shipToMove.
 ]
 
-{ #category : 'action' }
+{ #category : 'playing' }
 Game >> nextTurnPlay [
 
 	| shipToMove rolledNumber |
@@ -243,11 +233,11 @@ Game >> nextTurnPlay [
 	shipToMove := ships removeFirst.
 	rolledNumber := self rollDices.
 	self move: shipToMove with: rolledNumber.
-	ships add: shipToMove
+	shipToMove hasEnoughTurbines ifTrue: [ ships add: shipToMove ]
 ]
 
-{ #category : 'action' }
-Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip [
+{ #category : 'playing' }
+Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfectedShip and: anAffectedSquare [
 
 	aPlayingShip validateCard: aPlayedCard.
 
@@ -255,17 +245,19 @@ Game >> play: aPlayedCard by: aPlayingShip affecting: anAffectedCard and: anAfec
 		bePlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: anAfectedShip
+		and: anAffectedSquare
 		in: self
 ]
 
-{ #category : 'action' }
-Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip [
+{ #category : 'playing' }
+Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip and: anAffectedSquare [
 
 	lastPlayedCard
 		applyEffectPlayedBy: aPlayingShip
 		affecting: anAffectedCard
 		and: aTargetShip
-		in: self.
+		and: anAffectedSquare
+		in: self
 ]
 
 { #category : 'printing' }
@@ -284,12 +276,27 @@ Game >> printBoard [
 	^ results
 ]
 
+{ #category : 'printing' }
+Game >> printShips [
+
+	| positions results sortedPositions |
+	sortedPositions := ships sorted: [ :aShip |
+		                   board
+			                   calculateDistanceBetween: (Position at: 0 in: 1)
+			                   and: aShip currentPosition ] descending.
+	positions := String cr join:
+		             (sortedPositions collect: [ :aShip | aShip details ]).
+
+	results := positions.
+	^ results
+]
+
 { #category : 'removing' }
-Game >> remove: anAffectedCard playedBy: aShip [
+Game >> remove: anAffectedCard playedBy: aShip on: aPosition [
 
 	self validateIsActive: anAffectedCard.
 	activePermanentCards remove: anAffectedCard.
-	anAffectedCard cancelEffectIn: self
+	anAffectedCard cancelEffectIn: self on: aPosition
 ]
 
 { #category : 'action' }

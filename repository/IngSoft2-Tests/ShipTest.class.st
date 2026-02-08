@@ -114,6 +114,28 @@ ShipTest >> testWhenAShipMakesTwoMovesOfOneSquareThenItsPositionIsTwo [
 ]
 
 { #category : 'tests' }
+ShipTest >> testWhenAShipMovesAfterPassingThePreviousTurnThenItsFinalPositionIsCorrect [
+
+	| expectedPosition sideToRoll aSetDice someDices |
+	sideToRoll := #( 1 ) asOrderedCollection.
+	aSetDice := LoadedDice toRoll: sideToRoll.
+	someDices := OrderedCollection new.
+	someDices add: aSetDice.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	expectedPosition := Position at: 2 in: 1.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
 ShipTest >> testWhenAShipMovesOneSquareThenItsPositionIsOne [
 
 	| sideToRoll aSetDice expectedPosition someDices |

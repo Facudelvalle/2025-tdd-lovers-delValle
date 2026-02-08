@@ -46,7 +46,10 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 	self lengthIsValid: aLength.
 	self validate: aWormHole fallsInto: aLength.
 	self validate: aLength isSmallerThanTheEndingOf: aWormHole.
-	newDistribution := self replace: aDistribution withEndPointsFrom: aWormHole.
+	newDistribution := self
+		                   replace: aDistribution
+		                   withEndPointsFrom: aWormHole.
+	newDistribution assignPositionsToSquares.
 	^ self new
 		  initializeWith: aLength
 		  and: aWormHole
@@ -54,12 +57,12 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 ]
 
 { #category : 'action' }
-Board >> applyEfectOn: aShip with: aPosition in: aGame [ 
-	
+Board >> applyEffectOn: aShip with: aPosition in: aGame [
+
 	| effect |
 	effect := self effectIn: aPosition currentSquare + 1.
 	aGame lastEffect: effect.
-	^ effect applyOn: aShip and: aPosition in: aGame .
+	^ effect applyOn: aShip and: aPosition in: aGame
 ]
 
 { #category : 'action' }
@@ -69,10 +72,12 @@ Board >> calculateDistanceBetween: aPosition and: anotherPostion [
 ]
 
 { #category : 'compare' }
-Board >> distributionEquals: aDistribution [ 
+Board >> distributionEquals: aDistribution [
+
 	| squares |
-	squares := String cr join: (distribution collect: [ :aSquare| aSquare asString ]).
-	^ squares = aDistribution 
+	squares := String cr join:
+		           (distribution collect: [ :aSquare | aSquare asString ]).
+	^ squares = aDistribution
 ]
 
 { #category : 'accessing' }
@@ -81,18 +86,18 @@ Board >> effectIn: aSquare [
 	^ distribution at: aSquare
 ]
 
-{ #category : 'action' }
-Board >> goBackFourSquares: aShip from: aPosition [ 
-	
-	^ aPosition goBackFourSquaresIn: length 
-]
-
 { #category : 'initialization' }
-Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [ 
+Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [
 
 	length := aLength.
 	wormHole := aWormHole.
 	distribution := aDistribution
+]
+
+{ #category : 'changing state' }
+Board >> invertSquareIn: anAffectedSquaresPosition [
+
+	(distribution at: anAffectedSquaresPosition currentSquare + 1) invert
 ]
 
 { #category : 'testing' }
@@ -102,15 +107,15 @@ Board >> isEmpty [
 ]
 
 { #category : 'action' }
-Board >> jump: squaresToJump from: aPosition [ 
-	
-	^ aPosition add: squaresToJump with: length 
+Board >> jump: squaresToJump from: aPosition [
+
+	^ aPosition add: squaresToJump with: length
 ]
 
 { #category : 'accessing' }
-Board >> moveIfWormHoleAt: aPosition [
+Board >> move: aShip ifWormHoleAt: aPosition in: aGame [
 
-	^ wormHole moveIfEndPointAt: aPosition
+	^ wormHole move: aShip ifEndPointAt: aPosition in: aGame
 ]
 
 { #category : 'updating' }
