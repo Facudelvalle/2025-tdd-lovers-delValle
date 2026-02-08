@@ -190,7 +190,7 @@ ShipTurbineTest >> testWhenAShipLandsOnABlackHoleSquareThenItLosesATurbine [
 ]
 
 { #category : 'tests' }
-ShipTurbineTest >> testWhenAShipLandsOnAnInverseBlackHoleSquareThenEachOtherShipsLosesATurbine [
+ShipTurbineTest >> testWhenAShipLandsOnAnInverseBlackHoleSquareThenTheOtherShipsLoseATurbine [
 
 	| sideToRoll aLoadedDice aDistribution aBoard aGame expectedTurbines |
 	sideToRoll := #( 1 ) asOrderedCollection.
