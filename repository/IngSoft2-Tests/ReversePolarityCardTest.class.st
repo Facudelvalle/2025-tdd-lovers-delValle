@@ -56,7 +56,7 @@ ReversePolarityCardTest >> setUp [
 	aParsecJumpOfTwo := Parsec with: 2.
 	aParsecJumpOfThree := Parsec with: 3.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 
 	sideToRoll := #( 2 3 2 1 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
@@ -97,7 +97,7 @@ ReversePolarityCardTest >> setUp [
 		                                 for: aCardSquare
 		                                 with: aProbabilityOfOne.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
@@ -114,7 +114,7 @@ ReversePolarityCardTest >> setUp [
 		                                        for: anAccelerationCard
 		                                        with: aProbabilityOfOne.
 
-	aSetCardManagerWithReversePolarityCards := ProbablisiticEventsManager
+	aSetCardManagerWithReversePolarityCards := ProbabilisiticEventsManager
 		                                           new.
 	aSetCardManagerWithReversePolarityCards add:
 		aReversePolarityCardProbabilisticEvent.
@@ -149,15 +149,16 @@ ReversePolarityCardTest >> should: anErrorBlock raise: anErrorClass withMessageT
 { #category : 'tests' }
 ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingABlackHoleSquareThenItsEffectIsInverted [
 
-	| aGame aDistribution aBoard blackShipsExpectedPosition anAffectedSquaresPosition blueShipsExpectedPosition blueShipsExpectedFuel blackShipsExpectedFuel |
+	| aGame aDistribution aBoard blackShipsExpectedPosition anAffectedSquaresPosition blueShipsExpectedPosition blueShipsExpectedFuel blackShipsExpectedFuel expectedTurbines |
 	blueShipsExpectedPosition := Position at: 1 in: 1.
 	blueShipsExpectedFuel := Fuel with: 0 upTo: 6 in: HasFuelState new.
 	blackShipsExpectedPosition := Position at: 3 in: 1.
 	blackShipsExpectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
+	expectedTurbines := 2.
 
 	aDistributionManager add: aBlackHoleSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: sixSquares.
-	
+
 	aWormHole := WormHole between: 2 and: 5.
 
 	aBoard := Board
@@ -184,7 +185,8 @@ ReversePolarityCardTest >> testWhenAShipPlaysAReversePolarityCardAffectingABlack
 	self assert:
 		(aBlueShip currentPositionEquals: blueShipsExpectedPosition).
 	self assert: (aBlueShip fuelEquals: blueShipsExpectedFuel).
-	
+	self assert: aBlueShip turbines equals: expectedTurbines.
+
 	self assert:
 		(aBlackShip currentPositionEquals: blackShipsExpectedPosition).
 	self assert: (aBlackShip fuelEquals: blackShipsExpectedFuel)
@@ -835,7 +837,7 @@ ReversePolarityCardTest >> testWhenAShipTriesToPlayAReversePolarityCardThatIsNot
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aCardManager := ProbabilisiticEventsManager new.
 	aCardManager add: anAccelerationCardProbabilisticEvent.
 
 	aGameBuilder setBoard: aBoard.

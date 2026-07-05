@@ -53,7 +53,7 @@ CancellationCardTest >> setUp [
 
 	anAffectedSquaresPosition := Position at: 5 in: 1.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
 	aPlainSquareSquareProbabilisticEvent := ProbabilisticEvent
@@ -67,7 +67,7 @@ CancellationCardTest >> setUp [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
@@ -394,4 +394,49 @@ CancellationCardTest >> testWhenAShipTriesToPlayACancellationCardThatIsNotInItsH
 				and: anAffectedSquaresPosition ]
 		raise: Error
 		withMessageText: 'The ship does not have that card on its hand.'
+]
+
+{ #category : 'tests' }
+CancellationCardTest >> testWhenAnOverloadCardIsCancelledThenOnlyTheAffectedShipRecoversItsRollModifier [
+
+	| aRedShip sidesToRoll aLoadedDiceForTest expectedPosition aGame |
+	aRedShip := Ship called: 'RedShip'.
+	someShips add: aRedShip.
+
+	aSetCardManager add: anOverloadCardProbabilisticEvent.
+	aSetCardManager add: aCancellationCardProbabilisticEvent.
+	aGameBuilder setAvailableCards: aSetCardManager.
+
+	sidesToRoll := #( 3 3 3 ) asOrderedCollection.
+	aLoadedDiceForTest := LoadedDice toRoll: sidesToRoll.
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDiceForTest.
+
+	aGameBuilder setShips: someShips.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: anOverloadCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+
+	aGame
+		play: aCancellationCard
+		by: aBlackShip
+		affecting: anOverloadCard
+		and: aBlackShip
+		and: anAffectedSquaresPosition.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+
+	expectedPosition := Position at: 3 in: 1.
+
+	self assert: (aBlackShip currentPositionEquals: expectedPosition).
+	self assert: (aRedShip currentPositionEquals: expectedPosition)
 ]

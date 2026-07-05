@@ -23,7 +23,7 @@ BoardTest >> setUp [
 	twentySquares := 20.
 	fiveSquares := 5.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbability := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent

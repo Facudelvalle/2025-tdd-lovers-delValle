@@ -34,7 +34,7 @@ BlackHoleTest >> setUp [
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 	aBlackHoleSquare := BlackHoleSquare new.
 	aProbabilityOfOne := 1.
 	aBlackHoleProbabilisticEvent := ProbabilisticEvent
@@ -44,14 +44,14 @@ BlackHoleTest >> setUp [
 	aDistributionWithBlackHolesSquares := aDistributionManager
 		                                      generateFor: tenSquares.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aCardManager := ProbabilisiticEventsManager new.
 	aReversePolarityCard := ReversePolarityCard new.
 	aReversePolarityCardProbabilisticEvent := ProbabilisticEvent
 		                                          for: aReversePolarityCard

@@ -35,7 +35,7 @@ ShipTest >> setUp [
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
@@ -49,14 +49,14 @@ ShipTest >> setUp [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aCardManager := ProbabilisiticEventsManager new.
 	anAllyCard := AllyCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent
 		                                for: anAllyCard

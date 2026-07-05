@@ -83,14 +83,17 @@ Ship >> canLendFuelFor: fuelNeededToTravel [
 { #category : 'testing' }
 Ship >> canPlay: aRolledNumber [
 
-	| hasToWait |
+	| hasToWait canOvercomeGravity |
 	hasToWait := turnsLeftToWait > 0.
 
 	hasToWait ifTrue: [ self reducePenalty ].
 
-	gravityPenalty > aRolledNumber ifTrue: [ self loseATurbine ].
+	canOvercomeGravity := gravityPenalty <= aRolledNumber.
+	canOvercomeGravity
+		ifTrue: [ gravityPenalty := 0 ]
+		ifFalse: [ self loseATurbine ].
 
-	^ hasToWait not and: gravityPenalty <= aRolledNumber
+	^ hasToWait not and: canOvercomeGravity
 ]
 
 { #category : 'accessing' }
@@ -169,6 +172,12 @@ Ship >> hasAFuelPenalty [
 Ship >> hasEnoughTurbines [
 
 	^ turbines > 0
+]
+
+{ #category : 'testing' }
+Ship >> hasReached: aRaceGoal [
+
+	^ position > aRaceGoal
 ]
 
 { #category : 'update' }

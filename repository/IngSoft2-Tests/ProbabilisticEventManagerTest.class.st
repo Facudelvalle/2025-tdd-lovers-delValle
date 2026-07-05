@@ -11,7 +11,7 @@ ProbabilisticEventManagerTest >> testWhenADistributionIsBuiltThenItMatchesTheEve
 	| expectedDistribution averageDistribution aDistributionManager aPlainSquare aPlainSquareProbabilisticEvent aDistribution aPlainSquareProbability oneHundredSquares aBlackHoleSquare aBlackHoleSquareProbability aBlackHoleSquareProbabilisticEvent aHyperGravitySquare aHyperGravitySquareProbability aHyperGravitySquareProbabilisticEvent aMoonWalkSquare aMoonWalkSquareProbability aMoonWalkSquareProbabilisticEvent aHyperJumpSquare aHyperJumpSquareProbability aHyperJumpSquareProbabilisticEvent anAtomicBombSquare anAtomicBombSquareProbability anAtomicBombSquareProbabilisticEvent plainSquares blackHoleSquares hyperGravitySquares moonWalkSquares hyperJumpSquares atomicBombSquares iterations |
 	
 	oneHundredSquares := 100.
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 
 	aPlainSquare := PlainSquare new.
 	aPlainSquareProbability := 0.4.
