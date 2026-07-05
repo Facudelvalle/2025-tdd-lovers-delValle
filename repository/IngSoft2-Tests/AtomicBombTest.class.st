@@ -47,7 +47,7 @@ AtomicBombTest >> setUp [
 
 	aWormHole := WormHole between: 7 and: 8.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 	anAtomicBombSquare := AtomicBombSquare new.
 	aProbabilityOfOne := 1.
 	anAtomicBombProbabilisticEvent := ProbabilisticEvent
@@ -62,14 +62,14 @@ AtomicBombTest >> setUp [
 		                               and: aWormHole
 		                               distributedBy: aDistribution.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aCardManager := ProbabilisiticEventsManager new.
 	anAllyCard := AllyCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent
 		                                for: anAllyCard

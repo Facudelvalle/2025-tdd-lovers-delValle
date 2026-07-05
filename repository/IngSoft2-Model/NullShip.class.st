@@ -15,7 +15,7 @@ NullShip >> = aShip [
 ]
 
 { #category : 'testing' }
-NullShip >> canLendFuelFor: aShip [
+NullShip >> canLendFuelFor: fuelNeededToTravel [
 
 	^ false
 ]

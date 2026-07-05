@@ -41,7 +41,7 @@ ShipTurbineTest >> setUp [
 
 	tenSquares := 10.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 
 	aWormHole := WormHole between: 8 and: 9.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -54,7 +54,7 @@ ShipTurbineTest >> setUp [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward

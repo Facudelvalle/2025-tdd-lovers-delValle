@@ -21,12 +21,6 @@ WormHoleEndpoint class >> at: aPosition in: aWormHole [
 ]
 
 { #category : 'comparing' }
-WormHoleEndpoint >> = aPosition [
-
-	^ position = aPosition
-]
-
-{ #category : 'comparing' }
 WormHoleEndpoint >> > aLength [
 
 	^ index > aLength

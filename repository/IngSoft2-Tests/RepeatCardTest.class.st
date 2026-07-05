@@ -54,7 +54,7 @@ RepeatCardTest >> setUp [
 
 	aSetCardManager := SetProbablisiticEventsManager new.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 
 	anAffectedSquaresPosition := Position at: 2 in: 1.
 
@@ -69,14 +69,14 @@ RepeatCardTest >> setUp [
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aCardManager := ProbabilisiticEventsManager new.
 	aRepeatCard := RepeatCard new.
 	aRepeatCardProbabilisticEvent := ProbabilisticEvent
 		                                 for: aRepeatCard
@@ -542,7 +542,7 @@ RepeatCardTest >> testWhenAShipTriesToPlayARepeatCardThatIsNotInItsHandThenInval
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aCardManager := ProbabilisiticEventsManager new.
 	aCardManager add: anAllyCardProbabilisticEvent.
 
 	someDices add: aLoadedDice.

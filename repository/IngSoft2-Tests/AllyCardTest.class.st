@@ -47,7 +47,7 @@ AllyCardTest >> setUp [
 	expectedCards := OrderedCollection new.
 	anAffectedSquaresPosition := Position at: 2 in: 1.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
@@ -67,14 +67,14 @@ AllyCardTest >> setUp [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
 
-	aSetCardManagerWithAllyCards := ProbablisiticEventsManager new.
+	aSetCardManagerWithAllyCards := ProbabilisiticEventsManager new.
 
 	anAllyCard := AllyCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent

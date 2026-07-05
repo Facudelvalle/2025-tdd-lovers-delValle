@@ -47,7 +47,7 @@ AccelerationCardTest >> setUp [
 
 	aWormHole := WormHole between: 3 and: 4.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 
 	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
@@ -63,7 +63,7 @@ AccelerationCardTest >> setUp [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
 		                                      for: zeroReward
@@ -99,7 +99,7 @@ AccelerationCardTest >> setUp [
 
 	anAffectedSquaresPosition := Position at: 2 in: 1.
 
-	aSetCardManagerWithAccelerationCards := ProbablisiticEventsManager
+	aSetCardManagerWithAccelerationCards := ProbabilisiticEventsManager
 		                                        new.
 	aSetCardManagerWithAccelerationCards add:
 		anAccelerationCardProbabilisticEvent
@@ -145,7 +145,7 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenAllRolledNumbers
 AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenItIsNoLongerInItsHand [
 
 	| aGame aSetCardManager expectedCards |
-	aSetCardManager := ProbablisiticEventsManager new.
+	aSetCardManager := ProbabilisiticEventsManager new.
 	aSetCardManager add: anAllyCardProbabilisticEvent.
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 
@@ -169,7 +169,7 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenItIsNoLongerInIt
 AccelerationCardTest >> testWhenAShipTriesToPlayAnAccelerationCardThatIsNotInItsHandThenInvalid [
 
 	| aGame aSetCardManager |
-	aSetCardManager := ProbablisiticEventsManager new.
+	aSetCardManager := ProbabilisiticEventsManager new.
 	aSetCardManager add: anAllyCardProbabilisticEvent.
 
 	aGameBuilder setAvailableCards: aSetCardManager.

@@ -38,7 +38,7 @@ RewardTest >> setUp [
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
 	aProbabilityOfOne := 1.
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
@@ -52,7 +52,7 @@ RewardTest >> setUp [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aCardManager := ProbabilisiticEventsManager new.
 	anAllyCard := AllyCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent
 		                                for: anAllyCard
@@ -81,7 +81,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 	| expectedFuelLeft aRewardManager plusOneReward plusOneRewardProbabilisticEvent aGame |
 	expectedFuelLeft := Fuel with: 3 upTo: 3 in: HasFuelState new.
 	
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	plusOneReward := MaximumFuelReward of: 1.
 
 	plusOneRewardProbabilisticEvent := ProbabilisticEvent
@@ -105,7 +105,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsOneLessFuel [
 	| expectedFuelLeft aRewardManager minusOneReward minusOneRewardProbabilisticEvent aGame |
 	expectedFuelLeft := Fuel with: 0 upTo: 2 in: HasFuelState new.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	minusOneReward := FuelDecreaseReward of: -1.
 
 	minusOneRewardProbabilisticEvent := ProbabilisticEvent

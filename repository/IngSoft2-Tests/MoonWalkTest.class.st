@@ -37,9 +37,9 @@ MoonWalkTest >> setUp [
 
 	aProbabilityOfOne := 1.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
@@ -53,7 +53,7 @@ MoonWalkTest >> setUp [
 		                                          for: aReversePolarityCard
 		                                          with: aProbabilityOfOne.
 
-	aSetCardManagerWithReversePolarityCards := ProbablisiticEventsManager
+	aSetCardManagerWithReversePolarityCards := ProbabilisiticEventsManager
 		                                           new.
 	aSetCardManagerWithReversePolarityCards add:
 		aReversePolarityCardProbabilisticEvent.

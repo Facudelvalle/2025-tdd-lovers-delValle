@@ -2,7 +2,7 @@
 This class represents a distribution builder
 "
 Class {
-	#name : 'ProbablisiticEventsManager',
+	#name : 'ProbabilisiticEventsManager',
 	#superclass : 'Object',
 	#instVars : [
 		'probabilityEvents'
@@ -12,13 +12,13 @@ Class {
 }
 
 { #category : 'adding' }
-ProbablisiticEventsManager >> add: anEvent [
+ProbabilisiticEventsManager >> add: anEvent [
 
 	probabilityEvents add: anEvent
 ]
 
 { #category : 'building' }
-ProbablisiticEventsManager >> generateFor: aLength [
+ProbabilisiticEventsManager >> generateFor: aLength [
 
 	| generatedEvents |
 	generatedEvents := (0 to: aLength - 1) collect: [ :aNumber |
@@ -29,14 +29,14 @@ ProbablisiticEventsManager >> generateFor: aLength [
 ]
 
 { #category : 'building' }
-ProbablisiticEventsManager >> generateOne [
+ProbabilisiticEventsManager >> generateOne [
 
 	^ (probabilityEvents atRandomWeighting: [ :aProbabilisticEvent |
 		   aProbabilisticEvent probability ]) event
 ]
 
 { #category : 'initialization' }
-ProbablisiticEventsManager >> initialize [
+ProbabilisiticEventsManager >> initialize [
 
 	probabilityEvents := OrderedCollection new
 ]

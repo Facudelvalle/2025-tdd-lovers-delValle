@@ -4,6 +4,9 @@ This class represents an overload Card
 Class {
 	#name : 'OverloadCard',
 	#superclass : 'Card',
+	#instVars : [
+		'affectedShips'
+	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -13,6 +16,7 @@ OverloadCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and:
 
 	aGame validateNextPlayer: aPlayingShip.
 	anAffectedShip applyRollModifier: -2.
+	affectedShips add: anAffectedShip.
 	aGame lastPlayedCard: self.
 	aGame addActiveCard: self
 ]
@@ -32,7 +36,8 @@ OverloadCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffect
 { #category : 'cancelling' }
 OverloadCard >> cancelEffectIn: aGame on: aPosition [
 
-	aGame applyRollModifier: 2
+	affectedShips do: [ :aShip | aShip applyRollModifier: 2 ].
+	affectedShips := OrderedCollection new
 ]
 
 { #category : 'comparing' }
@@ -45,6 +50,12 @@ OverloadCard >> compare: aShip and: anotherShip [
 OverloadCard >> equalsCard: aCard [
 
 	^ aCard isOverloadCard
+]
+
+{ #category : 'initialization' }
+OverloadCard >> initialize [
+
+	affectedShips := OrderedCollection new
 ]
 
 { #category : 'comparing' }

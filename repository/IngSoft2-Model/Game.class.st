@@ -198,7 +198,7 @@ Game >> move: aShip with: rolledNumber [
 
 	self applyRewardTo: aShip for: rolledNumber.
 	aShip playTurnWith: rolledNumber on: board in: self.
-	aShip currentPosition > raceGoal ifFalse: [ ^ self ].
+	(aShip hasReached: raceGoal) ifFalse: [ ^ self ].
 	self finish.
 	winner := aShip
 ]

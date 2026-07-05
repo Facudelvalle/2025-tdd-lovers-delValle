@@ -37,7 +37,7 @@ HyperGravityTest >> setUp [
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 
-	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager := ProbabilisiticEventsManager new.
 	aSetHyperGravitySquare := HyperGravitySquare between: 2 and: 2.
 	aProbabilityOfOne := 1.
 	aSetHyperGravitySquareProbabilisticEvent := ProbabilisticEvent
@@ -52,14 +52,14 @@ HyperGravityTest >> setUp [
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-	aRewardManager := ProbablisiticEventsManager new.
+	aRewardManager := ProbabilisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardProbabilisticEvent := ProbabilisticEvent
 		                                for: zeroReward
 		                                with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aCardManager := ProbabilisiticEventsManager new.
 	anAllyCard := AllyCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent
 		                                for: anAllyCard
@@ -150,6 +150,51 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+HyperGravityTest >> testWhenAShipOvercomesAHyperGravitySquareThenItDoesNotLoseTurbinesOnANormalSquareAfterwards [
+
+	| sideToRoll aLoadedDice aGame aHyperGravitySquare turbinesAfterOvercoming |
+	aHyperGravitySquare := HyperGravitySquare between: 2 and: 2.
+
+	aDistribution := OrderedCollection new.
+	aDistribution add: PlainSquare new.
+	aDistribution add: aHyperGravitySquare.
+	aDistribution add: PlainSquare new.
+	aDistribution add: PlainSquare new.
+	aDistribution add: PlainSquare new.
+	aDistribution add: PlainSquare new.
+	aDistribution add: PlainSquare new.
+	aDistribution add: PlainSquare new.
+	aDistribution add: PlainSquare new.
+	aDistribution add: PlainSquare new.
+
+	aBoard := Board
+		          with: tenSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	sideToRoll := #( 1 2 1 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+
+	turbinesAfterOvercoming := aBlueShip turbines.
+
+	aGame nextTurnPlay.
+
+	self assert: aBlueShip turbines equals: turbinesAfterOvercoming.
+	self assert:
+		(aBlueShip currentPositionEquals: (Position at: 4 in: 1))
 ]
 
 { #category : 'tests' }
